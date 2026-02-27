@@ -21,7 +21,7 @@ export interface Post {
   format?: 'presencial' | 'online' | 'hibrido';
   hours?: string;
   
-  createdAt: string;
+  createdAt?: string;
 }
 
 export const CONTENT_TYPES: { id: ContentType; label: string }[] = [
