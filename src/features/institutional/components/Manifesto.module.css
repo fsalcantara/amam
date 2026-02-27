@@ -1,0 +1,72 @@
+.topBanner {
+  background-color: #ffffff;
+  color: var(--color-text-main);
+  padding: var(--section-padding-lg) 0;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+}
+
+.bannerText {
+  font-size: 3rem;
+  line-height: 1.1;
+  font-style: italic;
+  color: var(--color-primary);
+}
+
+.bannerText span {
+  font-size: 2rem;
+  font-style: normal;
+  display: block;
+  margin-top: var(--spacing-2);
+  font-weight: normal;
+  color: var(--color-text-main);
+}
+
+.bottomSection {
+  background-color: #ffffff;
+  color: var(--color-text-main);
+  padding: var(--section-padding-lg) 0;
+}
+
+.grid {
+  display: grid;
+  gap: var(--spacing-12);
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr 1.5fr;
+    align-items: center;
+  }
+}
+
+.manifestoTitle {
+  font-size: 3rem;
+  line-height: 1.1;
+  color: var(--color-primary);
+}
+
+.highlight {
+  font-weight: bold;
+}
+
+.rightCol {
+  font-size: var(--font-size-base);
+  line-height: 1.8;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6);
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .rightCol {
+    text-align: right;
+  }
+}
+
+.strong {
+  font-weight: bold;
+  font-size: var(--font-size-lg);
+}

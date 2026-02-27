@@ -1,0 +1,195 @@
+"use client";
+
+import { useEffect, useState } from 'react';
+import { Job, JOB_AREAS } from '@/features/jobs/types/job';
+import { jobService } from '@/features/jobs/services/jobService';
+import { JobForm } from './JobForm';
+import { AdminButton } from '@/features/admin/components/ui/AdminButton';
+import { AdminSelect } from '@/features/admin/components/ui/AdminInput';
+import { AdminToggle } from '@/features/admin/components/ui/AdminToggle';
+import styles from './JobList.module.css';
+
+import { applicationService } from '@/features/jobs/services/applicationService';
+
+export default function JobList() {
+  const [jobs, setJobs] = useState<Job[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentJob, setCurrentJob] = useState<Job | null>(null);
+  const [applicationCounts, setApplicationCounts] = useState<Record<string, number>>({});
+  
+  // Filters
+  const [searchTerm, setSearchTerm] = useState('');
+  const [areaFilter, setAreaFilter] = useState('');
+
+  useEffect(() => {
+    loadJobs();
+  }, []);
+
+  const loadJobs = async () => {
+    setLoading(true);
+    const data = await jobService.getJobs();
+    setJobs(data);
+
+    // Fetch application counts
+    const counts: Record<string, number> = {};
+    await Promise.all(data.map(async (job) => {
+      counts[job.id] = await applicationService.countApplications(job.id);
+    }));
+    setApplicationCounts(counts);
+
+    setLoading(false);
+  };
+
+  const filteredJobs = jobs.filter(job => {
+    const matchesSearch = job.title.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesArea = areaFilter ? job.area === areaFilter : true;
+    return matchesSearch && matchesArea;
+  });
+
+  const getAreaLabel = (areaId: string) => {
+    return JOB_AREAS.find(a => a.id === areaId)?.label || areaId;
+  };
+
+  const handleCreate = () => {
+    setCurrentJob(null);
+    setIsEditing(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleEdit = (job: Job) => {
+    setCurrentJob(job);
+    setIsEditing(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleDelete = async (id: string) => {
+    if (confirm('Tem certeza que deseja excluir esta vaga?')) {
+      await jobService.deleteJob(id);
+      loadJobs();
+    }
+  };
+
+  const handleSave = async (data: Partial<Job>) => {
+    if (currentJob?.id || data.id) {
+      await jobService.updateJob(currentJob?.id || data.id!, data);
+    } else {
+      await jobService.createJob(data as any);
+    }
+    setIsEditing(false);
+    loadJobs();
+  };
+
+  if (isEditing) {
+    return (
+      <JobForm 
+        initialData={currentJob} 
+        onSubmit={handleSave} 
+        onCancel={() => {
+          setIsEditing(false);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }} 
+      />
+    );
+  }
+
+  if (loading) return <div className={styles.loading}>Carregando vagas...</div>;
+
+  return (
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <div>
+          <h1>Gerenciar Vagas</h1>
+          <p className={styles.subtitle}>Gerencie as oportunidades de carreira da Amam.</p>
+        </div>
+        <AdminButton onClick={handleCreate}>+ Nova Vaga</AdminButton>
+      </div>
+
+      <div className={styles.filters}>
+        <div className={styles.searchBox}>
+          <input 
+            type="text" 
+            placeholder="Buscar por cargo..." 
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className={styles.input}
+          />
+        </div>
+        <div className={styles.filterBox}>
+          <AdminSelect 
+            value={areaFilter} 
+            onChange={(value: string) => setAreaFilter(value)}
+            options={[
+              { label: 'Todas as Áreas', value: '' },
+              ...JOB_AREAS.map(area => ({ label: area.label, value: area.id }))
+            ]}
+            placeholder="Filtrar por Área"
+          />
+        </div>
+      </div>
+
+      <div className={styles.tableContainer}>
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <th>Cargo</th>
+              <th>Área</th>
+              <th>Local</th>
+              <th>Currículos</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredJobs.length > 0 ? (
+              filteredJobs.map((job) => (
+                <tr key={job.id}>
+                  <td className={styles.jobTitle}>{job.title}</td>
+                  <td>
+                    <span className={styles.areaTag}>{getAreaLabel(job.area)}</span>
+                  </td>
+                  <td>{job.location}</td>
+                  <td>
+                    <span style={{ 
+                      backgroundColor: '#e3f2fd', 
+                      color: '#1565c0', 
+                      padding: '0.2rem 0.6rem', 
+                      borderRadius: '12px', 
+                      fontSize: '0.85rem', 
+                      fontWeight: 600 
+                    }}>
+                      {applicationCounts[job.id] || 0}
+                    </span>
+                  </td>
+                  <td>
+                    <div onClick={(e) => e.stopPropagation()}>
+                      <AdminToggle 
+                        label={job.isActive ? 'Ativa' : 'Inativa'} 
+                        checked={job.isActive}
+                        onChange={(checked) => handleSave({...job, isActive: checked})}
+                      />
+                    </div>
+                  </td>
+                  <td className={styles.actions}>
+                    <AdminButton variant="secondary" className={styles.smBtn} onClick={() => handleEdit(job)}>
+                      Editar
+                    </AdminButton>
+                    <AdminButton variant="danger" className={styles.smBtn} onClick={() => handleDelete(job.id)}>
+                      Excluir
+                    </AdminButton>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={6} className={styles.emptyState}>
+                  Nenhuma vaga encontrada.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}

@@ -1,0 +1,86 @@
+.card {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  background-color: var(--color-background);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: transparent;
+}
+
+.image {
+  height: 200px;
+  background-color: var(--color-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-muted);
+}
+
+.content {
+  padding: var(--spacing-4);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-2);
+}
+
+.badge {
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.blog { background-color: #E3F2FD; color: #1565C0; }
+.evento { background-color: #F3E5F5; color: #7B1FA2; }
+.treinamento { background-color: #E8F5E9; color: #2E7D32; }
+
+.date {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+.title {
+  font-size: var(--font-size-lg);
+  margin-bottom: var(--spacing-2);
+  line-height: 1.4;
+}
+
+.title a {
+  text-decoration: none;
+  color: var(--color-text-main);
+}
+
+.title a:hover {
+  color: var(--color-primary);
+}
+
+.excerpt {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin-bottom: var(--spacing-4);
+  flex: 1;
+}
+
+.details {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--spacing-2);
+  margin-top: auto;
+}

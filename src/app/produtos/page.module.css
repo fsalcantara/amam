@@ -1,0 +1,106 @@
+.page {
+  padding-bottom: var(--spacing-12);
+  background-color: var(--color-background);
+  min-height: 100vh;
+}
+
+.header {
+  padding: var(--spacing-8) 0;
+  margin-bottom: var(--spacing-6);
+  text-align: center;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.header h1 {
+  font-size: var(--font-size-3xl);
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-2);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.header p {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-base);
+}
+
+.content {
+  display: list-item; /* Fallback */
+}
+
+@media (min-width: 768px) {
+  .content {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: var(--spacing-8);
+    align-items: start;
+  }
+}
+
+.sidebar {
+  background-color: var(--color-surface);
+  padding: var(--spacing-4);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  position: sticky;
+  top: var(--spacing-4);
+}
+
+.sidebar h3 {
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--spacing-3);
+  padding-bottom: var(--spacing-2);
+  border-bottom: 2px solid var(--color-border);
+  text-transform: uppercase;
+  color: var(--color-text-main);
+  font-weight: 800;
+}
+
+.categoryList {
+  list-style: none;
+}
+
+.categoryList li {
+  margin-bottom: var(--spacing-1);
+}
+
+.categoryList a {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-2) var(--spacing-3);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.categoryList a:hover {
+  background-color: rgba(211, 47, 47, 0.05); /* very light red */
+  color: var(--color-primary);
+}
+
+.categoryList a.active {
+  background-color: var(--color-primary);
+  color: white;
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--spacing-4);
+}
+
+.empty {
+  text-align: center;
+  color: var(--color-text-muted);
+  padding: var(--spacing-12);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-md);
+  border: 1px dashed var(--color-border);
+}
+
+/* Animations */
+/* Animations handled in JS */

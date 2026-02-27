@@ -1,0 +1,30 @@
+.page {
+  /* Global page styles if needed */
+}
+
+/* Reusing hero styles but making them compact */
+.hero {
+  background-color: var(--color-surface);
+  padding: var(--spacing-12) 0;
+  text-align: center;
+  margin-bottom: var(--spacing-8);
+}
+
+.hero h1 {
+  font-size: var(--font-size-3xl);
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-2);
+  font-weight: 800;
+}
+
+.hero p {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-muted);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Sections spacing */
+.section {
+  padding: var(--spacing-12) 0;
+}

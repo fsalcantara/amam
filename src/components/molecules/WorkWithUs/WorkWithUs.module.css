@@ -1,0 +1,119 @@
+.container {
+  position: relative;
+}
+
+.trigger {
+  background: none;
+  border: none;
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-base);
+  color: var(--color-text-main);
+  cursor: pointer;
+  padding: var(--spacing-2) 0;
+  transition: color 0.2s;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+}
+
+.trigger:hover, .trigger.active {
+  color: var(--color-primary);
+}
+
+.icon {
+  transition: transform 0.3s ease;
+  font-size: 0.8em;
+}
+
+.trigger.active .icon {
+  transform: rotate(180deg);
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  right: -100px; /* Center relative to trigger or adjust as needed */
+  width: 600px;
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: var(--spacing-6);
+  z-index: 1000;
+  display: none; /* Hidden by default, toggled by GSAP */
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-6);
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.columnTitle {
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-3);
+  border-bottom: 2px solid var(--color-border);
+  padding-bottom: var(--spacing-2);
+}
+
+.vacancyList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.vacancyItem {
+  margin-bottom: var(--spacing-2);
+}
+
+.vacancyLink {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-main);
+  text-decoration: none;
+  transition: color 0.2s;
+  display: block;
+  padding: var(--spacing-1) 0;
+}
+
+.vacancyLink:hover {
+  color: var(--color-primary);
+  transform: translateX(4px);
+  transition: transform 0.2s ease, color 0.2s;
+}
+
+.closeButton {
+  position: absolute;
+  top: var(--spacing-2);
+  right: var(--spacing-2);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  font-size: 1.25rem;
+  padding: var(--spacing-1);
+}
+
+.closeButton:hover {
+  color: var(--color-primary);
+}
+
+@media (max-width: 768px) {
+  .dropdown {
+    width: 90vw;
+    right: -50vw;
+    left: 50%;
+    transform: translateX(-50%);
+    position: fixed;
+    top: 80px;
+  }
+}

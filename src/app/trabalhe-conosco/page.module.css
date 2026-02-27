@@ -1,0 +1,465 @@
+.page {
+  background-color: #f5f5f5;
+  min-height: 100vh;
+  padding-bottom: 3rem;
+}
+
+/* Hero Section */
+.hero {
+  background: linear-gradient(135deg, var(--color-primary) 0%, #a00f14 100%); /* Amam Red Gradient */
+  color: white;
+  padding: 3rem 0 5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.heroContent {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.hero h1 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.hero p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+/* Search Box */
+.searchBox {
+  background: white;
+  padding: 1.25rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+  text-align: left;
+  max-width: 800px;
+  margin: 0 auto -3rem; /* Overlap effect */
+  position: relative;
+  z-index: 3;
+  flex-wrap: wrap;
+}
+
+.searchField {
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.searchField label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #444;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.input, 
+.inputSelect {
+  width: 100%;
+  height: 48px; /* Fixed height for alignment */
+  border-radius: 8px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.input {
+  padding: 0 1rem;
+  border: 1px solid #e0e0e0;
+}
+
+/* Fix for CustomSelect alignment */
+.inputSelect {
+  margin-bottom: 0 !important; /* Override CustomSelect default margin */
+}
+
+/* Target the trigger div using tabindex attribute which is stable */
+.inputSelect > div[tabindex="0"] {
+  height: 48px !important;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem !important;
+  border: 1px solid #e0e0e0 !important;
+  border-radius: 8px !important;
+  background-color: white !important;
+  box-shadow: none !important; /* Remove default focus ring style from CustomSelect if any */
+}
+
+.input:focus {
+  border-color: var(--color-primary);
+}
+
+.searchButton {
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  padding: 0 2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  height: 48px;
+  font-size: 0.95rem;
+}
+
+.searchButton:hover {
+  background-color: #c41217;
+}
+
+/* Job List Section */
+.jobsSection {
+  padding-top: 5rem;
+  padding-bottom: 3rem;
+}
+
+.sectionTitle {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+}
+
+.jobList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.jobCard {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+  border-left: 3px solid transparent;
+}
+
+.jobCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-left-color: var(--color-primary);
+}
+
+.jobInfo h3 {
+  font-size: 1.1rem;
+  color: #222;
+  margin-bottom: 0.35rem;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.jobDetails {
+  display: flex;
+  gap: 1.5rem;
+  color: #666;
+  font-size: 0.85rem;
+  align-items: center;
+}
+
+.jobDetail {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.tag {
+  background-color: #f0f7ff;
+  color: #0066cc;
+  padding: 0.2rem 0.6rem;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.postedAt {
+  color: #999;
+  font-size: 0.75rem;
+  margin-top: 0.35rem;
+  display: block;
+}
+
+.viewButton {
+  background-color: #2c3e50;
+  color: white;
+  padding: 0.6rem 1.5rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.2s;
+  white-space: nowrap;
+  font-size: 0.9rem;
+}
+
+.viewButton:hover {
+  background-color: #1a252f;
+}
+
+/* Institutional Section */
+.institutionalSection {
+  background: white;
+  padding: 4rem 0;
+}
+
+.institutionalContent {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.institutionalContent h2 {
+  font-size: 1.75rem;
+  color: #333;
+  margin-bottom: 1.25rem;
+}
+
+.institutionalContent p {
+  line-height: 1.7;
+  color: #555;
+  margin-bottom: 1.25rem;
+  font-size: 1rem;
+}
+
+/* Media/Testimonials Section */
+.mediaSection {
+  padding: 4rem 0;
+  background-color: #f9f9f9;
+}
+
+.mediaGrid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 3rem;
+  align-items: flex-start;
+}
+
+.videoContainer {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  aspect-ratio: 16/9;
+}
+
+.videoOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.videoOverlay:hover {
+  background: rgba(0,0,0,0.1);
+}
+
+.playButton {
+  width: 64px;
+  height: 64px;
+  background: rgba(255,255,255,0.95);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary);
+  transition: transform 0.2s;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.playButton:hover {
+  transform: scale(1.05);
+}
+
+.testimonial {
+  padding: 1.5rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.testimonialHeader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.author h4 {
+  color: #333;
+  margin-bottom: 0.15rem;
+  font-size: 1rem;
+}
+
+.author span {
+  color: #666;
+  font-size: 0.8rem;
+}
+
+.quote {
+  font-style: italic;
+  color: #555;
+  line-height: 1.6;
+  font-size: 0.95rem;
+  min-height: 80px; /* Prevent height jump */
+}
+
+.testimonialWrapper {
+  position: relative;
+}
+
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #ddd;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s;
+}
+
+.activeDot {
+  background-color: var(--color-primary);
+  transform: scale(1.2);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Gallery inside Media Section */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+  margin-top: 3rem;
+}
+
+.gallery img,
+.gallery div {
+  width: 100%;
+  border-radius: 8px;
+  height: 180px;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.gallery img:hover,
+.gallery div:hover {
+  transform: scale(1.02);
+}
+
+/* Talent Bank CTA */
+.ctaSection {
+  background-color: #2c3e50;
+  color: white;
+  padding: 3rem 0;
+  text-align: center;
+}
+
+.ctaContent {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.ctaContent h2 {
+  font-size: 1.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.ctaContent p {
+  opacity: 0.9;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+}
+
+.ctaButton {
+  background-color: var(--color-primary);
+  color: white;
+  padding: 0.8rem 2rem;
+  border-radius: 6px;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-block;
+  transition: transform 0.2s, background-color 0.2s;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.ctaButton:hover {
+  transform: translateY(-2px);
+  background-color: #c41217;
+}
+
+.partners {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+  opacity: 0.6;
+  filter: grayscale(1);
+}
+
+@media (max-width: 768px) {
+  .searchBox {
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      padding: 1rem;
+  }
+
+  .searchField {
+      width: 100%;
+  }
+
+  .searchButton {
+      width: 100%;
+  }
+
+  .mediaGrid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+  }
+
+  .gallery {
+      grid-template-columns: 1fr 1fr;
+  }
+}

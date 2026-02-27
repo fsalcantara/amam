@@ -1,0 +1,68 @@
+.section {
+  padding: var(--section-padding-lg) 0;
+  background-color: var(--color-primary);
+  color: #ffffff;
+  text-align: center;
+}
+
+.title {
+  color: #ffffff;
+  font-size: var(--font-size-3xl);
+  margin-bottom: var(--spacing-2);
+}
+
+.subtitle {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--spacing-12);
+}
+
+.layout {
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.centerIcon {
+  font-size: 10rem;
+  color: var(--color-secondary);
+  margin: var(--spacing-8) 0;
+  opacity: 0.8;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-12) var(--spacing-8);
+  text-align: center;
+  position: relative;
+}
+
+/* Positioning tweaks to mimic the scattered layout around the center */
+.item:nth-child(odd) {
+  text-align: right;
+  padding-right: var(--spacing-8);
+}
+
+.item:nth-child(even) {
+  text-align: left;
+  padding-left: var(--spacing-8);
+}
+
+.itemTitle {
+  color: var(--color-secondary);
+  font-size: var(--font-size-xl);
+  margin-bottom: var(--spacing-2);
+}
+
+.itemText {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: var(--font-size-base);
+}
+
+.bottomItem {
+  grid-column: 1 / -1;
+  text-align: center !important;
+  margin-top: var(--spacing-8);
+  padding: 0 !important;
+}

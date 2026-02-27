@@ -1,0 +1,97 @@
+.wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #444;
+}
+
+.trigger {
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  font-size: 0.95rem;
+  color: #444;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s;
+  position: relative;
+  user-select: none;
+}
+
+.trigger:focus, .trigger.open {
+  outline: none;
+  border-color: #e31e24;
+  box-shadow: 0 0 0 4px rgba(227, 30, 36, 0.25);
+}
+
+.arrow {
+  width: 1rem;
+  height: 1rem;
+  transition: transform 0.2s;
+  color: #666;
+}
+
+.trigger.open .arrow {
+  transform: rotate(180deg);
+}
+
+.optionsContainer {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 4px;
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  z-index: 1000;
+  max-height: 250px;
+  overflow-y: auto;
+  animation: slideDown 0.2s ease-out;
+  padding: 0.5rem 0;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.option {
+  padding: 0.8rem 1rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: #444;
+  transition: background 0.2s;
+}
+
+.option:hover {
+  background-color: #e31e2410; /* Very light red */
+  color: #e31e24;
+}
+
+.option.selected {
+  background-color: #e31e24;
+  color: white;
+}
+
+.hasError .trigger {
+  border-color: #e74c3c;
+  background-color: #fdf2f2;
+}
+
+.error {
+  font-size: 0.8rem;
+  color: #e74c3c;
+}
