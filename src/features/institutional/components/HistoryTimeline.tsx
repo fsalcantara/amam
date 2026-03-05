@@ -25,7 +25,7 @@ export const HistoryTimeline = () => {
           {/* Right Column: Logo Breakdown */}
           <div className={styles.rightColumn}>
             <img 
-              src="/SITE/LOGO/AMAM LOGO.png" 
+              src="/SITE/LOGO/logo-color.png" 
               alt="AMAM Alimentos" 
               className={styles.logo}
             />
