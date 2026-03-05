@@ -8,8 +8,14 @@ export const Footer = () => {
       <Container>
         <div className={styles.grid}>
           <div className={styles.brand}>
-            <h3>Amam Alimentos</h3>
-            <p style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-text-muted)' }}>
+            <Link href="/" className={styles.logoLink}>
+              <img 
+                src="/SITE/ELEMENTOS E ICONES/DELONGO LOGO.png" 
+                alt="Amam Alimentos" 
+                className={styles.logoImage}
+              />
+            </Link>
+            <p className={styles.brandDescription}>
               Tradição e qualidade em alimentos.
             </p>
           </div>

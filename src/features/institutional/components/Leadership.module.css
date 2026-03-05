@@ -1,42 +1,44 @@
 .section {
   background-color: var(--color-primary);
   color: #fff;
-  padding: var(--section-padding-lg) 0;
+  padding: var(--spacing-24) 0;
 }
 
 .layout {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-12);
+  gap: var(--spacing-16);
 }
 
 @media (min-width: 1024px) {
   .layout {
     flex-direction: row;
     align-items: center;
+    gap: var(--spacing-24);
   }
 }
 
 .titleCol {
-  flex: 0 0 250px;
+  flex: 0 0 350px;
 }
 
 .title {
-  font-size: 3.5rem;
-  line-height: 1.1;
-  color: var(--color-secondary);
-  font-weight: 300;
-  letter-spacing: 2px;
+  font-size: 4.5rem;
+  line-height: 1;
+  color: #ffffff;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: var(--spacing-8);
 }
 
 .grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--spacing-8);
+  gap: var(--spacing-16);
   flex: 1;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 500px) {
   .grid {
     grid-template-columns: 1fr 1fr;
   }
@@ -50,42 +52,50 @@
 }
 
 .imageWrapper {
-  width: 180px;
-  height: 180px;
-  border-radius: 40px 0 40px 0; /* Leaf/organic shape approximation */
+  width: 170px;
+  height: 170px;
+  margin: var(--spacing-8) 0 var(--spacing-12) 0;
+  transform: rotate(45deg);
+  border-radius: 24px;
   overflow: hidden;
-  margin-bottom: var(--spacing-4);
   background-color: var(--color-secondary);
-  border: 4px solid rgba(255,255,255,0.2);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.placeholderImage {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 3rem;
-  color: var(--color-primary);
-  background: #e0e0e0;
+.leaderImage {
+  width: 140%; /* Increase to cover the rotated canvas */
+  height: 140%;
+  object-fit: cover;
+  transform: rotate(-45deg); /* Undo wrapper rotation */
+  transition: transform 0.3s ease;
+}
+
+.card:hover .leaderImage {
+  transform: rotate(-45deg) scale(1.1);
 }
 
 .name {
-  font-size: var(--font-size-lg);
-  font-weight: bold;
+  font-size: var(--font-size-xl);
+  font-weight: 700;
   text-transform: uppercase;
   margin-bottom: var(--spacing-1);
+  color: var(--color-secondary);
 }
 
 .role {
-  font-size: var(--font-size-sm);
-  margin-bottom: var(--spacing-3);
+  font-size: var(--font-size-base);
+  margin-bottom: var(--spacing-4);
   display: block;
-  opacity: 0.9;
+  font-weight: 600;
+  color: #ffffff;
 }
 
 .description {
-  font-size: var(--font-size-xs);
-  line-height: 1.5;
-  max-width: 250px;
+  font-size: var(--font-size-sm);
+  line-height: 1.6;
+  max-width: 280px;
+  color: rgba(255, 255, 255, 0.9);
 }

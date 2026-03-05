@@ -1,10 +1,10 @@
 :root {
   /* Brand Colors */
-  --color-primary: #D32F2F; 
-  --color-primary-dark: #9A0007;
-  --color-primary-light: #FF6659;
+  --color-primary: #ED3237; 
+  --color-primary-dark: #cc0000;
+  --color-primary-light: #ff6666;
   
-  --color-secondary: #FFC107; 
+  --color-secondary: #EBB571; 
   
   /* Neutral Colors */
   --color-background: #ffffff;

@@ -1,72 +1,98 @@
 .topBanner {
-  background-color: #ffffff;
-  color: var(--color-text-main);
-  padding: var(--section-padding-lg) 0;
-  min-height: 400px;
+  background-image: linear-gradient(rgba(237, 50, 55, 0.8), rgba(237, 50, 55, 0.9)), url('/SITE/BANNER/pao_1.png');
+  background-size: cover;
+  background-position: center;
+  color: #ffffff;
+  padding: var(--spacing-48) 0 var(--spacing-64) 0;
+  min-height: 480px;
   display: flex;
   align-items: center;
+  text-align: center;
 }
 
 .bannerText {
   font-size: 3rem;
-  line-height: 1.1;
-  font-style: italic;
-  color: var(--color-primary);
+  line-height: 1.2;
+  font-weight: 300;
+  color: #ffffff;
+}
+
+.bannerText strong {
+  font-weight: 800;
 }
 
 .bannerText span {
   font-size: 2rem;
-  font-style: normal;
+  font-weight: 400;
   display: block;
-  margin-top: var(--spacing-2);
-  font-weight: normal;
-  color: var(--color-text-main);
+  margin-top: var(--spacing-4);
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .bottomSection {
-  background-color: #ffffff;
-  color: var(--color-text-main);
-  padding: var(--section-padding-lg) 0;
+  background-color: var(--color-primary); /* Red Background */
+  color: #ffffff;
+  padding: 80px 0 var(--spacing-32) 0;
+  position: relative;
+  z-index: 2;
+  margin-bottom: -120px;
+  padding-bottom: calc(var(--spacing-32) + 120px);
+  margin-top: -80px; /* Pull it up into the banner nicely to integrate better */
 }
 
 .grid {
   display: grid;
-  gap: var(--spacing-12);
+  gap: var(--spacing-24);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 992px) {
   .grid {
-    grid-template-columns: 1fr 1.5fr;
-    align-items: center;
+    grid-template-columns: 1fr 1fr;
+    align-items: flex-start;
+    padding-top: 100px; /* Specific padding for the content inside the grid */
   }
 }
 
-.manifestoTitle {
-  font-size: 3rem;
-  line-height: 1.1;
-  color: var(--color-primary);
-}
-
-.highlight {
-  font-weight: bold;
+.leftCol {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  margin-top: 40px; /* Extra push for the form */
 }
 
 .rightCol {
-  font-size: var(--font-size-base);
-  line-height: 1.8;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+  margin-top: 40px; /* Extra push for the text */
+}
+
+.manifestoTitle {
+  font-size: 4rem;
+  line-height: 1;
+  color: #ffffff;
+  font-weight: 300;
+}
+
+.highlight {
+  font-weight: 800;
+  color: var(--color-secondary); /* Gold */
+}
+
+.textContent {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-6);
-  text-align: center;
+  font-size: var(--font-size-base);
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.9);
 }
 
-@media (min-width: 768px) {
-  .rightCol {
-    text-align: right;
-  }
-}
-
-.strong {
-  font-weight: bold;
+.strongText {
   font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: #ffffff;
+}
+.strongText strong {
+  color: var(--color-secondary);
 }

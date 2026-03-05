@@ -9,7 +9,7 @@ import { useGSAP } from '@gsap/react';
 
 interface HeroProps {
   headline: string;
-  subheadline: string;
+  subheadline?: string;
   imageSrc?: string;
   ctaText?: string;
   ctaLink?: string;
@@ -48,21 +48,27 @@ export const Hero = ({
 
   return (
     <section ref={containerRef} className={styles.hero}>
-      <div className={styles.heroImage} style={{ backgroundColor: '#222' }} />
-      <div className={styles.overlay} />
+      <div className={styles.heroBackground} />
+      <div className={styles.gradientOverlay} />
       
-      <Container>
+      <Container className={styles.container}>
         <div className={styles.content}>
-          <h1 ref={headlineRef} className={styles.headline}>{headline}</h1>
-          <p ref={subheadlineRef} className={styles.subheadline}>{subheadline}</p>
-          
-          <div ref={actionsRef} className={styles.actions}>
-            <Button href={ctaLink} as="a" variant="primary">
-              {ctaText}
-            </Button>
-            <Button href="/contato" as="a" variant="white">
-              Fale Conosco
-            </Button>
+          <div className={styles.textContent}>
+            <h1 ref={headlineRef} className={styles.headline}>
+              {headline}
+              <span className={styles.subtext}>a fatia que faltava</span>
+            </h1>
+            <div className={styles.wheatIcon}>
+              {/* Optional wheat icon or similar decorative element if needed, though we can use CSS */}
+            </div>
+          </div>
+
+          <div className={styles.productVisual}>
+            <img 
+              src="/SITE/BANNER/Pães Amam.png" 
+              alt="Pães Amam" 
+              className={styles.breadPackages} 
+            />
           </div>
         </div>
       </Container>

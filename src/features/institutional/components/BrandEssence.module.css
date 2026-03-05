@@ -1,8 +1,8 @@
 .section {
   position: relative;
-  background-color: var(--color-primary);
+  background-color: var(--color-primary); /* Red background */
   color: #fff;
-  padding: var(--section-padding-lg) 0;
+  padding: var(--spacing-48) 0 0 0; /* Removed bottom padding */
   overflow: hidden;
   text-align: center;
 }
@@ -11,40 +11,86 @@
   display: grid;
   gap: var(--spacing-12);
   align-items: center;
+  padding-bottom: var(--spacing-16); /* Add padding here so text isn't flush with separator */
 }
 
-@media (min-width: 768px) {
+@media (min-width: 992px) {
   .grid {
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr auto 1fr;
+    gap: var(--spacing-16);
   }
 }
 
 .textLeft {
-  text-align: right;
+  text-align: center;
 }
 
 .textRight {
-  text-align: left;
+  text-align: center;
 }
 
-.centerIcon {
+@media (min-width: 992px) {
+  .textLeft {
+    text-align: right;
+  }
+  .textRight {
+    text-align: left;
+  }
+}
+
+.centerIconSmall {
   display: flex;
   justify-content: center;
-  font-size: 8rem;
-  color: var(--color-secondary);
 }
 
-.highlight {
-  font-weight: bold;
+.heartImageSmall {
+  width: 100px;
+  height: auto;
+  object-fit: contain;
+  opacity: 0.9;
 }
 
-.lead {
+.centerIconLarge {
+  display: flex;
+  justify-content: center;
+}
+
+.heartImageLarge {
+  width: 180px;
+  height: auto;
+  object-fit: contain;
+}
+
+.paragraph {
+  font-size: var(--font-size-base);
+  line-height: 1.6;
+  font-weight: 500;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.paragraphStrong {
   font-size: var(--font-size-lg);
   line-height: 1.6;
-  margin-bottom: var(--spacing-4);
+  font-weight: 800;
+  max-width: 400px;
+  margin: 0 auto;
 }
 
-.sub {
-  font-weight: bold;
-  font-size: var(--font-size-xl);
+@media (min-width: 768px) {
+  .paragraph {
+    font-size: var(--font-size-lg);
+  }
+  .paragraphStrong {
+    font-size: var(--font-size-xl);
+  }
+}
+
+@media (min-width: 992px) {
+  .paragraph, .paragraphStrong {
+    margin: 0;
+  }
+  .textLeft .paragraph, .textLeft .paragraphStrong {
+    margin-left: auto;
+  }
 }

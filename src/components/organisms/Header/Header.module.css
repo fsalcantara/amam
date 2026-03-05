@@ -1,8 +1,6 @@
 .header {
   height: var(--header-height);
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: var(--color-primary);
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   position: sticky;
   top: 0;
@@ -14,6 +12,8 @@
 
 .header.scrolled {
   background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   height: calc(var(--header-height) - 10px);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
@@ -26,14 +26,19 @@
 }
 
 .logo {
-  font-weight: 800;
-  font-size: 1.5rem;
-  color: var(--color-primary);
   display: flex;
   align-items: center;
-  gap: var(--spacing-2);
-  text-transform: uppercase;
-  letter-spacing: -0.5px;
+}
+
+.logoImage {
+  max-height: 90px;
+  width: auto;
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); /* Add slight shadow for better visibility on white */
+}
+
+.scrolled .logoImage {
+  max-height: 50px;
 }
 
 .nav {
@@ -49,33 +54,161 @@
 @media (min-width: 992px) {
   .nav {
     display: flex;
-    gap: var(--spacing-8);
+    gap: var(--spacing-10); /* Increased spacing */
   }
 }
 
 .navLink {
   font-weight: 600;
-  color: var(--color-text-main);
+  color: #ffffff;
   transition: all 0.2s ease;
-  font-size: 0.95rem;
+  font-size: 0.85rem; /* Slightly smaller for all-caps */
+  text-transform: uppercase;
+  letter-spacing: 1px;
   position: relative;
+  padding: var(--spacing-2) 0; /* Add some padding for easier clicking and proper underline spacing */
+}
+
+.scrolled .navLink {
+  color: var(--color-text-main); /* Dark text on white background when scrolled */
 }
 
 .navLink::after {
   content: '';
   position: absolute;
-  bottom: -4px;
-  left: 0;
+  bottom: 0;
+  left: 50%; /* Start from center */
+  transform: translateX(-50%);
   width: 0;
   height: 2px;
-  background-color: var(--color-primary);
+  background-color: var(--color-secondary);
   transition: width 0.3s ease;
 }
 
 .navLink:hover {
-  color: var(--color-primary);
+  color: var(--color-secondary); /* Gold hover text */
+}
+
+.scrolled .navLink:hover {
+  color: var(--color-primary); /* Red hover text when scrolled (optional, maybe keep gold) Let's keep gold for consistency */
 }
 
 .navLink:hover::after {
   width: 100%;
+}
+
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 30px;
+  height: 24px;
+  background: transparent;
+  border: none;
+  border: 0;
+  outline: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 10;
+}
+
+.menuOpen .logoImage {
+  max-height: 70px; /* Force visibility and size when menu is open */
+}
+
+@media (min-width: 992px) {
+  .hamburger {
+    display: none;
+  }
+}
+
+.hamburgerLine {
+  width: 100%;
+  height: 3px;
+  background: #ffffff;
+  border-radius: 10px;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  transform-origin: center;
+}
+
+.scrolled .hamburgerLine,
+.menuOpen .hamburgerLine {
+  background: var(--color-primary);
+}
+
+.hamburgerActive .hamburgerLine:first-child {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.hamburgerActive .hamburgerLine:nth-child(2) {
+  opacity: 0;
+  transform: translateX(10px);
+}
+
+.hamburgerActive .hamburgerLine:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+.hamburgerActive .hamburgerLine {
+  background: var(--color-primary) !important;
+}
+
+.mobileNav {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: #ffffff;
+  padding: 120px var(--spacing-6) var(--spacing-10);
+  gap: var(--spacing-6);
+  z-index: 5;
+  transition: transform 0.3s ease-in-out;
+  transform: translateY(-100%);
+  overflow-y: auto;
+}
+
+.menuOpen .mobileNav {
+  transform: translateY(0);
+}
+
+.mobileNav .navLink {
+  color: var(--color-text-main);
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding-bottom: var(--spacing-4);
+  width: 100%;
+  text-align: left;
+}
+
+.mobileActions {
+  margin-top: var(--spacing-4);
+  display: flex;
+  justify-content: flex-start;
+}
+
+.header.menuOpen {
+  background: transparent;
+  box-shadow: none;
+}
+
+@media (max-width: 991px) {
+  .actions > a {
+    display: none;
+  }
+  
+  .inner {
+    position: relative;
+    z-index: 100; /* Ensure this stays above mobileNav */
+  }
+}
+
+@media (min-width: 992px) {
+  .mobileActions {
+    display: none;
+  }
 }

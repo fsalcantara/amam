@@ -7,25 +7,25 @@ export const Leadership = () => {
       name: 'Antônio Carlos Margutti',
       role: '(In Memoriam)',
       description: '45 anos de experiência em Distribuição, com uma relação de sucesso e confiança com mais de 4.000 clientes.',
-      image: 'antonio.jpg' 
+      image: '/SITE/Pagina/Sobre/A forca por tras da amam/ANTONIO.png' 
+    },
+    {
+      name: 'Aline Margutti',
+      role: 'Diretora de RH e Depto Pessoal',
+      description: 'Responsável por cuidar do nosso maior patrimônio: as pessoas que fazem a AMAM acontecer todos os dias.',
+      image: '/SITE/Pagina/Sobre/A forca por tras da amam/NAIR.png'
     },
     {
       name: 'Márcio Delongo',
-      role: 'Diretor Comercial',
+      role: 'Diretor Executivo',
       description: '20 anos de experiência em São Paulo, com atuação em contas nacionais e multinacionais e 12 anos de experiência no segmento de Distribuição.',
-      image: 'marcio.jpg'
-    },
-    {
-      name: 'Nair Margutti',
-      role: 'Diretora Financeira',
-      description: '25 anos de know-how em Gestão Financeira, e controladoria no segmento de Distribuição.',
-      image: 'nair.jpg'
+      image: '/SITE/Pagina/Sobre/A forca por tras da amam/MARCIO.png'
     },
     {
       name: 'Almir Margutti',
-      role: 'Diretor de Produção',
+      role: 'Diretor de Produção - Mestre Padeiro',
       description: 'Mais de 25 anos de know-how em Panificação.',
-      image: 'almir.jpg'
+      image: '/SITE/Pagina/Sobre/A forca por tras da amam/ALMIR.png'
     }
   ];
 
@@ -36,9 +36,8 @@ export const Leadership = () => {
           <div className={styles.titleCol}>
             <h2 className={styles.title}>
               A FORÇA <br />
-              POR <br />
-              TRÁS DA <br />
-              AMAM
+              POR TRÁS <br />
+              DA AMAM
             </h2>
           </div>
           
@@ -46,8 +45,7 @@ export const Leadership = () => {
             {leaders.map((leader, index) => (
               <div key={index} className={styles.card}>
                 <div className={styles.imageWrapper}>
-                   {/* Placeholder for now */}
-                   <div className={styles.placeholderImage}>{leader.name[0]}</div>
+                   <img src={leader.image} alt={leader.name} className={styles.leaderImage} />
                 </div>
                 <h3 className={styles.name}>{leader.name}</h3>
                 <span className={styles.role}>{leader.role}</span>

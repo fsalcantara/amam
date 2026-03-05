@@ -8,6 +8,7 @@ import styles from './Header.module.css';
 
 export const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,24 +19,53 @@ export const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
+
   return (
-    <header className={`${styles.header} ${isScrolled ? styles.scrolled : ''}`}>
+    <header className={`${styles.header} ${isScrolled ? styles.scrolled : ''} ${isMobileMenuOpen ? styles.menuOpen : ''}`}>
       <Container className={styles.inner}>
-        <Link href="/" className={styles.logo}>
-          Amam Alimentos
+        <Link href="/" className={styles.logo} onClick={closeMobileMenu}>
+          <img 
+            src={(isScrolled || isMobileMenuOpen) ? "/SITE/LOGO/logo-color.png" : "/SITE/LOGO/logo-white.png"} 
+            alt="Amam Alimentos Logo" 
+            height={90}
+            className={styles.logoImage}
+          />
         </Link>
         
-        <nav className={styles.nav}>
-          <Link href="/sobre" className={styles.navLink}>Quem Somos</Link>
-          <Link href="/produtos" className={styles.navLink}>Produtos</Link>
-          <Link href="/trabalhe-conosco" className={styles.navLink}>Trabalhe Conosco</Link>
-          <Link href="/acontecendo-na-amam" className={styles.navLink}>O que está acontecendo</Link>
+        <nav className={`${styles.nav} ${isMobileMenuOpen ? styles.mobileNav : ''}`}>
+          <Link href="/sobre" className={styles.navLink} onClick={closeMobileMenu}>Quem Somos</Link>
+          <Link href="/produtos" className={styles.navLink} onClick={closeMobileMenu}>Produtos</Link>
+          <Link href="/trabalhe-conosco" className={styles.navLink} onClick={closeMobileMenu}>Trabalhe Conosco</Link>
+          <Link href="/acontecendo-na-amam" className={styles.navLink} onClick={closeMobileMenu}>O que está acontecendo</Link>
+          
+          <div className={styles.mobileActions}>
+            <Button href="/contato" as="a" variant="primary" onClick={closeMobileMenu}>
+              Fale Conosco
+            </Button>
+          </div>
         </nav>
 
         <div className={styles.actions}>
-          <Button href="/contato" as="a" variant="primary">
+          <Button href="/contato" as="a" variant={isScrolled ? "primary" : "white"}>
             Fale Conosco
           </Button>
+          
+          <button 
+            className={`${styles.hamburger} ${isMobileMenuOpen ? styles.hamburgerActive : ''}`} 
+            onClick={toggleMobileMenu}
+            aria-label="Menu"
+          >
+            <span className={styles.hamburgerLine}></span>
+            <span className={styles.hamburgerLine}></span>
+            <span className={styles.hamburgerLine}></span>
+          </button>
         </div>
       </Container>
     </header>
