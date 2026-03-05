@@ -22,7 +22,7 @@ export const Preloader = () => {
     <div className={styles.preloader}>
       <div className={styles.logoContainer}>
         <img 
-          src="/SITE/LOGO/AMAM LOGO BLANK.png" 
+          src="/SITE/LOGO/logo-white.png" 
           alt="Amam Alimentos" 
           className={styles.logo}
         />
