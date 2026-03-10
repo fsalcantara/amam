@@ -32,6 +32,9 @@ export const metadata: Metadata = {
     url: 'https://www.amamalimentos.com.br',
     siteName: 'Amam Alimentos',
   },
+  icons: {
+    icon: '/favicon.png',
+  },
 };
 
 export default function RootLayout({
