@@ -1,12 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
 export async function POST(req: NextRequest) {
   try {
+    // Inicialização atrasada (lazy) para evitar erro de build na Vercel se a key nao existir
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey) {
+      console.warn("OPENAI_API_KEY não configurada no servidor.");
+      return NextResponse.json({ error: 'IA temporariamente indisponível' }, { status: 503 });
+    }
+
+    const openai = new OpenAI({ apiKey });
+    
     const { messages } = await req.json();
 
     if (!messages || !Array.isArray(messages)) {
