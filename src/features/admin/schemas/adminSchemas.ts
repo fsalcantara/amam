@@ -15,8 +15,8 @@ export const postSchema = z.object({
   imageUrl: z.string().url('Insira uma URL de imagem válida.').optional().or(z.literal('')),
   videoUrl: z.string().optional(),
   content: z.string().optional(),
-  ingredients: z.string().optional(),
-  preparationSteps: z.string().optional(),
+  ingredients: z.array(z.object({ measure: z.string(), name: z.string() })).optional(),
+  preparationSteps: z.array(z.object({ value: z.string() })).optional(),
 });
 
 export type PostFormValues = z.infer<typeof postSchema>;

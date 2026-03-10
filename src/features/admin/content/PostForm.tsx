@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Post, CONTENT_TYPES } from '@/features/content-hub/types/post';
 import { AdminInput, AdminSelect, AdminTextarea } from '@/features/admin/components/ui/AdminInput';
@@ -21,7 +21,7 @@ export function PostForm({ initialData, onSubmit, onCancel }: PostFormProps) {
   const [videoUrl, setVideoUrl] = useState(initialData?.videoUrl || '');
   const [gallery, setGallery] = useState<string[]>(initialData?.gallery || []);
 
-  const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<PostFormValues>({
+  const { register, control, handleSubmit, watch, setValue, formState: { errors } } = useForm<PostFormValues>({
     resolver: zodResolver(postSchema),
     defaultValues: {
       title: initialData?.title || '',
@@ -31,9 +31,19 @@ export function PostForm({ initialData, onSubmit, onCancel }: PostFormProps) {
       imageUrl: initialData?.coverImage || '',
       videoUrl: initialData?.videoUrl || '',
       content: initialData?.content || '',
-      ingredients: initialData?.ingredients?.join('\n') || '',
-      preparationSteps: initialData?.preparationSteps?.join('\n') || '',
+      ingredients: initialData?.ingredients || [],
+      preparationSteps: initialData?.preparationSteps?.map(i => ({ value: i })) || [],
     }
+  });
+
+  const { fields: ingredientFields, append: appendIngredient, remove: removeIngredient } = useFieldArray({
+    control,
+    name: "ingredients"
+  });
+
+  const { fields: stepFields, append: appendStep, remove: removeStep } = useFieldArray({
+    control,
+    name: "preparationSteps"
   });
 
   const formType = watch('type');
@@ -55,8 +65,8 @@ export function PostForm({ initialData, onSubmit, onCancel }: PostFormProps) {
         videoUrl: videoMode === 'upload' ? videoUrl : data.videoUrl,
         gallery,
         isFeatured: false,
-        ingredients: data.ingredients ? data.ingredients.split('\n').filter(i => i.trim()) : undefined,
-        preparationSteps: data.preparationSteps ? data.preparationSteps.split('\n').filter(i => i.trim()) : undefined,
+        ingredients: data.ingredients ? data.ingredients.filter(v => v.measure.trim() || v.name.trim()) : undefined,
+        preparationSteps: data.preparationSteps ? data.preparationSteps.map(s => s.value).filter(v => v.trim()) : undefined,
         slug: data.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
       });
     } finally {
@@ -118,21 +128,79 @@ export function PostForm({ initialData, onSubmit, onCancel }: PostFormProps) {
         {formType === 'receita' && (
           <>
             <h3 className={styles.sectionTitle}>Detalhes da Receita</h3>
+            
             <div className={styles.fullWidth}>
-              <AdminTextarea 
-                label="Ingredientes (Um por linha)" 
-                {...register('ingredients')}
-                placeholder="Ex: 500g de farinha&#10;1 xícara de leite..."
-                rows={5}
-              />
+              <label className={styles.listLabel}>Ingredientes</label>
+              <div className={styles.dynamicList}>
+                {ingredientFields.map((field, index) => (
+                  <div key={field.id} className={styles.dynamicItem}>
+                    <div className={styles.dynamicInputWrapper} style={{ display: 'flex', gap: '0.5rem' }}>
+                      <input 
+                        className={styles.dynamicInput}
+                        style={{ width: '120px', flexShrink: 0 }}
+                        {...register(`ingredients.${index}.measure` as const)}
+                        placeholder="Ex: 500g"
+                      />
+                      <input 
+                        className={styles.dynamicInput}
+                        {...register(`ingredients.${index}.name` as const)}
+                        placeholder="Ex: farinha de trigo..."
+                      />
+                    </div>
+                    <button 
+                      type="button" 
+                      onClick={() => removeIngredient(index)}
+                      className={styles.removeButton}
+                      title="Remover ingrediente"
+                    >
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                  </div>
+                ))}
+              </div>
+              <button 
+                type="button" 
+                onClick={() => appendIngredient({ measure: '', name: '' })}
+                className={styles.addButton}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                Adicionar Ingrediente
+              </button>
             </div>
-            <div className={styles.fullWidth}>
-              <AdminTextarea 
-                label="Modo de Preparo (Um passo por linha)" 
-                {...register('preparationSteps')}
-                placeholder="Ex: Misture os secos&#10;Adicione o leite aos poucos..."
-                rows={6}
-              />
+
+            <div className={styles.fullWidth} style={{ marginTop: '1.5rem' }}>
+              <label className={styles.listLabel}>Modo de Preparo</label>
+              <div className={styles.dynamicList}>
+                {stepFields.map((field, index) => (
+                  <div key={field.id} className={styles.dynamicItem}>
+                    <div className={styles.stepNumberBadge}>{index + 1}</div>
+                    <div className={styles.dynamicInputWrapper}>
+                      <textarea 
+                        className={`${styles.dynamicInput} ${styles.dynamicTextarea}`}
+                        {...register(`preparationSteps.${index}.value` as const)}
+                        placeholder="Ex: Misture os ingredientes secos..."
+                        rows={2}
+                      />
+                    </div>
+                    <button 
+                      type="button" 
+                      onClick={() => removeStep(index)}
+                      className={styles.removeButton}
+                      title="Remover passo"
+                    >
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                  </div>
+                ))}
+              </div>
+              <button 
+                type="button" 
+                onClick={() => appendStep({ value: '' })}
+                className={styles.addButton}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                Adicionar Passo
+              </button>
             </div>
           </>
         )}

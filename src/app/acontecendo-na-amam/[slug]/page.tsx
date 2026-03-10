@@ -163,7 +163,8 @@ export default async function PostDetailPage({ params }: PostDetailProps) {
                           {post.ingredients.map((item, idx) => (
                             <li key={idx}>
                               <span className={styles.bullet}></span>
-                              {item}
+                              <span className={styles.ingredientMeasure}>{item.measure}</span>
+                              <span className={styles.ingredientName}>{item.name}</span>
                             </li>
                           ))}
                         </ul>

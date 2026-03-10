@@ -27,7 +27,7 @@ export interface Post {
   hours?: string;
   
   // Recipe specific
-  ingredients?: string[];
+  ingredients?: { measure: string; name: string }[];
   preparationSteps?: string[];
   
   createdAt?: string;

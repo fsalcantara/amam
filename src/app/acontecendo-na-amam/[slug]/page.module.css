@@ -416,6 +416,16 @@
   flex-shrink: 0;
 }
 
+.ingredientMeasure {
+  font-weight: 700;
+  color: #1e293b;
+  padding-right: 0.25rem;
+}
+
+.ingredientName {
+  color: #475569;
+}
+
 .stepsList {
   display: flex;
   flex-direction: column;

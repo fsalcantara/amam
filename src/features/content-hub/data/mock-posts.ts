@@ -79,12 +79,12 @@ export const POSTS: Post[] = [
     author: 'Chef Amam',
     coverImage: 'https://images.unsplash.com/photo-1621303837174-89787a7d4729?auto=format&fit=crop&q=80&w=1200',
     ingredients: [
-      '3 a 4 pães Amam amanhecidos',
-      '3 ovos',
-      '1 lata de leite condensado',
-      '2 medidas (da lata) de leite',
-      '1 colher de sopa de manteiga',
-      '1 xícara de açúcar para a calda'
+      { measure: '3 a 4', name: 'pães Amam amanhecidos' },
+      { measure: '3', name: 'ovos' },
+      { measure: '1 lata', name: 'de leite condensado' },
+      { measure: '2 medidas da lata', name: 'de leite' },
+      { measure: '1 colher de sopa', name: 'de manteiga' },
+      { measure: '1 xícara', name: 'de açúcar para a calda' }
     ],
     preparationSteps: [
       'Derreta o açúcar em uma forma de pudim até virar caramelo.',
@@ -105,12 +105,12 @@ export const POSTS: Post[] = [
     author: 'Chef Amam',
     coverImage: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&q=80&w=1200',
     ingredients: [
-      '2 Pães de Hambúrguer Amam',
-      '200g de carne moída (blend de sua preferência)',
-      'Queijo cheddar ou prato fatiado',
-      'Cebola caramelizada',
-      'Rúcula fresca',
-      'Maionese temperada'
+      { measure: '2', name: 'Pães de Hambúrguer Amam' },
+      { measure: '200g', name: 'de carne moída (blend de sua preferência)' },
+      { measure: '150g', name: 'Queijo cheddar ou prato fatiado' },
+      { measure: '1 porção', name: 'Cebola caramelizada' },
+      { measure: 'A gosto', name: 'Rúcula fresca' },
+      { measure: 'A gosto', name: 'Maionese temperada' }
     ],
     preparationSteps: [
       'Molde a carne em formato de hambúrguer e tempere com sal e pimenta.',
