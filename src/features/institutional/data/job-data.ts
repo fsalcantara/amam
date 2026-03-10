@@ -56,8 +56,8 @@ export const JOB_DATA: JobArea[] = [
         title: 'Confeiteiro',
         location: 'São Bernardo do Campo - SP',
         type: 'Presencial',
-        description: 'Elaboração de bolos, doces e sobremesas, com foco em acabamento e sabor.',
-        requirements: ['Experiência em confeitaria fina', 'Criatividade']
+        description: 'Elaboração de bolos, com foco em acabamento e sabor.',
+        requirements: ['Experiência em confeitaria', 'Criatividade']
       }
     ]
   },
