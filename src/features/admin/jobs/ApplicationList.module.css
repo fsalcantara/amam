@@ -1,0 +1,402 @@
+.container {
+  padding: 2rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #f1f5f9;
+}
+
+.header h1 {
+  font-size: 1.5rem;
+  color: #1e293b;
+  margin: 0.5rem 0 0 0;
+}
+
+.subtitle {
+  color: #64748b;
+  font-size: 0.95rem;
+  margin-top: 0.25rem;
+}
+
+.backButton {
+  background: none;
+  border: none;
+  color: #e31c23;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.backButton:hover {
+  text-decoration: underline;
+}
+
+.contentGrid {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 2rem;
+  min-height: 500px;
+}
+
+.listSection {
+  border-right: 1px solid #e2e8f0;
+  padding-right: 1.5rem;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.appList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.appItem {
+  padding: 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: #f8fafc;
+}
+
+.appItem:hover {
+  border-color: #cbd5e1;
+  background: white;
+}
+
+.appItem.selected {
+  border-color: #e31c23;
+  background: #fffafa;
+  box-shadow: 0 0 0 1px #e31c23;
+}
+
+.appHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+
+.appHeader strong {
+  color: #0f172a;
+  font-size: 0.95rem;
+}
+
+.date {
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+.appMeta {
+  font-size: 0.85rem;
+  color: #64748b;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.appBadge {
+  margin-top: 0.5rem;
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #059669;
+  background: #ecfdf5;
+  border-radius: 4px;
+}
+
+.detailsSection {
+  padding-bottom: 2rem;
+}
+
+.emptyDetails {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #94a3b8;
+  gap: 1rem;
+}
+
+.emptyDetails p {
+  font-size: 1.1rem;
+}
+
+.detailsCard h2 {
+  font-size: 1.25rem;
+  color: #1e293b;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.detailGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.detailGroup {
+  margin-bottom: 1rem;
+}
+
+.detailGroup label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #64748b;
+  margin-bottom: 0.25rem;
+}
+
+.detailGroup p {
+  margin: 0;
+  color: #334155;
+  font-size: 1rem;
+}
+
+.detailGroup a {
+  color: #0284c7;
+  text-decoration: none;
+}
+
+.detailGroup a:hover {
+  text-decoration: underline;
+}
+
+.downloadBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background: #f1f5f9;
+  color: #334155;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+}
+
+.downloadBtn:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.answersSection {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.answersHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.answersHeader h3 {
+  margin-bottom: 0;
+  font-size: 1.15rem;
+  color: #1e293b;
+}
+
+.testScoreBadge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #f1f5f9;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+}
+
+.testPercentage {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #1e293b;
+}
+
+.testDetails {
+  color: #64748b;
+  font-size: 0.85rem;
+}
+
+.testGrade {
+  font-weight: 600;
+  margin-left: 0.5rem;
+}
+
+.gradeGood {
+  color: #059669;
+}
+
+.gradeBad {
+  color: #e11d48;
+}
+
+.answerBlock {
+  background: #f8fafc;
+  padding: 1.25rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  border: 1px solid #f1f5f9;
+}
+
+.questionText {
+  font-weight: 500;
+  color: #334155;
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+}
+
+.answerText {
+  margin: 0;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.answerText.correct {
+  color: #059669;
+}
+
+.answerText.incorrect {
+  color: #e11d48;
+}
+
+.badge {
+  font-weight: bold;
+}
+
+.correctAnswerText {
+  margin: 0.5rem 0 0 0;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.timeSpent {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.7rem;
+  color: #94a3b8;
+}
+
+.proctoringAlert {
+  padding: 1rem;
+  background: #fffbeb;
+  border-left: 4px solid #f59e0b;
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+  color: #b45309;
+}
+
+.proctoringAlert.flagged {
+  background: #fef2f2;
+  border-left-color: #ef4444;
+  color: #b91c1c;
+}
+
+.aiButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background: #10b981;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+}
+
+.aiButton:hover:not(:disabled) {
+  background: #059669;
+}
+
+.aiButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.aiAnalysisCard {
+  margin-top: 1rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.25rem;
+  width: 100%;
+}
+
+.aiAnalysisHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.aiAnalysisHeader h4 {
+  margin: 0;
+  font-size: 1.05rem;
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.aiAnalysisHeader h4::before {
+  content: '✦';
+  color: #10b981;
+}
+
+.aiScore {
+  font-weight: 700;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+.scoreGood {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.scoreBad {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.aiEvaluation {
+  font-size: 0.95rem;
+  color: #475569;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.aiRecommendation {
+  font-size: 0.95rem;
+  padding: 0.75rem;
+  background: white;
+  border-radius: 6px;
+  border: 1px dashed #cbd5e1;
+}

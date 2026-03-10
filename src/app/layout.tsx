@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Dancing_Script } from "next/font/google";
-import { Header } from "@/components/organisms/Header/Header";
-import { Footer } from "@/components/organisms/Footer/Footer";
 import { Preloader } from "@/components/organisms/Preloader/Preloader";
-import { SectionDivider } from "@/components/atoms/SectionDivider/SectionDivider";
+import { ConditionalLayout } from "@/components/organisms/ConditionalLayout/ConditionalLayout";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -45,15 +43,11 @@ export default function RootLayout({
     <html lang="pt-BR">
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${dancingScript.variable}`}
-        style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}
       >
         <Preloader />
-        <Header />
-        <main style={{ flex: 1 }}>
+        <ConditionalLayout>
           {children}
-        </main>
-        <SectionDivider variant="white-to-red" />
-        <Footer />
+        </ConditionalLayout>
       </body>
     </html>
   );

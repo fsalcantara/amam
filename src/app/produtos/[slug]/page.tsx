@@ -48,16 +48,19 @@ export default async function ProductDetailPage({ params }: ProductDetailProps) 
 
         <div className={styles.grid}>
           <div className={styles.imageContainer}>
-            {/* Placeholder for product image */}
-            {product.name}
+            <img 
+              src={product.image} 
+              alt={product.name} 
+              className={styles.productImage} 
+            />
           </div>
 
           <div className={styles.content}>
-            <span className={styles.category}>{product.category}</span>
-            <h1>{product.name}</h1>
-            <p className={styles.description}>{product.description}</p>
+            <span className={styles.categoryBadge}>{product.category}</span>
+            <h1 className={styles.productName}>{product.name}</h1>
+            <p className={styles.descriptionText}>{product.description}</p>
 
-            <NutritionalInfo />
+            <NutritionalInfo product={product} />
 
             <div className={styles.actions}>
               <Button href="/contato" as="a" variant="primary">

@@ -1,6 +1,7 @@
 "use client";
 
-import { useRef, use } from 'react'; // Added 'use' import
+import Link from 'next/link';
+import { useRef, use } from 'react'; 
 import { Container } from '@/components/atoms/Container/Container';
 import { ProductCard } from '@/features/products/components/ProductCard';
 import { PRODUCTS, CATEGORIES } from '@/features/products/data/mock-data';
@@ -41,33 +42,28 @@ export default function ProductsPage({ searchParams }: ProductsPageProps) {
   const gridRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    // Set initial states
-    gsap.set([headerRef.current, sidebarRef.current, gridRef.current ? gridRef.current.children : []], { opacity: 0 });
-    if (headerRef.current) gsap.set(headerRef.current, { y: -20 });
-    if (sidebarRef.current) gsap.set(sidebarRef.current, { x: -20 });
-    if (gridRef.current) gsap.set(gridRef.current.children, { y: 20, scale: 0.95 });
-
-    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-
-    tl.to(headerRef.current, 
-      { y: 0, opacity: 1, duration: 0.8 }
-    )
-    .to(sidebarRef.current,
-      { x: 0, opacity: 1, duration: 0.6 },
-      "-=0.4"
-    )
-    .to(gridRef.current ? gridRef.current.children : [],
-      { 
-        y: 0, 
-        opacity: 1, 
-        scale: 1, 
-        duration: 0.5, 
-        stagger: 0.1 
-      },
-      "-=0.4"
+    // Initial reveal of layout (Header & Sidebar) - only on mount
+    gsap.fromTo([headerRef.current, sidebarRef.current],
+      { opacity: 0, y: (i) => i === 0 ? -20 : 0, x: (i) => i === 1 ? -20 : 0 },
+      { opacity: 1, y: 0, x: 0, duration: 1, ease: 'power3.out', stagger: 0.2 }
     );
 
-  }, { scope: containerRef });
+    // Grid items animation - happens every time selectedCategory changes
+    if (gridRef.current) {
+      gsap.fromTo(gridRef.current.children,
+        { y: 30, opacity: 0, scale: 0.95 },
+        { 
+          y: 0, 
+          opacity: 1, 
+          scale: 1, 
+          duration: 0.6, 
+          stagger: 0.08,
+          ease: 'power2.out',
+          overwrite: true
+        }
+      );
+    }
+  }, { scope: containerRef, dependencies: [selectedCategory] });
 
   return (
     <div className={styles.page} ref={containerRef}>
@@ -82,18 +78,23 @@ export default function ProductsPage({ searchParams }: ProductsPageProps) {
             <h3>Categorias</h3>
             <ul className={styles.categoryList}>
               <li>
-                <a href="/produtos" className={!selectedCategory ? styles.active : ''}>
+                <Link 
+                  href="/produtos" 
+                  className={!selectedCategory ? styles.active : ''}
+                  scroll={false}
+                >
                   Todos
-                </a>
+                </Link>
               </li>
               {CATEGORIES.map(cat => (
                 <li key={cat.id}>
-                  <a 
+                  <Link 
                     href={`/produtos?category=${cat.slug}`}
                     className={selectedCategory === cat.slug ? styles.active : ''}
+                    scroll={false}
                   >
                     {cat.name}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

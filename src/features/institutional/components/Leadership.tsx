@@ -5,26 +5,26 @@ export const Leadership = () => {
   const leaders = [
     {
       name: 'Antônio Carlos Margutti',
-      role: '(In Memoriam)',
+      role: '(Em memória)',
       description: '45 anos de experiência em Distribuição, com uma relação de sucesso e confiança com mais de 4.000 clientes.',
       image: '/SITE/Pagina/Sobre/A forca por tras da amam/ANTONIO.png' 
     },
     {
-      name: 'Aline Margutti',
-      role: 'Diretora de RH e Depto Pessoal',
-      description: 'Responsável por cuidar do nosso maior patrimônio: as pessoas que fazem a AMAM acontecer todos os dias.',
+      name: 'Nair Margutti',
+      role: 'Diretora Financeira',
+      description: '25 anos de know-how em Gestão Financeira e controladoria no segmento de Distribuição.',
       image: '/SITE/Pagina/Sobre/A forca por tras da amam/NAIR.png'
     },
     {
       name: 'Márcio Delongo',
-      role: 'Diretor Executivo',
+      role: 'Diretor Comercial',
       description: '20 anos de experiência em São Paulo, com atuação em contas nacionais e multinacionais e 12 anos de experiência no segmento de Distribuição.',
       image: '/SITE/Pagina/Sobre/A forca por tras da amam/MARCIO.png'
     },
     {
       name: 'Almir Margutti',
-      role: 'Diretor de Produção - Mestre Padeiro',
-      description: 'Mais de 25 anos de know-how em Panificação.',
+      role: 'Diretor de Produção',
+      description: 'Mestre Padeiro com mais de 25 anos de know-how em Panificação.',
       image: '/SITE/Pagina/Sobre/A forca por tras da amam/ALMIR.png'
     }
   ];

@@ -1,55 +1,65 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
+import dynamic from 'next/dynamic';
+import useSWR from 'swr';
 import { Job, JOB_AREAS } from '@/features/jobs/types/job';
 import { jobService } from '@/features/jobs/services/jobService';
-import { JobForm } from './JobForm';
 import { AdminButton } from '@/features/admin/components/ui/AdminButton';
 import { AdminSelect } from '@/features/admin/components/ui/AdminInput';
 import { AdminToggle } from '@/features/admin/components/ui/AdminToggle';
 import styles from './JobList.module.css';
-
 import { applicationService } from '@/features/jobs/services/applicationService';
+import { useDebounce } from '@/hooks/useDebounce';
+
+const JobForm = dynamic(() => import('./JobForm').then(mod => mod.JobForm), {
+  loading: () => <div className={styles.loading}>Carregando formulário...</div>
+});
+
+const ApplicationList = dynamic(() => import('./ApplicationList').then(mod => mod.ApplicationList), {
+  loading: () => <div className={styles.loading}>Carregando currículos...</div>
+});
 
 export default function JobList() {
-  const [jobs, setJobs] = useState<Job[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data: jobs, error, mutate: mutateJobs } = useSWR<Job[]>('api/jobs', () => jobService.getJobs());
+  const loading = !jobs && !error;
+
   const [isEditing, setIsEditing] = useState(false);
   const [currentJob, setCurrentJob] = useState<Job | null>(null);
+  const [viewingApplicationsJob, setViewingApplicationsJob] = useState<Job | null>(null);
   const [applicationCounts, setApplicationCounts] = useState<Record<string, number>>({});
   
   // Filters
   const [searchTerm, setSearchTerm] = useState('');
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
   const [areaFilter, setAreaFilter] = useState('');
 
+  // Fetch application counts when jobs data is available
   useEffect(() => {
-    loadJobs();
-  }, []);
+    async function fetchCounts() {
+      if (!jobs) return;
+      const counts: Record<string, number> = {};
+      await Promise.all(jobs.map(async (job) => {
+        counts[job.id] = await applicationService.countApplications(job.id);
+      }));
+      setApplicationCounts(counts);
+    }
+    fetchCounts();
+  }, [jobs]);
 
-  const loadJobs = async () => {
-    setLoading(true);
-    const data = await jobService.getJobs();
-    setJobs(data);
+  const filteredJobs = useMemo(() => 
+    (jobs || []).filter(job => {
+      const matchesSearch = job.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase());
+      const matchesArea = areaFilter ? job.area === areaFilter : true;
+      return matchesSearch && matchesArea;
+    }),
+    [jobs, debouncedSearchTerm, areaFilter]
+  );
 
-    // Fetch application counts
-    const counts: Record<string, number> = {};
-    await Promise.all(data.map(async (job) => {
-      counts[job.id] = await applicationService.countApplications(job.id);
-    }));
-    setApplicationCounts(counts);
-
-    setLoading(false);
-  };
-
-  const filteredJobs = jobs.filter(job => {
-    const matchesSearch = job.title.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesArea = areaFilter ? job.area === areaFilter : true;
-    return matchesSearch && matchesArea;
-  });
-
-  const getAreaLabel = (areaId: string) => {
-    return JOB_AREAS.find(a => a.id === areaId)?.label || areaId;
-  };
+  const getAreaLabel = useCallback((areaId: string) => 
+    JOB_AREAS.find(a => a.id === areaId)?.label || areaId,
+    []
+  );
 
   const handleCreate = () => {
     setCurrentJob(null);
@@ -66,7 +76,7 @@ export default function JobList() {
   const handleDelete = async (id: string) => {
     if (confirm('Tem certeza que deseja excluir esta vaga?')) {
       await jobService.deleteJob(id);
-      loadJobs();
+      mutateJobs();
     }
   };
 
@@ -77,8 +87,20 @@ export default function JobList() {
       await jobService.createJob(data as any);
     }
     setIsEditing(false);
-    loadJobs();
+    mutateJobs();
   };
+
+  if (viewingApplicationsJob) {
+    return (
+      <ApplicationList 
+        job={viewingApplicationsJob} 
+        onBack={() => {
+          setViewingApplicationsJob(null);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }} 
+      />
+    );
+  }
 
   if (isEditing) {
     return (
@@ -171,6 +193,17 @@ export default function JobList() {
                     </div>
                   </td>
                   <td className={styles.actions}>
+                    <AdminButton 
+                      variant="primary" 
+                      className={styles.smBtn} 
+                      onClick={() => {
+                        setViewingApplicationsJob(job);
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
+                      disabled={!applicationCounts[job.id]}
+                    >
+                      Candidatos
+                    </AdminButton>
                     <AdminButton variant="secondary" className={styles.smBtn} onClick={() => handleEdit(job)}>
                       Editar
                     </AdminButton>

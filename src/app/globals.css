@@ -9,6 +9,7 @@
   /* Neutral Colors */
   --color-background: #ffffff;
   --color-surface: #fafafa;
+  --color-section-light: #f9f9f9; /* Standard light background for transitions and alt sections */
   --color-text-main: #1a1a1a;
   --color-text-muted: #5f6368;
   --color-border: #eaecf0; /* Softer border */
@@ -44,7 +45,8 @@
 
   /* Layout */
   --container-width: 1280px; /* Wider container */
-  --header-height: 80px;
+  --header-height: 100px;
+  --header-height-scrolled: 75px;
   
   /* UI refinements */
   --radius-sm: 8px;
@@ -70,6 +72,9 @@ body {
   color: var(--color-text-main);
   line-height: 1.6; /* improved readability */
   -webkit-font-smoothing: antialiased;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 a {

@@ -2,12 +2,14 @@
   position: relative;
   width: 100%;
   overflow: hidden;
-  background-color: var(--color-primary); /* Base is red */
+  background-color: var(--color-primary); /* Clean brand red as base */
 }
 
 .topRed {
-  padding: var(--spacing-32) 0 var(--spacing-16) 0;
+  padding: var(--spacing-24) 0 var(--spacing-8) 0;
   color: #ffffff;
+  position: relative;
+  z-index: 2; /* Content above any potential background depth */
 }
 
 .topGrid {
@@ -19,59 +21,70 @@
 
 @media (min-width: 992px) {
   .topGrid {
-    grid-template-columns: 1fr 2fr;
-    gap: var(--spacing-16);
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-32);
   }
+}
+
+.eyebrow {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.3em;
+  margin-bottom: var(--spacing-2);
 }
 
 .title {
   font-size: 3.5rem;
   line-height: 1.1;
-  font-weight: 700;
-  color: var(--color-secondary); /* Gold Title */
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.02em;
 }
 
 .topText {
-  font-size: var(--font-size-base);
-  line-height: 1.6;
-  font-weight: 500;
-  max-width: 800px;
+  font-size: 1.125rem;
+  line-height: 1.8;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 480px;
 }
 
-@media (min-width: 768px) {
+@media (max-width: 991px) {
+  .title {
+    font-size: 2.75rem;
+  }
   .topText {
-    font-size: var(--font-size-lg);
+    max-width: 100%;
   }
 }
 
+/* Container for products and curve to manage layering better */
 .middleOverlap {
   position: relative;
   width: 100%;
+  z-index: 3;
 }
 
 .curveBg {
   position: absolute;
-  bottom: 0;
+  top: 0;
   left: 0;
   width: 100%;
-  height: 50%;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  z-index: 1;
+  z-index: 1; /* Curve is behind the products */
 }
 
 .curveSvg {
   width: 100%;
   height: auto;
-  min-height: 60px;
+  min-height: 100px;
   display: block;
   margin-bottom: -1px;
-}
-
-@media (min-width: 1200px) {
-  .curveSvg {
-    min-height: 120px;
-  }
 }
 
 .solidWhiteBg {
@@ -79,82 +92,102 @@
   background-color: #ffffff;
 }
 
-.imageContainer {
+.imageWrapper {
   position: relative;
   width: 100%;
-  max-width: 1000px;
+  max-width: 1300px; /* Wider for bigger products */
   margin: 0 auto;
   display: flex;
   justify-content: center;
-  z-index: 2;
-  /* Adjust overlap visually */
-  transform: translateY(10%);
+  z-index: 5; /* Ensure it sits ON TOP of the curve */
+  /* Upward overlap into red section */
+  transform: translateY(-120px);
+}
+
+/* Soft radial glow behind products to highlight them */
+.radialGlow {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: 80%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: -1;
 }
 
 .image {
-  width: 100%;
+  width: 120%; /* Even larger focus */
   height: auto;
+  max-height: 550px;
   object-fit: contain;
   display: block;
+  /* Premium depth shadow */
+  filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.25));
+  margin-bottom: 2rem;
 }
 
 .bottomWhite {
   background-color: #ffffff;
-  padding: var(--spacing-32) 0 var(--spacing-16) 0;
+  /* Generous breathing space from the product lineup */
+  padding: var(--spacing-40) 0 var(--spacing-40) 0;
+  margin-top: 0; /* Natural visual separation */
   position: relative;
-  z-index: 3;
+  z-index: 10;
 }
 
-.bottomTextContainer {
-  max-width: 1000px;
+.manifestoContainer {
+  max-width: 650px; /* Sharp, editorial reading width */
   margin: 0 auto;
   text-align: center;
-  position: relative;
-  padding-top: var(--spacing-8);
 }
 
-/* Red accent line above the text */
-.bottomTextContainer::before {
+.manifestoHighlight {
+  font-size: 2.125rem; /* Larger, more authoritative statement */
+  line-height: 1.5; 
+  color: #1a1a1a;
+  font-weight: 700;
+  display: block;
+  letter-spacing: 0.01em;
+  margin-bottom: var(--spacing-12); /* Stronger vertical rhythm */
+  position: relative;
+}
+
+.manifestoHighlight::after {
   content: '';
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 4px;
+  display: block;
+  width: 40px;
+  height: 2px;
   background-color: var(--color-primary);
+  margin: var(--spacing-12) auto 0;
+  opacity: 0.8;
   border-radius: 2px;
 }
 
-.bottomText {
-  margin-bottom: var(--spacing-4);
-}
-
-.mainHighlight {
-  font-size: 1.4rem;
-  line-height: 1.4;
-  color: var(--color-text-main);
-  font-weight: 700;
-  display: block;
-  letter-spacing: -0.01em;
-}
-
 .subText {
-  font-size: 1.1rem;
+  font-size: 1.125rem;
   line-height: 1.8;
-  color: var(--color-text-light); /* Assuming this variable exists or using a subtle gray */
-  color: rgba(0, 0, 0, 0.65);
+  color: #666;
   font-weight: 400;
-  max-width: 800px;
+  max-width: 650px;
   margin: 0 auto;
 }
 
-@media (min-width: 768px) {
-  .mainHighlight {
-    font-size: 2rem;
+@media (max-width: 767px) {
+  .title {
+    font-size: 2.5rem;
   }
-  
-  .subText {
-    font-size: var(--font-size-lg);
+  .imageWrapper {
+    transform: translateY(-60px);
+  }
+  .image {
+    width: 100%;
+  }
+  .manifestoHighlight {
+    font-size: 1.75rem;
+  }
+  .bottomWhite {
+    margin-top: -40px;
   }
 }

@@ -1,4 +1,4 @@
-export type ContentType = 'blog' | 'evento' | 'treinamento';
+export type ContentType = 'blog' | 'evento' | 'treinamento' | 'receita';
 
 export interface Post {
   id: string;
@@ -11,6 +11,11 @@ export interface Post {
   author?: string;
   isFeatured?: boolean;
   
+  // Media fields
+  coverImage?: string;
+  gallery?: string[]; // Array of image URLs
+  videoUrl?: string; // YouTube/Vimeo embed URL
+  
   // Event specific
   eventDate?: string;
   location?: string;
@@ -21,11 +26,16 @@ export interface Post {
   format?: 'presencial' | 'online' | 'hibrido';
   hours?: string;
   
+  // Recipe specific
+  ingredients?: string[];
+  preparationSteps?: string[];
+  
   createdAt?: string;
 }
 
 export const CONTENT_TYPES: { id: ContentType; label: string }[] = [
-  { id: 'blog', label: 'Blog Post' },
+  { id: 'blog', label: 'Amam Alimentos' },
   { id: 'evento', label: 'Evento' },
   { id: 'treinamento', label: 'Treinamento' },
+  { id: 'receita', label: 'Receitas' },
 ];

@@ -1,11 +1,12 @@
 .layout {
   display: flex;
   min-height: 100vh;
+  background-color: #f1f5f9;
 }
 
 .main {
   flex: 1;
-  margin-left: 250px; /* Sidebar width */
-  padding: 2rem;
-  background-color: #f8f9fa;
+  margin-left: 280px; /* New Sidebar width */
+  padding: 3rem 4rem;
+  background-color: transparent;
 }

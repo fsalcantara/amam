@@ -54,8 +54,12 @@ export const ProductsPreview = () => {
     <section className={styles.section} ref={containerRef}>
       <Container>
         <div className={styles.header} ref={headerRef}>
-          <h2>Nossos Produtos</h2>
-          <p>Confira nossa linha de produtos selecionados com o melhor sabor.</p>
+          <span className={styles.eyebrow}>Linha de Produtos</span>
+          <h2 className={styles.title}>Nossos Produtos</h2>
+          <div className={styles.divider}></div>
+          <p className={styles.description}>
+            Qualidade Amam em cada detalhe. Conheça nossa seleção de produtos feitos com ingredientes rigorosamente selecionados.
+          </p>
         </div>
 
         <div className={styles.grid} ref={gridRef}>

@@ -26,7 +26,6 @@
   gap: var(--spacing-12); /* Increased gap */
   position: relative;
   z-index: 1;
-  animation: fadeUpIn 0.8s ease-out forwards;
 }
 
 @media (min-width: 768px) {
@@ -41,7 +40,7 @@
 }
 
 .logoImage {
-  max-width: 180px;
+  max-width: 220px;
   height: auto;
 }
 
@@ -88,8 +87,6 @@
   font-size: var(--font-size-xs);
   position: relative;
   z-index: 1;
-  animation: fadeIn 1s ease-out 0.4s forwards;
-  opacity: 0; /* Starts hidden for animation */
 }
 
 @keyframes fadeUpIn {

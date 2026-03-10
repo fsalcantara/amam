@@ -1,67 +1,165 @@
-import styles from './NutritionalTable.module.css';
+"use client";
 
-interface Nutrient {
-  label: string;
-  amount: string;
-  dv: string; // Daily Value percentage
-  isSubItem?: boolean;
-}
+import { useEffect, useRef } from 'react';
+import styles from './NutritionalTable.module.css';
+import { Product } from '@/features/products/types/product';
+import gsap from 'gsap';
 
 interface NutritionalTableProps {
-  servingSize?: string;
-  servingsPerContainer?: string;
-  calories?: string;
-  nutrients?: Nutrient[];
+  product?: Product;
 }
 
-const defaultNutrients: Nutrient[] = [
-  { label: 'Gorduras Totais', amount: '8g', dv: '10%' },
-  { label: 'Gorduras Saturadas', amount: '1g', dv: '5%', isSubItem: true },
-  { label: 'Gorduras Trans', amount: '0g', dv: '', isSubItem: true },
-  { label: 'Colesterol', amount: '0mg', dv: '0%' },
-  { label: 'Sódio', amount: '160mg', dv: '7%' },
-  { label: 'Carboidratos Totais', amount: '37g', dv: '13%' },
-  { label: 'Fibra Alimentar', amount: '4g', dv: '14%', isSubItem: true },
-  { label: 'Açúcares Totais', amount: '12g', dv: '', isSubItem: true },
-  { label: 'Açúcares Adicionados', amount: '0g', dv: '', isSubItem: true },
-  { label: 'Proteínas', amount: '3g', dv: '' },
-];
+export const NutritionalTable = ({ product }: NutritionalTableProps) => {
+  const containerRef = useRef<HTMLDivElement>(null);
 
-export const NutritionalTable = ({
-  servingSize = "50g (2 fatias)",
-  servingsPerContainer = "aprox. 9",
-  calories = "126",
-  nutrients = defaultNutrients
-}: NutritionalTableProps) => {
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const ctx = gsap.context(() => {
+      // 1. Initial fade in of the entire card
+      gsap.fromTo(containerRef.current, 
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, ease: "power3.out" }
+      );
+
+      // 2. Staggered entry for sections and rows
+      const rows = containerRef.current?.querySelectorAll(`.${styles.row}, .${styles.sectionHeader}`);
+      if (rows) {
+        gsap.fromTo(rows, 
+          { y: 20, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.6, stagger: 0.05, ease: "power2.out", delay: 0.2 }
+        );
+      }
+
+      // 3. Animate progress bars
+      const bars = containerRef.current?.querySelectorAll(`.${styles.progressFill}`);
+      if (bars) {
+        bars.forEach(bar => {
+          const width = (bar as HTMLElement).dataset.width || "0%";
+          gsap.fromTo(bar, 
+            { width: 0 },
+            { width: width, duration: 1.2, ease: "power4.out", delay: 0.6 }
+          );
+        });
+      }
+
+      // 4. Simple count up animation for kcal (just the main one)
+      const caloriesVal = containerRef.current?.querySelector(`.${styles.caloriesValue}`);
+      if (caloriesVal) {
+        const value = parseInt(caloriesVal.textContent || "0");
+        const obj = { val: 0 };
+        gsap.to(obj, {
+          val: value,
+          duration: 1.5,
+          ease: "power3.out",
+          delay: 0.4,
+          onUpdate: () => {
+            caloriesVal.textContent = Math.round(obj.val).toString();
+          }
+        });
+      }
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, [product]);
+
+  if (!product || !product.nutritionalInfo) {
+    return <div className={styles.noData}>Informação nutricional não disponível.</div>;
+  }
+
+  const { servingSize, servingsPerPack, nutrients } = product.nutritionalInfo;
+
+  const categories = [
+    {
+      id: 'macronutrients',
+      name: 'Macronutrientes',
+      items: [
+        { label: 'Valor energético', key: 'valor_energetico_kcal', unit: 'kcal' },
+        { label: 'Carboidratos', key: 'carboidratos_g', unit: 'g' },
+        { label: 'Proteínas', key: 'proteinas_g', unit: 'g' },
+        { label: 'Gorduras totais', key: 'gorduras_totais_g', unit: 'g' },
+      ]
+    },
+    {
+      id: 'breakdown',
+      name: 'Detalhamento',
+      items: [
+        { label: 'Açúcares totais', key: 'acucares_totais_g', unit: 'g' },
+        { label: 'Açúcares adicionados', key: 'acucares_adicionados_g', unit: 'g' },
+        { label: 'Gorduras saturadas', key: 'gorduras_saturadas_g', unit: 'g' },
+        { label: 'Gorduras trans', key: 'gorduras_trans_g', unit: 'g' },
+        { label: 'Gorduras monoinsaturadas', key: 'gorduras_monoinsaturadas_g', unit: 'g' },
+        { label: 'Gorduras poliinsaturadas', key: 'gorduras_poliinsaturadas_g', unit: 'g' },
+        { label: 'Colesterol', key: 'colesterol_mg', unit: 'mg' },
+      ]
+    },
+    {
+      id: 'others',
+      name: 'Outros',
+      items: [
+        { label: 'Fibras', key: 'fibras_g', unit: 'g' },
+        { label: 'Sódio', key: 'sodio_mg', unit: 'mg' },
+      ]
+    }
+  ];
+
   return (
-    <div className={styles.container}>
+    <div className={styles.container} ref={containerRef}>
       <header className={styles.header}>
         <h2 className={styles.title}>Informação Nutricional</h2>
-        <p className={styles.serving}>{servingsPerContainer} porções por embalagem</p>
-        <p className={styles.serving}><strong>Porção de {servingSize}</strong></p>
+        <div className={styles.metadata}>
+          <span>Porções por embalagem: <strong>{servingsPerPack}</strong></span>
+          <span className={styles.dot}>•</span>
+          <span>Porção: <strong>{servingSize}g</strong></span>
+        </div>
       </header>
-      
-      <div className={styles.caloriesRow}>
-        <span className={styles.caloriesLabel}>Quantidade por porção<br/><strong>Valor Energético</strong></span>
-        <span className={styles.caloriesValue}>{calories}</span>
+
+      <div className={styles.gridHeader}>
+        <div className={styles.colLabel}>Nutriente</div>
+        <div className={styles.colLabel}>100g</div>
+        <div className={styles.colLabel}>Porção</div>
+        <div className={styles.colLabel}>%VD*</div>
       </div>
 
-      <div className={styles.body}>
-        <div className={styles.row}>
-          <span className={styles.dailyValue}>% VD*</span>
-        </div>
-        {nutrients.map((nutrient, index) => (
-          <div key={index} className={`${styles.row} ${!nutrient.isSubItem ? styles.bold : ''}`}>
-            <span className={nutrient.isSubItem ? styles.indent : ''}>
-              {nutrient.label} <strong>{nutrient.amount}</strong>
-            </span>
-            <span className={styles.dailyValue}>{nutrient.dv}</span>
+      <div className={styles.content}>
+        {categories.map((cat) => (
+          <div key={cat.id} className={styles.section}>
+            <h3 className={styles.sectionHeader}>{cat.name}</h3>
+            {cat.items.map((item) => {
+              const data = nutrients[item.key as keyof typeof nutrients];
+              if (!data) return null;
+
+              const isEnergy = item.key === 'valor_energetico_kcal';
+              const vdPercent = data.vd || 0;
+
+              return (
+                <div key={item.key} className={styles.row}>
+                  <div className={styles.nutrientName}>{item.label}</div>
+                  <div className={styles.val100g}>{data.per100g}<span className={styles.unit}>{item.unit}</span></div>
+                  <div className={`${styles.valPortion} ${isEnergy ? styles.caloriesValue : ''}`}>
+                    {data.perServing}<span className={styles.unit}>{item.unit}</span>
+                  </div>
+                  <div className={styles.vdCol}>
+                    <div className={styles.vdInfo}>
+                      <span className={styles.vdNum}>{vdPercent}%</span>
+                      <div className={styles.progressBar}>
+                        <div 
+                          className={styles.progressFill} 
+                          data-width={`${Math.min(Number(vdPercent), 100)}%`}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         ))}
       </div>
 
       <footer className={styles.footer}>
-        * % Valores Diários com base em uma dieta de 2.000 kcal ou 8.400 kJ. Seus valores diários podem ser maiores ou menores dependendo de suas necessidades energéticas.
+        <p>Percentual de valores diários fornecidos pela porção.</p>
+        <p>No alimento pronto para consumo.</p>
       </footer>
     </div>
   );

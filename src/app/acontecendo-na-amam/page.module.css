@@ -1,74 +1,96 @@
 .page {
-  padding-bottom: var(--spacing-12);
-  background-color: var(--color-background);
+  padding-bottom: var(--spacing-20);
+  background-color: #f8fafc;
   min-height: 100vh;
 }
 
+.hero {
+  padding: 6rem 0 5rem;
+  background: white;
+  margin-bottom: 4rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
 .header {
-  padding: var(--spacing-8) 0;
-  margin-bottom: var(--spacing-6);
   text-align: center;
-  border-bottom: 1px solid var(--color-border);
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .header h1 {
-  font-size: var(--font-size-2xl); /* Slightly smaller than products/work for news */
-  color: var(--color-primary);
-  margin-bottom: var(--spacing-2);
+  font-size: 3.5rem;
+  color: #0f172a;
+  margin-bottom: 1rem;
   font-weight: 800;
   letter-spacing: -0.02em;
+  background: linear-gradient(to right, var(--color-primary), #0f172a);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .header p {
-  color: var(--color-text-muted);
-  font-size: var(--font-size-base);
+  color: #64748b;
+  font-size: 1.25rem;
+  line-height: 1.6;
 }
 
 .filters {
   display: flex;
   justify-content: center;
-  gap: var(--spacing-2);
-  margin-bottom: var(--spacing-8);
+  gap: 0.75rem;
+  margin-top: 3rem;
   flex-wrap: wrap;
 }
 
 .filterLink {
-  padding: var(--spacing-2) var(--spacing-4);
-  border-radius: var(--radius-full);
-  background-color: var(--color-surface);
-  color: var(--color-text-muted);
-  font-size: var(--font-size-sm);
+  padding: 0.6rem 1.5rem;
+  border-radius: 50px;
+  background-color: #f1f5f9;
+  color: #475569;
+  font-size: 0.95rem;
   font-weight: 600;
-  transition: all 0.2s;
-  border: 1px solid transparent;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
 }
 
 .filterLink:hover {
-  border-color: var(--color-primary);
-  color: var(--color-primary);
-  background-color: white;
+  background-color: #e2e8f0;
+  color: #0f172a;
+  transform: translateY(-2px);
 }
 
 .filterLink.active {
   background-color: var(--color-primary);
   color: white;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 4px 15px rgba(227, 28, 35, 0.3);
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: var(--spacing-6);
+  grid-template-columns: repeat(1, 1fr);
+  gap: 2.5rem;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .empty {
   text-align: center;
   color: var(--color-text-muted);
-  padding: var(--spacing-12);
-  background-color: var(--color-surface);
-  border-radius: var(--radius-md);
-  border: 1px dashed var(--color-border);
+  padding: 5rem 2rem;
+  background-color: white;
+  border-radius: 20px;
+  border: 2px dashed #e2e8f0;
+  font-size: 1.15rem;
+  font-weight: 500;
 }
-
-/* Animations */
-/* Animations handled in JS */

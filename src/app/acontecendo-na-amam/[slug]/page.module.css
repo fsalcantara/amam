@@ -1,11 +1,96 @@
 .page {
-  padding: var(--spacing-12) 0;
+  padding-bottom: var(--spacing-16);
+  background-color: #f8fafc;
+  min-height: 100vh;
 }
 
+/* ============================
+   Hero (With Cover Image)
+   ============================ */
+.heroCover {
+  position: relative;
+  width: 100%;
+  height: 60vh;
+  min-height: 400px;
+  max-height: 600px;
+  margin-bottom: var(--spacing-12);
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: var(--spacing-12);
+}
+
+.heroImageWrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.heroImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.heroOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.85) 100%);
+}
+
+.heroContent {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  color: white;
+}
+
+.metaHero {
+  display: flex;
+  gap: var(--spacing-4);
+  align-items: center;
+  margin-bottom: var(--spacing-4);
+  font-size: var(--font-size-sm);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.heroTime, .heroAuthor {
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.heroTitle {
+  font-size: 3.5rem;
+  color: white;
+  margin-bottom: var(--spacing-4);
+  line-height: 1.1;
+  font-weight: 800;
+  text-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  max-width: 900px;
+}
+
+.heroLead {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  max-width: 800px;
+  opacity: 0.9;
+  font-weight: 400;
+}
+
+/* ============================
+   Header (No Cover Image Fallback)
+   ============================ */
 .header {
-  margin-bottom: var(--spacing-8);
+  margin-bottom: var(--spacing-10);
   border-bottom: 1px solid var(--color-border);
   padding-bottom: var(--spacing-8);
+  padding-top: var(--spacing-12);
 }
 
 .meta {
@@ -19,9 +104,11 @@
 
 .badge {
   text-transform: uppercase;
-  font-weight: 600;
-  padding: 4px 8px;
-  border-radius: 4px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 50px;
+  letter-spacing: 0.05em;
+  font-size: 0.75rem;
 }
 
 .blog { background-color: #E3F2FD; color: #1565C0; }
@@ -29,41 +116,365 @@
 .treinamento { background-color: #E8F5E9; color: #2E7D32; }
 
 .title {
-  font-size: var(--font-size-3xl);
+  font-size: 3rem;
   color: var(--color-primary);
   margin-bottom: var(--spacing-4);
   line-height: 1.2;
+  font-weight: 800;
 }
 
+.lead {
+  font-size: 1.25rem;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+/* ============================
+   Content Layout (Grid + Sidebar)
+   ============================ */
+.contentLayout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-12);
+  margin-bottom: var(--spacing-12);
+}
+
+@media (min-width: 1024px) {
+  .contentLayout {
+    grid-template-columns: 2.5fr 1fr;
+    align-items: start;
+  }
+}
+
+.mainColumn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-10);
+}
+
+.sidebarColumn {
+  position: sticky;
+  top: 100px; /* Sticks when scrolling down */
+}
+
+/* ============================
+   Typography / Rich Text Area
+   ============================ */
 .content {
-  font-size: var(--font-size-lg);
+  font-size: 1.15rem;
   line-height: 1.8;
-  color: var(--color-text-main);
-  max-width: 800px;
+  color: #334155;
+  background-color: white;
+  padding: 3rem;
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.03);
 }
 
+.content h2 {
+  font-size: 2rem;
+  color: #0f172a;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.content p {
+  margin-bottom: 1.5rem;
+}
+
+.dropcap::first-letter {
+  float: left;
+  font-size: 4rem;
+  line-height: 0.8;
+  padding-right: 0.5rem;
+  padding-top: 0.4rem;
+  color: var(--color-primary);
+  font-weight: 800;
+}
+
+.content blockquote {
+  border-left: 4px solid var(--color-primary);
+  padding-left: 1.5rem;
+  margin: 2rem 0;
+  font-size: 1.35rem;
+  font-style: italic;
+  color: #1e293b;
+  background: #f8fafc;
+  padding: 2rem;
+  border-radius: 0 16px 16px 0;
+}
+
+.content cite {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  margin-top: 1rem;
+  font-style: normal;
+  font-weight: 600;
+}
+
+/* ============================
+   Multimedia Handlers
+   ============================ */
+.videoEmbed {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+.videoEmbed iframe,
+.uploadedVideo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background-color: #000;
+}
+
+.gallerySection {
+  background-color: white;
+  padding: 3rem;
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+}
+
+.gallerySection h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+}
+
+.galleryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--spacing-4);
+}
+
+.galleryItem {
+  border-radius: 12px;
+  overflow: hidden;
+  aspect-ratio: 1;
+  position: relative;
+  cursor: pointer;
+}
+
+.galleryItem img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.galleryItem:hover img {
+  transform: scale(1.1);
+}
+
+/* ============================
+   Sidebar Event Details
+   ============================ */
 .eventDetails {
-  background-color: var(--color-surface);
-  padding: var(--spacing-6);
-  border-radius: var(--radius-md);
-  margin-bottom: var(--spacing-8);
-  border: 1px solid var(--color-border);
+  background-color: white;
+  padding: 2rem;
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.03);
 }
 
 .eventDetails h3 {
-  font-size: var(--font-size-lg);
-  margin-bottom: var(--spacing-4);
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+  color: #0f172a;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 1rem;
+}
+
+.detailCard {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.iconCircle {
+  width: 44px;
+  height: 44px;
+  background-color: #f1f5f9;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  flex-shrink: 0;
+}
+
+.statusClosed {
+  background-color: #fee2e2;
+  color: #ef4444;
+}
+
+.statusOpen {
+  background-color: #dcfce3;
+  color: #22c55e;
+}
+
+.detailCard strong {
+  display: block;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: #94a3b8;
+  letter-spacing: 0.05em;
+  margin-bottom: 2px;
+}
+
+.detailCard p {
+  color: #1e293b;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+/* ============================
+   Footer Nav
+   ============================ */
+.footerNav {
+  display: flex;
+  justify-content: center;
+  padding-top: var(--spacing-8);
+  border-top: 1px solid #e2e8f0;
+}
+
+.blog { background-color: #E3F2FD; color: #1565C0; }
+.receita { background-color: #FFF3E0; color: #E65100; }
+.evento { background-color: #F3E5F5; color: #7B1FA2; }
+.treinamento { background-color: #E8F5E9; color: #2E7D32; }
+
+/* ============================
+   Recipe Section
+   ============================ */
+.recipeContainer {
+  margin-top: var(--spacing-10);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-12);
+}
+
+.ingredientsSection, .preparationSection {
+  background-color: white;
+  padding: 3rem;
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+}
+
+.sectionHeaderIcon {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
   color: var(--color-primary);
 }
 
-.detailRow {
-  display: flex;
-  margin-bottom: var(--spacing-3);
-  font-size: var(--font-size-base);
+.sectionHeaderIcon h3 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
 }
 
-.detailLabel {
-  font-weight: 600;
-  width: 150px;
-  color: var(--color-text-muted);
+.ingredientsList {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.ingredientsList li {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.1rem;
+  color: #334155;
+  background: #f8fafc;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  transition: transform 0.2s ease;
+}
+
+.ingredientsList li:hover {
+  transform: translateX(5px);
+  background: #f1f5f9;
+}
+
+.bullet {
+  width: 8px;
+  height: 8px;
+  background-color: var(--color-primary);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.stepsList {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.stepItem {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.stepNumber {
+  width: 50px;
+  height: 50px;
+  background-color: var(--color-primary);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+  box-shadow: 0 5px 15px rgba(237, 50, 55, 0.2);
+}
+
+.stepText {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: #334155;
+  padding-top: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .heroTitle {
+    font-size: 2.25rem;
+  }
+  .title {
+    font-size: 2rem;
+  }
+  .content {
+    padding: 1.5rem;
+    font-size: 1rem;
+  }
+  .heroCover {
+    height: 50vh;
+  }
+  .ingredientsSection, .preparationSection {
+    padding: 2rem 1.5rem;
+  }
+  .stepItem {
+    gap: 1rem;
+    flex-direction: column;
+  }
+  .stepNumber {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
 }

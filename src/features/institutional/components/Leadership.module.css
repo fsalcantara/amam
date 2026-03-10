@@ -1,7 +1,7 @@
 .section {
   background-color: var(--color-primary);
   color: #fff;
-  padding: var(--spacing-24) 0;
+  padding: var(--spacing-40) 0 calc(var(--spacing-40) + 1.5rem); /* Added 1.5rem bottom space */
 }
 
 .layout {
@@ -23,12 +23,13 @@
 }
 
 .title {
-  font-size: 4.5rem;
-  line-height: 1;
+  font-size: 3.75rem; /* Slightly smaller for elegance */
+  line-height: 1.1; /* More space between lines */
   color: #ffffff;
-  font-weight: 700;
+  font-weight: 800; /* Extra bold for impact */
   text-transform: uppercase;
-  margin-bottom: var(--spacing-8);
+  letter-spacing: 0.05em; /* Subtle elegant spacing */
+  margin-bottom: var(--spacing-12);
 }
 
 .grid {

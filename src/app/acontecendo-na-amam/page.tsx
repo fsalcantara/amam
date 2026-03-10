@@ -32,6 +32,7 @@ export default function ContentHubPage({ searchParams }: PageProps) {
   const filters = [
     { label: 'Todos', value: 'todos' },
     { label: 'Blog', value: 'blog' },
+    { label: 'Receitas', value: 'receita' },
     { label: 'Eventos', value: 'evento' },
     { label: 'Treinamentos', value: 'treinamento' },
   ];
@@ -66,23 +67,29 @@ export default function ContentHubPage({ searchParams }: PageProps) {
 
   return (
     <div className={styles.page} ref={containerRef}>
-      <Container>
-        <div className={styles.header} ref={headerRef}>
-          <h1>O que está acontecendo na AMAM</h1>
-          <p>Notícias, eventos e conhecimento para você.</p>
-        </div>
+      
+      <div className={styles.hero}>
+        <Container>
+          <div className={styles.header} ref={headerRef}>
+            <h1>O que está acontecendo na AMAM</h1>
+            <p>Notícias, eventos e conhecimento para você.</p>
+          </div>
 
-        <div className={styles.filters} ref={filtersRef}>
-          {filters.map((filter) => (
-            <Link 
-              key={filter.value}
-              href={filter.value === 'todos' ? '/acontecendo-na-amam' : `/acontecendo-na-amam?category=${filter.value}`}
-              className={`${styles.filterLink} ${category === filter.value || (category === 'todos' && filter.value === 'todos') ? styles.active : ''}`}
-            >
-              {filter.label}
-            </Link>
-          ))}
-        </div>
+          <div className={styles.filters} ref={filtersRef}>
+            {filters.map((filter) => (
+              <Link 
+                key={filter.value}
+                href={filter.value === 'todos' ? '/acontecendo-na-amam' : `/acontecendo-na-amam?category=${filter.value}`}
+                className={`${styles.filterLink} ${category === filter.value || (category === 'todos' && filter.value === 'todos') ? styles.active : ''}`}
+              >
+                {filter.label}
+              </Link>
+            ))}
+          </div>
+        </Container>
+      </div>
+
+      <Container>
 
         {posts.length > 0 ? (
           <div className={styles.grid} ref={gridRef}>

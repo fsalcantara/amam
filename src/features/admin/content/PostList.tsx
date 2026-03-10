@@ -1,36 +1,33 @@
 "use client";
 
 import { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
+import useSWR from 'swr';
 import { Post, CONTENT_TYPES } from '@/features/content-hub/types/post';
 import { postService } from '@/features/content-hub/services/postService';
-import { PostForm } from './PostForm';
 import { AdminButton } from '@/features/admin/components/ui/AdminButton';
 import { AdminSelect } from '@/features/admin/components/ui/AdminInput';
 import styles from './PostList.module.css';
+import { useDebounce } from '@/hooks/useDebounce';
+
+const PostForm = dynamic(() => import('./PostForm').then(mod => mod.PostForm), {
+  loading: () => <div className={styles.loading}>Carregando editor...</div>
+});
 
 export default function PostList() {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data: posts, error, mutate: mutatePosts } = useSWR<Post[]>('api/posts', () => postService.getPosts());
+  const loading = !posts && !error;
+
   const [isEditing, setIsEditing] = useState(false);
   const [currentPost, setCurrentPost] = useState<Post | null>(null);
 
   // Filters
   const [searchTerm, setSearchTerm] = useState('');
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
   const [typeFilter, setTypeFilter] = useState('');
 
-  useEffect(() => {
-    loadPosts();
-  }, []);
-
-  const loadPosts = async () => {
-    setLoading(true);
-    const data = await postService.getPosts();
-    setPosts(data);
-    setLoading(false);
-  };
-
-  const filteredPosts = posts.filter(post => {
-    const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase());
+  const filteredPosts = (posts || []).filter(post => {
+    const matchesSearch = post.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase());
     const matchesType = typeFilter ? post.type === typeFilter : true;
     return matchesSearch && matchesType;
   });
@@ -54,7 +51,7 @@ export default function PostList() {
   const handleDelete = async (id: string) => {
     if (confirm('Tem certeza que deseja excluir este conteúdo?')) {
       await postService.deletePost(id);
-      loadPosts();
+      mutatePosts();
     }
   };
 
@@ -65,7 +62,7 @@ export default function PostList() {
       await postService.createPost(data as any);
     }
     setIsEditing(false);
-    loadPosts();
+    mutatePosts();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 

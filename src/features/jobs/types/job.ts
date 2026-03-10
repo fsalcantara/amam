@@ -1,3 +1,10 @@
+export interface ScreeningQuestion {
+  id: string;
+  text: string;
+  options: [string, string, string, string];
+  correctOptionIndex?: number; // HR reference only, never shown to candidate
+}
+
 export interface Job {
   id: string;
   title: string;
@@ -7,6 +14,7 @@ export interface Job {
   location: string;
   isActive: boolean;
   createdAt: string;
+  screeningQuestions?: ScreeningQuestion[];
 }
 
 export type JobArea = 'admin' | 'production' | 'logistics' | 'commercial';

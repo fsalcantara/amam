@@ -54,12 +54,12 @@ export const WhatsHappeningPreview = () => {
     <section className={styles.section} ref={containerRef}>
       <Container>
         <div className={styles.header} ref={headerRef}>
-          <div className={styles.title}>
-            <h2>O que está acontecendo na AMAM</h2>
-            <p>Fique por dentro das nossas novidades, eventos e dicas.</p>
+          <div className={styles.headerInfo}>
+            <h2 className={styles.title}>O que está acontecendo na AMAM</h2>
+            <p className={styles.subtitle}>Fique por dentro das nossas novidades, eventos e dicas.</p>
           </div>
           <div className={styles.actions}>
-            <Button href="/acontecendo-na-amam" as="a" variant="outline">
+            <Button href="/acontecendo-na-amam" as="a" className={styles.verTudoButton}>
               Ver Tudo
             </Button>
           </div>

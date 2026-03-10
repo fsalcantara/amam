@@ -1,89 +1,122 @@
 .card {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
+  background-color: #ffffff;
+  border-radius: 16px;
   overflow: hidden;
-  transition: all 0.2s ease;
-  background-color: var(--color-surface);
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
   display: flex;
   flex-direction: column;
   height: 100%;
+  padding: var(--spacing-8);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  position: relative;
+  border: 1px solid rgba(0, 0, 0, 0.02);
 }
 
 .card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-  border-color: var(--color-primary);
-  background-color: #fff;
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
 }
 
 .imageContainer {
-  height: 180px; /* Slightly reduced height for compactness */
-  background-color: #fff;
+  height: 240px;
   position: relative;
-  overflow: hidden;
-  border-bottom: 1px solid var(--color-border);
-}
-
-.placeholder {
-  width: 100%;
-  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-text-muted);
-  font-size: var(--font-size-sm);
-  background-color: var(--color-surface);
-  font-weight: 500;
+  margin-bottom: var(--spacing-6);
+  z-index: 1;
+}
+
+/* Subtle decorative circle behind product */
+.imageCircle {
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.02) 0%, transparent 70%);
+  border-radius: 50%;
+  z-index: -1;
+}
+
+.image {
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
+  transition: transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.1));
+}
+
+.card:hover .image {
+  transform: scale(1.1) translateY(-10px);
 }
 
 .content {
-  padding: var(--spacing-4);
-  flex: 1;
   display: flex;
   flex-direction: column;
+  flex: 1;
+  text-align: center;
 }
 
 .category {
-  font-size: 10px; /* XS */
+  font-size: 0.7rem;
+  font-weight: 700;
   text-transform: uppercase;
   color: var(--color-primary);
-  margin-bottom: var(--spacing-1);
-  letter-spacing: 0.5px;
-  font-weight: 700;
+  margin-bottom: var(--spacing-2);
+  letter-spacing: 0.15em;
+  opacity: 0.8;
 }
 
 .title {
-  font-size: var(--font-size-base);
-  font-weight: 700;
-  margin-bottom: var(--spacing-2);
-  color: var(--color-text-main);
-  line-height: 1.3;
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin-bottom: var(--spacing-3);
+  color: #1a1a1a;
+  line-height: 1.2;
 }
 
 .title a {
   text-decoration: none;
+  color: inherit;
   transition: color 0.2s;
 }
 
-.title a:hover {
-  color: var(--color-primary);
+.description {
+  font-size: 0.875rem;
+  color: #777;
+  margin-bottom: var(--spacing-8);
+  line-height: 1.6;
+  flex: 1;
+  font-weight: 400;
 }
 
-.description {
-  font-size: var(--font-size-xs);
-  color: var(--color-text-muted);
-  margin-bottom: var(--spacing-3);
-  flex: 1;
-  line-height: 1.5;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+.footer {
+  margin-top: auto;
 }
 
 .button {
   width: 100%;
-  font-size: var(--font-size-xs) !important;
-  padding: var(--spacing-2) !important;
-  height: auto !important;
+  border-radius: 50px !important;
+  font-size: 0.8rem !important;
+  font-weight: 700 !important;
+  padding: var(--spacing-3) !important;
+  transition: all 0.3s ease !important;
+  border: 1.5px solid #eee !important;
+  background: transparent !important;
+  color: #333 !important;
+}
+
+.card:hover .button {
+  background-color: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 15px rgba(235, 30, 40, 0.3);
+}
+
+@media (max-width: 768px) {
+  .card {
+    padding: var(--spacing-6);
+  }
+  .imageContainer {
+    height: 200px;
+  }
 }

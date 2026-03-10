@@ -14,7 +14,7 @@
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  height: calc(var(--header-height) - 10px);
+  height: var(--header-height-scrolled);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
@@ -31,14 +31,14 @@
 }
 
 .logoImage {
-  max-height: 90px;
+  max-height: 85px; /* Deixa 15px de respiro (100px - 85px / 2 = 7.5px top/bottom) */
   width: auto;
   transition: all 0.3s ease;
   filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); /* Add slight shadow for better visibility on white */
 }
 
 .scrolled .logoImage {
-  max-height: 50px;
+  max-height: 55px;
 }
 
 .nav {
@@ -54,7 +54,8 @@
 @media (min-width: 992px) {
   .nav {
     display: flex;
-    gap: var(--spacing-10); /* Increased spacing */
+    gap: var(--spacing-12); /* Increased spacing even more */
+    margin-left: var(--spacing-10); /* More separation from logo */
   }
 }
 
@@ -113,7 +114,7 @@
 }
 
 .menuOpen .logoImage {
-  max-height: 70px; /* Force visibility and size when menu is open */
+  max-height: 80px; /* Force visibility and size when menu is open */
 }
 
 @media (min-width: 992px) {

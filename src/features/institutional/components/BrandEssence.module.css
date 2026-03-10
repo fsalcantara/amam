@@ -1,23 +1,27 @@
 .section {
   position: relative;
-  background-color: var(--color-primary); /* Red background */
+  background-color: var(--color-primary); 
+  /* Subtle depth gradient overlay */
+  background: linear-gradient(0deg, #990000 0%, var(--color-primary) 100%);
   color: #fff;
-  padding: var(--spacing-48) 0 0 0; /* Removed bottom padding */
+  padding: var(--spacing-48) 0;
   overflow: hidden;
-  text-align: center;
+  display: flex;
+  align-items: center;
 }
 
 .grid {
   display: grid;
-  gap: var(--spacing-12);
+  gap: var(--spacing-16);
   align-items: center;
-  padding-bottom: var(--spacing-16); /* Add padding here so text isn't flush with separator */
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 @media (min-width: 992px) {
   .grid {
-    grid-template-columns: 1fr auto 1fr;
-    gap: var(--spacing-16);
+    grid-template-columns: 1fr 200px 1fr;
+    gap: var(--spacing-24);
   }
 }
 
@@ -38,59 +42,67 @@
   }
 }
 
-.centerIconSmall {
+.centerIconWrapper {
   display: flex;
   justify-content: center;
+  align-items: center;
+  position: relative;
 }
 
-.heartImageSmall {
-  width: 100px;
-  height: auto;
-  object-fit: contain;
-  opacity: 0.9;
-}
-
-.centerIconLarge {
+.heartContainer {
+  position: relative;
+  width: 140px;
+  height: 140px;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
-.heartImageLarge {
-  width: 180px;
+.heartImage {
+  width: 100%;
   height: auto;
   object-fit: contain;
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.2));
+  animation: heartPulse 4s infinite ease-in-out;
+}
+
+.heartGlow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120%;
+  height: 120%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+  z-index: 1;
+}
+
+@keyframes heartPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
 }
 
 .paragraph {
-  font-size: var(--font-size-base);
-  line-height: 1.6;
-  font-weight: 500;
-  max-width: 400px;
+  font-size: 1.125rem;
+  line-height: 1.7;
+  font-weight: 400;
+  max-width: 420px;
   margin: 0 auto;
+  color: rgba(255, 255, 255, 0.9);
 }
 
-.paragraphStrong {
-  font-size: var(--font-size-lg);
-  line-height: 1.6;
-  font-weight: 800;
-  max-width: 400px;
-  margin: 0 auto;
-}
-
-@media (min-width: 768px) {
-  .paragraph {
-    font-size: var(--font-size-lg);
-  }
-  .paragraphStrong {
-    font-size: var(--font-size-xl);
-  }
+.emphasis {
+  font-weight: 700;
+  color: #ffffff;
 }
 
 @media (min-width: 992px) {
-  .paragraph, .paragraphStrong {
+  .paragraph {
     margin: 0;
   }
-  .textLeft .paragraph, .textLeft .paragraphStrong {
+  .textLeft .paragraph {
     margin-left: auto;
   }
 }

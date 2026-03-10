@@ -1,92 +1,164 @@
 .sidebar {
-  width: 260px;
+  width: 280px;
   height: 100vh;
-  background-color: #ffffff;
-  border-right: 1px solid #eee;
+  background-color: #0f172a; /* Premium Dark Slate */
+  border-right: 1px solid #1e293b;
   display: flex;
   flex-direction: column;
   position: fixed;
   left: 0;
   top: 0;
-  box-shadow: 2px 0 10px rgba(0,0,0,0.03);
+  box-shadow: 4px 0 24px rgba(0,0,0,0.1);
+  color: white;
+  z-index: 50;
+  list-style: none; /* Previne pontos de bullets indesejados caso interpretado erradamente */
 }
 
 .header {
-  padding: 2rem 1.5rem;
-  background-color: #ffffff;
-  border-bottom: 1px solid #f0f0f0;
+  padding: 2.5rem 2rem;
+  background-color: #0f172a;
+  border-bottom: 1px solid #1e293b;
 }
 
-.logo {
-  font-size: 1.5rem;
+.logoContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.logoImage {
+  width: auto;
+  max-width: 200px;
+  object-fit: contain;
+}
+
+.logoSubtitle {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #64748b;
   font-weight: 800;
-  margin-bottom: 0.5rem;
-  color: #e31e24; /* Amam Red */
-  letter-spacing: -0.5px;
+  margin: 0;
+  padding-left: 0.2rem;
 }
 
 .userInfo {
-  font-size: 0.85rem;
-  color: #666;
+  font-size: 0.95rem;
+  color: #94a3b8;
+  font-weight: 500;
+  line-height: 1.5;
 }
 
 .userRole {
   font-size: 0.7rem;
   text-transform: uppercase;
-  background: #fdf2f2;
-  color: #e31e24;
-  padding: 3px 8px;
+  background: rgba(227, 30, 36, 0.15);
+  color: #fca5a5;
+  padding: 4px 10px;
   border-radius: 12px;
-  font-weight: 600;
+  font-weight: 700;
   display: inline-block;
-  margin-top: 4px;
+  margin-top: 6px;
+  border: 1px solid rgba(227, 30, 36, 0.3);
 }
 
 .nav {
   flex: 1;
-  padding: 1.5rem 1rem;
+  padding: 2rem 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
 .navItem {
-  padding: 0.85rem 1rem;
-  color: #555;
+  padding: 1rem 1.25rem;
+  color: #94a3b8;
   text-decoration: none;
-  transition: all 0.2s ease;
-  border-radius: 8px;
-  font-weight: 500;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.95rem;
   display: flex;
   align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.navItem::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 0;
+  background-color: #e31e24;
+  transition: width 0.3s ease;
+  z-index: 0;
+  opacity: 0;
 }
 
 .navItem:hover {
-  background-color: #fdf2f2;
-  color: #e31e24;
-  transform: translateX(4px);
+  color: #ffffff;
+  transform: translateX(6px);
+}
+
+.navItem:hover::before {
+  width: 100%;
+  opacity: 0.1;
 }
 
 .navItem.active {
   background-color: #e31e24;
   color: white;
-  box-shadow: 0 4px 10px rgba(227, 30, 36, 0.2);
+  box-shadow: 0 4px 15px rgba(227, 30, 36, 0.3);
+}
+
+.footerActions {
+  padding: 1.5rem;
+  border-top: 1px solid #1e293b;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.backToSiteButton {
+  padding: 1rem;
+  background-color: transparent;
+  border: 1px solid transparent;
+  color: #94a3b8;
+  text-decoration: none;
+  border-radius: 12px;
+  transition: all 0.3s;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.backToSiteButton:hover {
+  background-color: #1e293b;
+  color: #ffffff;
 }
 
 .logoutButton {
-  margin: 1.5rem;
-  padding: 0.85rem;
-  background-color: white;
-  border: 1px solid #eee;
-  color: #666;
+  padding: 1rem;
+  background-color: #1e293b;
+  border: 1px solid #334155;
+  color: #cbd5e1;
   cursor: pointer;
-  border-radius: 8px;
-  transition: all 0.2s;
-  font-weight: 500;
+  border-radius: 12px;
+  transition: all 0.3s;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
 }
 
 .logoutButton:hover {
-  border-color: #e31e24;
-  color: #e31e24;
-  background-color: #fdf2f2;
+  border-color: #ef4444;
+  color: #ef4444;
+  background-color: rgba(239, 68, 68, 0.1);
 }

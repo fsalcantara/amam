@@ -22,8 +22,6 @@ export default function Home() {
       
       <InstitutionalTeaser />
       
-      <SectionDivider variant="red-to-white" />
-      
       <WhatsHappeningPreview />
     </>
   );

@@ -1,10 +1,13 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { UserRole } from '@/features/auth/types';
 import { AdminToggle } from '@/features/admin/components/ui/AdminToggle';
 import { AdminButton } from '@/features/admin/components/ui/AdminButton';
 import { AdminInput, AdminSelect } from '@/features/admin/components/ui/AdminInput';
+import { newUserSchema, NewUserFormValues } from '@/features/admin/schemas/adminSchemas';
 import styles from './UserManagement.module.css';
 
 // Mock list for display - should ideally come from authService
@@ -16,30 +19,32 @@ const INITIAL_USERS = [
 
 export default function UserManagementPage() {
   const [users, setUsers] = useState(INITIAL_USERS);
-  const [newUser, setNewUser] = useState({ name: '', username: '', password: '', role: UserRole.HR });
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleCreateUser = (e: React.FormEvent) => {
-    e.preventDefault();
+  const { register, handleSubmit, reset, setValue, watch, formState: { errors } } = useForm<NewUserFormValues>({
+    resolver: zodResolver(newUserSchema) as any,
+    defaultValues: { name: '', username: '', password: '', role: UserRole.HR },
+  });
+
+  const handleCreateUser = useCallback((data: NewUserFormValues) => {
     const createdUser = {
       id: Math.random().toString(36).substr(2, 9),
-      username: newUser.username,
-      name: newUser.name,
-      role: newUser.role,
+      username: data.username,
+      name: data.name,
+      role: data.role as UserRole,
       isActive: true
     };
-    
-    setUsers([...users, createdUser]);
-    setNewUser({ name: '', username: '', password: '', role: UserRole.HR });
+    setUsers(prev => [...prev, createdUser]);
+    reset();
     setIsModalOpen(false);
     alert('Usuário criado com sucesso! (Mock)');
-  };
+  }, [reset]);
 
-  const toggleUser = (id: string, currentStatus: boolean) => {
-    setUsers(users.map(u => 
+  const toggleUser = useCallback((id: string, currentStatus: boolean) => {
+    setUsers(prev => prev.map(u => 
       u.id === id ? { ...u, isActive: !currentStatus } : u
     ));
-  };
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -95,33 +100,33 @@ export default function UserManagementPage() {
             <div className={styles.modalHeader}>
               <h2>Novo Usuário</h2>
             </div>
-            <form onSubmit={handleCreateUser} className={styles.form}>
+            <form onSubmit={handleSubmit(handleCreateUser)} className={styles.form}>
               <AdminInput 
                 label="Nome Completo"
-                value={newUser.name}
-                onChange={e => setNewUser({...newUser, name: e.target.value})}
+                {...register('name')}
+                error={errors.name?.message}
                 required 
               />
               
               <AdminInput 
                 label="Usuário (Login)"
-                value={newUser.username}
-                onChange={e => setNewUser({...newUser, username: e.target.value})}
+                {...register('username')}
+                error={errors.username?.message}
                 required 
               />
 
               <AdminInput 
                 label="Senha"
                 type="password"
-                value={newUser.password}
-                onChange={e => setNewUser({...newUser, password: e.target.value})}
+                {...register('password')}
+                error={errors.password?.message}
                 required 
               />
 
               <AdminSelect
                 label="Função"
-                value={newUser.role}
-                onChange={(value: string) => setNewUser({...newUser, role: value as UserRole})}
+                value={watch('role')}
+                onChange={(value: string) => setValue('role', value)}
                 options={[
                   { label: 'HR (Recursos Humanos)', value: UserRole.HR },
                   { label: 'Marketing', value: UserRole.MARKETING },
@@ -130,7 +135,7 @@ export default function UserManagementPage() {
               />
 
               <div className={styles.modalActions}>
-                <AdminButton type="button" variant="secondary" onClick={() => setIsModalOpen(false)}>Cancelar</AdminButton>
+                <AdminButton type="button" variant="secondary" onClick={() => { reset(); setIsModalOpen(false); }}>Cancelar</AdminButton>
                 <AdminButton type="submit">Salvar Usuário</AdminButton>
               </div>
             </form>

@@ -6,18 +6,25 @@
 }
 
 .label {
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: #444;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 0.25rem;
 }
 
-.input, .select {
-  padding: 0.8rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+.input, .select, .textarea {
+  padding: 0.85rem 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
   font-size: 0.95rem;
-  transition: all 0.2s;
-  background-color: #fff;
+  color: #0f172a;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  background-color: #f8fafc;
+  width: 100%;
+}
+
+.input:hover, .select:hover, .textarea:hover {
+  border-color: #94a3b8;
 }
 
 .select {
@@ -32,10 +39,11 @@
   cursor: pointer;
 }
 
-.input:focus, .select:focus {
+.input:focus, .select:focus, .textarea:focus {
   outline: none;
   border-color: #e31e24;
-  box-shadow: 0 0 0 4px rgba(227, 30, 36, 0.25);
+  background-color: #ffffff;
+  box-shadow: 0 0 0 4px rgba(227, 30, 36, 0.15);
 }
 
 .textarea {

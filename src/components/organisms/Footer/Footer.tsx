@@ -16,7 +16,14 @@ export const Footer = () => {
               />
             </Link>
             <p className={styles.brandDescription}>
-              Tradição e qualidade em alimentos.
+              Os pães AMAM, são produzidos por Delongo & Margutti Indústria e Comércio LTADA, uma empresa sediada em Vitória da Conquista - Bahia.
+
+            </p>
+
+            <p className={styles.brandDescription}>
+              
+              <br></br>
+              <strong>CNPJ:</strong> 45.238.099/0001-00
             </p>
           </div>
           
