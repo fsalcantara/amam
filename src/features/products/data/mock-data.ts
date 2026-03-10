@@ -40,7 +40,7 @@ export const PRODUCTS: Product[] = [
     slug: 'pao-de-forma-tradicional',
     description: 'O clássico pão de forma AMAM, macio e perfeito para qualquer momento.',
     category: 'paes-tradicionais',
-    image: '/SITE/PRODUTOS/TRADICIONAL/tradicional.png',
+    image: '/SITE/PRODUTOS/TRADICIONAL/Tradicional.png',
     nutritionalInfo: {
       servingSize: 50,
       servingsPerPack: 8,
@@ -67,7 +67,7 @@ export const PRODUCTS: Product[] = [
     slug: 'pao-sem-casca-tradicional',
     description: 'Praticidade e maciez sem a casca, ideal para sanduíches delicados.',
     category: 'sem-casca',
-    image: '/SITE/PRODUTOS/SEM CASCAS/sem-casca-tradicional.png',
+    image: '/SITE/PRODUTOS/SEM CASCA/sem-casca-tradicional.png',
     nutritionalInfo: {
       servingSize: 50,
       servingsPerPack: 7,
@@ -202,7 +202,7 @@ export const PRODUCTS: Product[] = [
     slug: 'pao-sem-casca-tradicional-integral-37',
     description: 'A maciez do sem casca com os benefícios do integral 37%.',
     category: 'sem-casca',
-    image: '/SITE/PRODUTOS/SEM CASCAS/sem-casca-integral-37.png',
+    image: '/SITE/PRODUTOS/SEM CASCA/sem-casca-integral-37.png',
     nutritionalInfo: {
       servingSize: 50,
       servingsPerPack: 7,
