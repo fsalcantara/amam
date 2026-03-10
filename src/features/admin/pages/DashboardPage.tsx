@@ -11,7 +11,7 @@ import { postService } from '@/features/content-hub/services/postService';
 
 export default function DashboardPage() {
   const router = useRouter();
-  const [user, setUser] = useState(authService.getCurrentUser());
+  const [user, setUser] = useState<any>(null);
   const [stats, setStats] = useState({
     jobs: 0,
     posts: 0,
