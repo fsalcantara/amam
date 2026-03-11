@@ -7,17 +7,18 @@
 .historySection {
   background-color: #ffffff;
   color: #333333;
-  padding: 80px 0; /* Reduzido de 140px */
-  text-align: center;
+  padding: 100px 0;
+  text-align: left; /* Alinhado à esquerda por padrão */
   position: relative;
 }
 
 .historyContent {
-  max-width: 800px; /* Levemente maior para distribuir melhor o texto */
+  max-width: 1200px; /* Aumentado para o layout horizontal */
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-6); /* Reduzido o gap geral */
+  display: grid;
+  grid-template-columns: 1fr 1.5fr; /* Duas colunas */
+  gap: var(--spacing-16);
+  align-items: start;
 }
 
 .manifestoTitle {
@@ -38,9 +39,9 @@
 .textContent {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-4); /* Parágrafos mais próximos */
-  font-size: 1.15rem; /* Ajuste leve no tamanho */
-  line-height: 1.7; /* Mais compacto e profissional */
+  gap: var(--spacing-6); /* Parágrafos mais afastados */
+  font-size: 1.15rem; 
+  line-height: 1.85; /* Mais espaçamento entre linhas para não "embolar" */
   color: #444444;
   font-weight: 400;
 }
@@ -58,8 +59,7 @@
   content: '';
   position: absolute;
   top: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0; /* Alinhado à esquerda */
   width: 60px;
   height: 3px;
   background-color: var(--color-primary);
@@ -192,9 +192,25 @@
 }
 
 
+@media (max-width: 1024px) {
+  .historyContent {
+    grid-template-columns: 1fr; /* Volta para uma coluna em telas menores */
+    gap: var(--spacing-10);
+  }
+}
+
 @media (max-width: 768px) {
   .historySection, .topBanner, .contactFormSection {
     padding: 40px 0;
+  }
+
+  .historySection {
+    text-align: center;
+  }
+  
+  .strongText::before {
+    left: 50%;
+    transform: translateX(-50%);
   }
   
   .formWrapper {
