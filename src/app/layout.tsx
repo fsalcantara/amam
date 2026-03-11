@@ -21,6 +21,7 @@ const dancingScript = Dancing_Script({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://amamalimentos.com.br'),
   title: {
     template: '%s | Amam Alimentos',
     default: 'Amam Alimentos | Tradição e Qualidade',

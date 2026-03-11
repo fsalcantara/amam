@@ -124,7 +124,7 @@ export const ContactForm = ({ variant = 'light' }: ContactFormProps) => {
       </div>
 
       {formData.segment === 'Outro' && (
-        <div className={styles.field}>
+        <div className={`${styles.field} ${styles.fullWidth}`}>
           <label htmlFor="otherSegment">Qual o seu segmento? *</label>
           <input 
             type="text" 

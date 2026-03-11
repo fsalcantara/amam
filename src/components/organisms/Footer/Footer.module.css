@@ -30,7 +30,7 @@
 
 @media (min-width: 768px) {
   .grid {
-    grid-template-columns: 2fr 1fr 1fr 1fr;
+    grid-template-columns: 1.5fr 0.8fr 0.8fr 0.8fr 1.5fr;
   }
 }
 
@@ -78,6 +78,16 @@
   color: var(--color-secondary); /* Gold hover */
 }
 
+.contactList li {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.contactSpacing {
+  margin-top: var(--spacing-4);
+}
+
 .copyright {
   margin-top: var(--spacing-16);
   padding-top: var(--spacing-6);
@@ -87,6 +97,33 @@
   font-size: var(--font-size-xs);
   position: relative;
   z-index: 1;
+}
+
+.socialLinks {
+  display: flex;
+  gap: var(--spacing-4);
+  margin-top: var(--spacing-6);
+}
+
+.socialIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  font-size: 1.25rem;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.socialIcon:hover {
+  background: var(--color-secondary);
+  color: #000000;
+  transform: translateY(-3px);
+  border-color: var(--color-secondary);
 }
 
 @keyframes fadeUpIn {

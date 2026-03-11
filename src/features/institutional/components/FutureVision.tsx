@@ -103,7 +103,7 @@ export const FutureVision = () => {
           <div className={styles.imageWrapper} ref={imageRef}>
             <div className={styles.radialGlow}></div>
             <img 
-              src="/SITE/BANNER/amam-pães alta.png" 
+              src="/SITE/BANNER/amam-paes-alta.png" 
               alt="Pães Amam" 
               className={styles.image}
             />

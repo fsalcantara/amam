@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { FaInstagram } from 'react-icons/fa6';
 import { Container } from '../../atoms/Container/Container';
 import styles from './Footer.module.css';
 
@@ -25,6 +26,18 @@ export const Footer = () => {
               <br></br>
               <strong>CNPJ:</strong> 45.238.099/0001-00
             </p>
+
+            <div className={styles.socialLinks}>
+              <a 
+                href="https://www.instagram.com/amam.alimentos/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className={styles.socialIcon}
+                aria-label="Instagram"
+              >
+                <FaInstagram />
+              </a>
+            </div>
           </div>
           
           <div className={styles.column}>
@@ -50,6 +63,23 @@ export const Footer = () => {
             <ul>
               <li><Link href="/privacidade">Política de Privacidade</Link></li>
               <li><Link href="/termos">Termos de Uso</Link></li>
+            </ul>
+          </div>
+
+          <div className={styles.column}>
+            <h4>Contato</h4>
+            <ul className={styles.contactList}>
+              <li>
+                Distrito Industrial dos Ymborés.<br />
+                BR 116 Km 271, Estrada do Peri Peri<br />
+                Vitória da Conquista - Bahia
+              </li>
+              <li className={styles.contactSpacing}>
+                <strong>Fone:</strong> <a href="tel:77991550013">77 9 9155-0013</a>
+              </li>
+              <li>
+                <a href="mailto:vendas@amamalimentos.com.br">vendas@amamalimentos.com.br</a>
+              </li>
             </ul>
           </div>
         </div>

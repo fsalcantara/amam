@@ -54,12 +54,16 @@
 }
 
 .headline {
-  color: #fff;
-  font-family: var(--font-family-script);
-  font-size: 6.5rem; /* Aumentado */
-  line-height: 0.9;
   margin: 0;
-  text-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+  width: 100%;
+}
+
+.headlineSvg {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  display: block;
+  filter: drop-shadow(2px 2px 10px rgba(0,0,0,0.2));
 }
 
 .introWord {

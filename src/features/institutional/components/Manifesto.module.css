@@ -96,7 +96,7 @@
   font-weight: 400;
   display: block;
   margin-top: var(--spacing-4);
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--color-secondary);
 }
 
 /* 3. Contact Form Section */
@@ -106,7 +106,7 @@
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
-  padding: 100px 0;
+  padding: 40px 0;
 }
 
 /* Overlay darker to make gold pop */
@@ -127,17 +127,29 @@
 }
 
 .formGrid {
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr 700px;
+  gap: var(--spacing-8);
+  align-items: start;
+}
+
+.formText {
+  text-align: left;
+  padding-top: 2.5rem;
+}
+
+.formText .bannerText {
+  text-align: left;
+  margin: 0;
 }
 
 .formWrapper {
   width: 100%;
-  max-width: 480px;
+  max-width: 700px;
   background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  padding: 50px;
+  padding: 40px;
   border-radius: 32px;
   border: 1px solid rgba(235, 181, 113, 0.3);
   box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6);
@@ -182,10 +194,19 @@
 
 @media (max-width: 768px) {
   .historySection, .topBanner, .contactFormSection {
-    padding: 60px 0;
+    padding: 40px 0;
   }
   
   .formWrapper {
     padding: 24px;
+  }
+
+  .formGrid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-8);
+  }
+
+  .formText, .formText .bannerText {
+    text-align: center;
   }
 }

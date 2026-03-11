@@ -55,9 +55,11 @@ export const Hero = ({
         <div className={styles.content}>
           <div className={styles.textContent}>
             <h1 ref={headlineRef} className={styles.headline}>
-              <span className={styles.introWord}>Chegou</span><br/>
-              a fatia<br/>
-              <span className={styles.yellowText}>que faltava</span>
+              <img 
+                src="/SITE/BANNER/CHEGOU-A-FATIA-QUE-FALTAVA.svg" 
+                alt="Chegou a fatia que faltava" 
+                className={styles.headlineSvg}
+              />
             </h1>
             <div className={styles.wheatIcon}>
               {/* Optional wheat icon or similar decorative element if needed, though we can use CSS */}
@@ -66,7 +68,7 @@ export const Hero = ({
 
           <div className={styles.productVisual}>
             <img 
-              src="/SITE/BANNER/Pães Amam.png" 
+              src="/SITE/BANNER/Paes Amam.png" 
               alt="Pães Amam" 
               className={styles.breadPackages} 
             />

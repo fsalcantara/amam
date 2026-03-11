@@ -44,6 +44,12 @@ export const Manifesto = () => {
         <div className={styles.formContainer}>
           <Container>
             <div className={styles.formGrid}>
+               <div className={styles.formText}>
+                 <h2 className={styles.bannerText}>
+                   Seja um parceiro <strong>AMAM</strong><br />
+                   <span>e garanta a sua fatia<br/>deste mercado em expansão.</span>
+                 </h2>
+               </div>
                <div className={styles.formWrapper}>
                  <ContactForm variant="dark" />
                </div>
@@ -52,15 +58,6 @@ export const Manifesto = () => {
         </div>
       </div>
 
-      {/* 1. TOP BANNER (Seja um parceiro AMAM) - Moved to bottom */}
-      <div className={styles.topBanner}>
-        <Container>
-           <h2 className={styles.bannerText}>
-             Seja um parceiro <strong>AMAM</strong><br />
-             <span>e garanta a sua fatia<br/>deste mercado em expansão.</span>
-           </h2>
-        </Container>
-      </div>
     </section>
   );
 };
