@@ -11,7 +11,13 @@
     color: var(--color-white);
     font-family: var(--font-body);
     overflow-x: hidden;
-    cursor: none; /* Hide default cursor */
+    cursor: none; /* Hide default cursor by default */
+}
+
+@media (max-width: 1024px) {
+    .root {
+        cursor: auto; /* Show default cursor on mobile/tablet */
+    }
 }
 
 /* Custom Cursor */
@@ -27,6 +33,12 @@
     z-index: 9999;
     mix-blend-mode: difference;
     transform: translate(-50%, -50%);
+}
+
+@media (max-width: 1024px) {
+    .cursor {
+        display: none;
+    }
 }
 
 /* Progress bar */
@@ -71,11 +83,27 @@
     overflow: hidden;
 }
 
+@media (max-width: 1024px) {
+    .container {
+        height: auto;
+        overflow: visible;
+    }
+}
+
 .horizontalWrapper {
     height: 100%;
     display: flex;
     width: fit-content;
     will-change: transform;
+}
+
+@media (max-width: 1024px) {
+    .horizontalWrapper {
+        flex-direction: column;
+        width: 100%;
+        height: auto;
+        transform: none !important;
+    }
 }
 
 .slide {
@@ -88,6 +116,18 @@
     align-items: center;
 }
 
+@media (max-width: 1024px) {
+    .slide {
+        width: 100%;
+        height: auto;
+        min-height: 100vh;
+        padding: 5rem 0;
+    }
+    .heroSlide {
+        height: 100vh;
+    }
+}
+
 .slideContent {
     width: 100%;
     max-width: 1300px;
@@ -96,6 +136,14 @@
     position: relative;
     z-index: 10;
     will-change: opacity, transform;
+}
+
+@media (max-width: 1024px) {
+    .slideContent {
+        padding: 0 1.5rem;
+        opacity: 1 !important;
+        transform: none !important;
+    }
 }
 
 .centeredContent {
@@ -150,11 +198,12 @@
 
 .heroTitle {
     font-family: var(--font-heading);
-    font-size: 8vw;
+    font-size: clamp(3rem, 8vw, 110px);
     font-weight: 800;
     text-transform: uppercase;
     line-height: 0.9;
     margin-bottom: 2rem;
+    color: white;
 }
 
 .heroSubtitle {
@@ -204,6 +253,7 @@
     font-weight: 800;
     margin-bottom: 2rem;
     line-height: 1.1;
+    color: var(--color-primary);
 }
 
 .description {
@@ -231,7 +281,11 @@
 
 /* SLIDE 3: PROCESS */
 .darkSlide {
-    background-color: var(--color-black);
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.darkSlide .slideHeading {
     color: white;
 }
 
@@ -287,8 +341,7 @@
 }
 
 .parallaxImg {
-    border-radius: 20px;
-    box-shadow: 0 50px 100px rgba(0,0,0,0.1);
+    /* Styles are now handled by parent .imageAccent */
 }
 
 /* SLIDE 5: CTA */
@@ -299,11 +352,12 @@
 
 .ctaTitle {
     font-family: var(--font-heading);
-    font-size: 6vw;
+    font-size: clamp(2rem, 6vw, 80px); /* Clamp for ultrawide */
     font-weight: 800;
     color: white;
     text-transform: uppercase;
-    margin-bottom: 4rem;
+    margin-bottom: 2rem;
+    line-height: 1; /* Standardized line height */
 }
 
 .ctaActions {
@@ -334,16 +388,34 @@
 /* RESPONSIVE WARNING: Horizontal scroll is complex on mobile */
 @media (max-width: 992px) {
     .slideContent {
-        padding: 0 2rem;
+        padding: 0 1.5rem;
+    }
+    .heroTitle {
+        font-size: 3.5rem;
+    }
+    .slideHeading {
+        font-size: 2.5rem;
     }
     .splitLayout {
         grid-template-columns: 1fr;
-        gap: 2rem;
+        gap: 3rem;
     }
     .bigStat {
         font-size: 4rem;
     }
     .processCards {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    .ctaTitle {
+        font-size: 3rem;
+    }
+    .ctaActions {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    .ghostBtn {
+        padding: 1rem 2rem;
+        width: 100%;
     }
 }

@@ -15,7 +15,6 @@
   --color-border: #eaecf0; /* Softer border */
 
   /* Typography */
-  --font-family-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-family-serif: Georgia, "Times New Roman", Times, serif;
   
   --font-size-xs: 0.75rem;
@@ -77,6 +76,10 @@ body {
   min-height: 100vh;
 }
 
+h1, h2, h3 {
+  color: var(--color-primary);
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -118,4 +121,28 @@ img {
   margin-right: auto;
   padding-left: var(--spacing-6);
   padding-right: var(--spacing-6);
+}
+
+/* Button Group Utility */
+.buttonGroup {
+  display: flex;
+  gap: var(--spacing-4);
+  flex-wrap: wrap;
+}
+
+@media (max-width: 640px) {
+  .buttonGroup {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .buttonGroup > * {
+    width: 100%;
+  }
+}
+
+.fullWidthMobile {
+  @media (max-width: 640px) {
+    width: 100% !important;
+  }
 }

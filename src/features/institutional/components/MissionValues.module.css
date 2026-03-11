@@ -44,3 +44,22 @@
   font-size: var(--font-size-sm);
   line-height: 1.6;
 }
+
+.valuesList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  text-align: left;
+  margin-top: var(--spacing-2);
+}
+
+.valueItem {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  line-height: 1.4;
+}
+
+.valueItem strong {
+  color: var(--color-text);
+  font-weight: 600;
+}

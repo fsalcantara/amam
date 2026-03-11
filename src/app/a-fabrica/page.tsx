@@ -37,32 +37,120 @@ export default function AFabricaPage() {
         }
         requestAnimationFrame(raf);
 
-        // 2. Horizontal Scroll Logic
-        const slides = gsap.utils.toArray(`.${styles.slide}`);
-        const totalSlides = slides.length;
+        // 2. Responsive MatchMedia for GSAP
+        let mm = gsap.matchMedia();
 
-        const scrollTween = gsap.to(wrapperRef.current, {
-            x: () => -(wrapperRef.current!.scrollWidth - window.innerWidth),
-            ease: "none",
-            scrollTrigger: {
-                trigger: containerRef.current,
-                pin: true,
-                scrub: 0.5,
-                snap: {
-                    snapTo: 1 / (totalSlides - 1),
-                    duration: { min: 0.2, max: 0.7 },
-                    delay: 0,
-                    ease: "power2.inOut"
-                },
-                invalidateOnRefresh: true,
-                end: () => `+=${wrapperRef.current!.scrollWidth - window.innerWidth}`,
-                onUpdate: (self) => {
-                    // Update progress line
-                    if (progressRef.current) {
-                        gsap.set(progressRef.current, { scaleX: self.progress });
+        mm.add("(min-width: 1025px)", () => {
+            // Horizontal Scroll Logic
+            const slides = gsap.utils.toArray(`.${styles.slide}`);
+            const totalSlides = slides.length;
+
+            const scrollTween = gsap.to(wrapperRef.current, {
+                x: () => -(wrapperRef.current!.scrollWidth - window.innerWidth),
+                ease: "none",
+                scrollTrigger: {
+                    trigger: containerRef.current,
+                    pin: true,
+                    scrub: 0.5,
+                    snap: {
+                        snapTo: 1 / (totalSlides - 1),
+                        duration: { min: 0.2, max: 0.7 },
+                        delay: 0,
+                        ease: "power2.inOut"
+                    },
+                    invalidateOnRefresh: true,
+                    end: () => `+=${wrapperRef.current!.scrollWidth - window.innerWidth}`,
+                    onUpdate: (self) => {
+                        if (progressRef.current) {
+                            gsap.set(progressRef.current, { scaleX: self.progress });
+                        }
                     }
                 }
-            }
+            });
+
+            // Parallax & Stagger Effects for each slide (Horizontal)
+            slides.forEach((slide: any, i) => {
+                if (i > 0) {
+                    gsap.from(slide.querySelector(`.${styles.slideContent}`), {
+                        opacity: 0,
+                        y: 30,
+                        duration: 0.8,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: slide,
+                            containerAnimation: scrollTween,
+                            start: "left center",
+                            toggleActions: "play none none reverse"
+                        }
+                    });
+                } else {
+                    gsap.set(slide.querySelector(`.${styles.slideContent}`), { opacity: 1, y: 0 });
+                }
+
+                if (i === 1) {
+                    gsap.from(`.${styles.drawingLine}`, {
+                        strokeDashoffset: 1000,
+                        duration: 2,
+                        ease: "power2.inOut",
+                        scrollTrigger: {
+                            trigger: slide,
+                            containerAnimation: scrollTween,
+                            start: "left center"
+                        }
+                    });
+                }
+
+                if (i === 2) {
+                    gsap.from(`.${styles.processCard}`, {
+                        y: 60,
+                        opacity: 0,
+                        stagger: 0.2,
+                        duration: 0.8,
+                        scrollTrigger: {
+                            trigger: slide,
+                            containerAnimation: scrollTween,
+                            start: "left center"
+                        }
+                    });
+                }
+
+                if (i === 3) {
+                    gsap.to(`.${styles.parallaxImg}`, {
+                        x: -50,
+                        scrollTrigger: {
+                            trigger: slide,
+                            containerAnimation: scrollTween,
+                            scrub: true
+                        }
+                    });
+                }
+            });
+        });
+
+        mm.add("(max-width: 1024px)", () => {
+            // Vertical simple animations for mobile
+            const slides = gsap.utils.toArray(`.${styles.slide}`);
+            slides.forEach((slide: any) => {
+                gsap.from(slide.querySelector(`.${styles.slideContent}`), {
+                    opacity: 0,
+                    y: 50,
+                    duration: 1,
+                    scrollTrigger: {
+                        trigger: slide,
+                        start: "top 80%",
+                        toggleActions: "play none none none"
+                    }
+                });
+            });
+            // Ensure drawing line works in vertical too
+            gsap.from(`.${styles.drawingLine}`, {
+                strokeDashoffset: 1000,
+                duration: 2,
+                scrollTrigger: {
+                    trigger: `.${styles.techSlide}`,
+                    start: "top center"
+                }
+            });
         });
 
         // 3. Splitting Text Effect (Dynamic Import to avoid SSR error)
@@ -86,69 +174,6 @@ export default function AFabricaPage() {
         };
 
         initSplitting();
-
-        // 4. Parallax & Stagger Effects for each slide
-        slides.forEach((slide: any, i) => {
-            // Smooth fade in on entry (Skip first slide as it should be visible immediately)
-            if (i > 0) {
-                gsap.from(slide.querySelector(`.${styles.slideContent}`), {
-                    opacity: 0,
-                    y: 30,
-                    duration: 0.8,
-                    ease: "power2.out",
-                    scrollTrigger: {
-                        trigger: slide,
-                        containerAnimation: scrollTween,
-                        start: "left center",
-                        toggleActions: "play none none reverse"
-                    }
-                });
-            } else {
-                // Ensure first slide is visible
-                gsap.set(slide.querySelector(`.${styles.slideContent}`), { opacity: 1, y: 0 });
-            }
-
-            // Slide 2: Drawing the red line (SVG)
-            if (i === 1) {
-                gsap.from(`.${styles.drawingLine}`, {
-                    strokeDashoffset: 1000,
-                    duration: 2,
-                    ease: "power2.inOut",
-                    scrollTrigger: {
-                        trigger: slide,
-                        containerAnimation: scrollTween,
-                        start: "left center"
-                    }
-                });
-            }
-
-            // Slide 3: Card stagger
-            if (i === 2) {
-                gsap.from(`.${styles.processCard}`, {
-                    y: 60,
-                    opacity: 0,
-                    stagger: 0.2,
-                    duration: 0.8,
-                    scrollTrigger: {
-                        trigger: slide,
-                        containerAnimation: scrollTween,
-                        start: "left center"
-                    }
-                });
-            }
-
-            // Slide 4: Parallax Image
-            if (i === 3) {
-                gsap.to(`.${styles.parallaxImg}`, {
-                    x: -50,
-                    scrollTrigger: {
-                        trigger: slide,
-                        containerAnimation: scrollTween,
-                        scrub: true
-                    }
-                });
-            }
-        });
 
         // 5. Custom Cursor
         const moveCursor = (e: MouseEvent) => {
@@ -252,15 +277,17 @@ export default function AFabricaPage() {
                     <section className={`${styles.slide} ${styles.envSlide}`}>
                         <div className={styles.slideContent}>
                             <div className={styles.splitLayout}>
-                                <div className={styles.layoutImage}>
-                                    <img src="/SITE/Empresa/Imagem20.jpg" alt="Ambiente Controlado" className={styles.parallaxImg} />
-                                </div>
                                 <div className={styles.layoutText}>
                                     <h2 className={styles.slideHeading}>Ambiente Controlado</h2>
                                     <p className={styles.description}>
                                         Trabalhamos em um ambiente com temperatura e higiene rigorosamente controlados.
                                         Nossa equipe utiliza todos os EPIs necessários e segue protocolos internacionais de boas práticas de fabricação (BPF).
                                     </p>
+                                </div>
+                                <div className={styles.layoutImage}>
+                                    <div className={styles.imageAccent}>
+                                        <img src="/SITE/Empresa/Imagem20.jpg" alt="Ambiente Controlado" className={styles.parallaxImg} />
+                                    </div>
                                 </div>
                             </div>
                         </div>

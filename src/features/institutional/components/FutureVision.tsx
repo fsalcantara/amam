@@ -83,7 +83,7 @@ export const FutureVision = () => {
              
              <div className={styles.textCol} ref={textRef}>
                <p className={styles.topText}>
-                 A Delongo & Margutti tem a ambição de ir além do pão: ele é a base para um portfólio diversificado que incluirá panetones e biscoitos, cada um com marcas próprias, mas sob a identidade central AMAM.
+                 A fábrica, registrada como AMAM Alimentos, nasce com a ambição de ir além dos pães. Ela é a semente de um portfólio diversificado, que já no próximo ano incluirá panetones e biscoitos, todas unidas pela identidade central AMAM.
                </p>
              </div>
           </div>
@@ -103,7 +103,7 @@ export const FutureVision = () => {
           <div className={styles.imageWrapper} ref={imageRef}>
             <div className={styles.radialGlow}></div>
             <img 
-              src="/SITE/Pagina/Sobre/Visão de futuro/paes-amam.png" 
+              src="/SITE/BANNER/amam-pães alta.png" 
               alt="Pães Amam" 
               className={styles.image}
             />
@@ -117,13 +117,13 @@ export const FutureVision = () => {
           <div className={styles.manifestoContainer} ref={manifestoRef}>
             <p className={styles.manifestoText}>
               <span className={styles.manifestoHighlight}>
-                Nosso principal objetivo é ser líder no fornecimento de pães embalados de alta qualidade, 
-                levando alegria e praticidade às famílias.
+                Nosso objetivo é ser reconhecida como a marca líder no fornecimento de pães embalados de alta qualidade, 
+                proporcionando alegria e praticidade às famílias.
               </span>
             </p>
             <p className={styles.subText}>
-              Buscamos incorporar tradição familiar, cuidado e inovação em diferentes momentos de consumo, 
-              mantendo sempre a conexão com o cliente.
+              Buscamos levar o nosso cuidado, a força da tradição familiar e a inovação para diferentes momentos de consumo, 
+              mantendo sempre a essência que nos conecta ao cliente.
             </p>
           </div>
         </Container>

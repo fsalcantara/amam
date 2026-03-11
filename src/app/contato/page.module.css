@@ -79,7 +79,7 @@
 .infoContent h3 {
   font-size: 1.1rem;
   font-weight: 800;
-  color: #1a1a1a;
+  color: var(--color-primary);
   margin-bottom: 0.5rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -99,7 +99,7 @@
 .mapTitle {
   font-size: 1.25rem;
   font-weight: 800;
-  color: #1a1a1a;
+  color: var(--color-primary);
   margin-bottom: 1.5rem;
   padding-left: 0.5rem;
 }

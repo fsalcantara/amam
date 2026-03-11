@@ -10,7 +10,7 @@ export const SectionDivider = ({ variant }: SectionDividerProps) => {
   // Fill = the color we're transitioning INTO
   const fillColor = isWhiteToRed ? 'var(--color-primary)' : '#ffffff';
   // Background = the color we're coming FROM
-  const bgColor = isWhiteToRed ? 'var(--color-section-light)' : 'var(--color-primary)';
+  const bgColor = isWhiteToRed ? '#e8192c' : 'var(--color-primary)';
 
   return (
     <div

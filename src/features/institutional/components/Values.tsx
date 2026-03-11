@@ -3,10 +3,31 @@ import styles from './Values.module.css';
 
 export const Values = () => {
   const values = [
-    { title: 'Confiança', icon: '/SITE/Pagina/Sobre/Valores/INTEGRIDADE.png', text: 'Honestidade, transparência e respeito em todas as relações corporativas e humanas.' },
-    { title: 'Responsabilidade Social', icon: '/SITE/Pagina/Sobre/Valores/satisfacao-cliente.png', text: 'Trabalho com amor, empatia, honestidade, e responsabilidade com o próximo.' },
-    { title: 'Inovação', icon: '/SITE/Pagina/Sobre/Valores/inovacao.png', text: 'Inovar nas operações da empresa buscando soluções eficientes e sustentáveis.' },
-    { title: 'Sustentabilidade', icon: '/SITE/Pagina/Sobre/Valores/sustentabilidade.png', text: 'Respeito e preservação ambiental para deixarmos um mundo melhor a todos.' },
+    { 
+      title: 'Qualidade', 
+      icon: '/SITE/Empresa/Valores/icone-qualidade.png', 
+      text: 'Manter padrões elevados em todas as etapas, da seleção de ingredientes à entrega.' 
+    },
+    { 
+      title: 'Sustentabilidade', 
+      icon: '/SITE/Empresa/Valores/icone-sustentabilidade.png', 
+      text: 'Reduzir o impacto ambiental com práticas responsáveis.' 
+    },
+    { 
+      title: 'Inovação', 
+      icon: '/SITE/Empresa/Valores/icone-inovacao.png', 
+      text: 'Criar e aprimorar produtos para atender as novas demandas' 
+    },
+    { 
+      title: 'Integridade', 
+      icon: '/SITE/Empresa/Valores/icone-integridade.png', 
+      text: 'Atuar com ética, honestidade e transparência.' 
+    },
+    { 
+      title: 'Satisfação do Cliente', 
+      icon: '/SITE/Empresa/Valores/icone-satisfacao.png', 
+      text: 'Superar expectativas em cada experiência.' 
+    },
   ];
 
   return (
@@ -17,7 +38,7 @@ export const Values = () => {
           {values.map((val, idx) => (
              <div key={idx} className={styles.card}>
                <div className={styles.iconWrapper}>
-                 <img src={val.icon} alt={val.title} className={styles.iconImage} />
+                 <img src={val.icon} alt={`Ícone ${val.title}`} className={styles.iconImage} />
                </div>
                <h3 className={styles.cardTitle}>{val.title}</h3>
                <p className={styles.text}>{val.text}</p>

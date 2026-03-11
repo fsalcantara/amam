@@ -56,17 +56,18 @@
 .headline {
   color: #fff;
   font-family: var(--font-family-script);
-  font-size: 5rem;
-  line-height: 1;
+  font-size: 6.5rem; /* Aumentado */
+  line-height: 0.9;
   margin: 0;
   text-shadow: 2px 2px 10px rgba(0,0,0,0.2);
-  display: flex;
-  flex-direction: column;
 }
 
-.subtext {
-  font-size: 3.5rem;
-  margin-top: -0.5rem;
+.introWord {
+  font-size: 5rem; /* Aumentado proporcionalmente */
+}
+
+.yellowText {
+  color: #fbbf24; /* or a specific yellow from the brand */
 }
 
 .productVisual {
@@ -110,8 +111,8 @@
 }
 
 @media (max-width: 1024px) {
-  .headline { font-size: 4rem; }
-  .subtext { font-size: 2.8rem; }
+  .headline { font-size: 5rem; }
+  .introWord { font-size: 4rem; }
   .breadPackages { max-width: 100%; }
 }
 

@@ -70,7 +70,7 @@
   font-size: 1.25rem;
   font-weight: 800;
   margin-bottom: var(--spacing-3);
-  color: #1a1a1a;
+  color: var(--color-primary);
   line-height: 1.2;
 }
 
@@ -103,6 +103,9 @@
   border: 1.5px solid #eee !important;
   background: transparent !important;
   color: #333 !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .card:hover .button {

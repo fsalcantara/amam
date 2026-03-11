@@ -17,7 +17,7 @@
   font-weight: 800;
   letter-spacing: -0.02em;
   margin: 0 0 var(--spacing-1) 0;
-  color: #000;
+  color: var(--color-primary);
   text-transform: uppercase;
 }
 

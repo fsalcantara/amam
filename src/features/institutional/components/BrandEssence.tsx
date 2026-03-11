@@ -9,10 +9,10 @@ export const BrandEssence = () => {
         <div className={styles.grid}>
           <div className={styles.textLeft}>
             <p className={styles.paragraph}>
-              Nossa principal missão é <span className={styles.emphasis}>fabricar alimentos deliciosos</span>, elaborados de forma qualificada. Tudo isso com foco em ser parte da vida de famílias, lares e laços.
+              O nome <span className={styles.emphasis}>AMAM</span> carrega a força da união e traduz experiência, oportunidade e propósito. Mais do que uma sigla, ele soa como um verbo de ação e afeto.
             </p>
             <p className={styles.paragraph} style={{ marginTop: 'var(--spacing-10)' }}>
-              Aquilo que é feito de coração só pode alimentar o coração, trazendo conforto e muita paz para o dia a dia.
+              Para famílias que buscam confiança e sabor no dia a dia, a AMAM oferece pães de qualidade superior, feitos com afeto e conhecimento.
             </p>
           </div>
 
@@ -29,7 +29,7 @@ export const BrandEssence = () => {
 
           <div className={styles.textRight}>
             <p className={styles.paragraph}>
-              A receita que enche a sua vida e a de muita gente de <span className={styles.emphasis}>afeto, carinho e cuidado</span> de quem cozinha com o coração.
+              Nossa força está na tradição familiar unida à experiência industrial, entregando um pão macio, gostoso e feito para estar presente em cada momento.
             </p>
           </div>
         </div>

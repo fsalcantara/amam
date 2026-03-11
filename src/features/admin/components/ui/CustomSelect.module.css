@@ -14,12 +14,12 @@
 }
 
 .trigger {
-  padding: 0.8rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #fff;
-  font-size: 0.95rem;
-  color: #444;
+  padding: var(--select-padding, 0.8rem);
+  border: var(--select-border-width, 1px) solid var(--select-border, #ddd);
+  border-radius: var(--select-radius, 8px);
+  background-color: var(--select-bg, #fff);
+  font-size: var(--select-font-size, 0.95rem);
+  color: var(--select-text, #444);
   cursor: pointer;
   display: flex;
   justify-content: space-between;
@@ -31,15 +31,15 @@
 
 .trigger:focus, .trigger.open {
   outline: none;
-  border-color: #e31e24;
-  box-shadow: 0 0 0 4px rgba(227, 30, 36, 0.25);
+  border-color: var(--select-focus-border, #e31e24);
+  box-shadow: var(--select-focus-shadow, 0 0 0 4px rgba(227, 30, 36, 0.25));
 }
 
 .arrow {
   width: 1rem;
   height: 1rem;
   transition: transform 0.2s;
-  color: #666;
+  color: var(--select-arrow, #666);
 }
 
 .trigger.open .arrow {
@@ -52,9 +52,9 @@
   left: 0;
   right: 0;
   margin-top: 4px;
-  background: white;
-  border: 1px solid #eee;
-  border-radius: 8px;
+  background: var(--select-options-bg, white);
+  border: 1px solid var(--select-options-border, #eee);
+  border-radius: var(--select-radius, 8px);
   box-shadow: 0 10px 25px rgba(0,0,0,0.1);
   z-index: 1000;
   max-height: 250px;
@@ -71,19 +71,19 @@
 .option {
   padding: 0.8rem 1rem;
   cursor: pointer;
-  font-size: 0.95rem;
-  color: #444;
+  font-size: var(--select-font-size, 0.95rem);
+  color: var(--select-option-text, #444);
   transition: background 0.2s;
 }
 
 .option:hover {
-  background-color: #e31e2410; /* Very light red */
-  color: #e31e24;
+  background-color: var(--select-option-hover-bg, #e31e2410); /* Very light red */
+  color: var(--select-option-hover-text, #e31e24);
 }
 
 .option.selected {
-  background-color: #e31e24;
-  color: white;
+  background-color: var(--select-option-selected-bg, #e31e24);
+  color: var(--select-option-selected-text, white);
 }
 
 .hasError .trigger {

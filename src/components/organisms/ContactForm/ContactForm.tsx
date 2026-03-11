@@ -4,7 +4,11 @@ import { useState } from 'react';
 import { CustomSelect } from '@/features/admin/components/ui/CustomSelect';
 import styles from './ContactForm.module.css';
 
-export const ContactForm = () => {
+interface ContactFormProps {
+  variant?: 'light' | 'dark';
+}
+
+export const ContactForm = ({ variant = 'light' }: ContactFormProps) => {
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -47,7 +51,7 @@ export const ContactForm = () => {
   };
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
+    <form className={`${styles.form} ${variant === 'dark' ? styles.formDark : ''}`} onSubmit={handleSubmit}>
       <h2 className={styles.title}>Envie sua Mensagem</h2>
 
       <div className={styles.field}>

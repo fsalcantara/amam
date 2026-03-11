@@ -172,7 +172,7 @@
 
 .content h2 {
   font-size: 2rem;
-  color: #0f172a;
+  color: var(--color-primary);
   margin-top: 2rem;
   margin-bottom: 1rem;
   font-weight: 700;

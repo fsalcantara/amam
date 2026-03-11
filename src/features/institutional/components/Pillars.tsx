@@ -3,15 +3,15 @@ import styles from './Pillars.module.css';
 
 export const Pillars = () => {
   const leftPillars = [
-    { title: 'Sabor como assinatura', text: 'Amamos criar laços e memórias através do sabor.' },
-    { title: 'Qualidade de ingredientes', text: 'Excelência em cada etapa, desde os ingredientes até produto final.' },
-    { title: 'Tradição que inspira', text: 'Honrar nossa história familiar e a arte de panificação.' }
+    { title: 'Sabor como assinatura', text: 'Proporcionar experiências marcantes que despertam memórias e afeto.' },
+    { title: 'Qualidade consistente', text: 'Excelência em cada etapa, desde os ingredientes até o produto final.' },
+    { title: 'Tradição que inspira', text: 'Honrar nossa história familiar e a arte da panificação.' }
   ];
 
   const rightPillars = [
-    { title: 'Inovação com propósito', text: 'Evoluir com responsabilidade e sem perder a essência.' },
-    { title: 'Sustentabilidade responsável', text: 'Respeitar e proteger nosso planeta.' },
-    { title: 'Preço justo para o dia a dia', text: 'Levar à mesa das famílias um produto de qualidade, com valor acessível.' }
+    { title: 'Inovação com propósito', text: 'Evoluir sem perder a essência.' },
+    { title: 'Sustentabilidade responsável', text: 'Respeitar e proteger o planeta.' },
+    { title: 'Acesso com sofisticação', text: 'Tornar produtos de qualidade acessíveis a todos.' }
   ];
 
   const bottomPillar = { 

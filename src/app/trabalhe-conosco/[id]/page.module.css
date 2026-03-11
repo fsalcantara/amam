@@ -34,6 +34,7 @@
 .title {
   font-size: 3rem;
   font-weight: 800;
+  color: white;
   letter-spacing: -0.02em;
   margin-top: 1.5rem;
   margin-bottom: 2.5rem;
@@ -107,7 +108,7 @@
 
 .section h2 {
   font-size: 1.75rem;
-  color: #1a1a1a;
+  color: var(--color-primary);
   margin-bottom: 1.5rem;
   padding-bottom: 0.8rem;
   border-bottom: 1px solid #f1f5f9;
@@ -209,7 +210,7 @@
 
 .formTitle {
   margin-bottom: 2rem;
-  color: #1a1a1a;
+  color: var(--color-primary);
   font-size: 1.75rem;
   font-weight: 700;
   text-align: center;

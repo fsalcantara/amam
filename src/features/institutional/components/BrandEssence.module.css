@@ -1,8 +1,6 @@
 .section {
   position: relative;
   background-color: var(--color-primary); 
-  /* Subtle depth gradient overlay */
-  background: linear-gradient(0deg, #990000 0%, var(--color-primary) 100%);
   color: #fff;
   padding: var(--spacing-48) 0;
   overflow: hidden;

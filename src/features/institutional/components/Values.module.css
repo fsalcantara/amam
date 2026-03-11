@@ -1,8 +1,6 @@
 .section {
   padding: var(--spacing-32) 0;
-  background-color: var(--color-primary); /* Base brand red */
-  /* Subtle depth gradient overlay */
-  background: linear-gradient(180deg, #990000 0%, var(--color-primary) 100%);
+  background-color: var(--color-primary); /* Solid brand red to match FutureVision */
   position: relative;
   overflow: hidden;
 }
@@ -11,82 +9,72 @@
   text-align: center;
   font-size: 3.5rem;
   color: var(--color-secondary); /* Gold Title */
-  margin-bottom: var(--spacing-20);
+  margin-top: var(--spacing-16);
+  margin-bottom: var(--spacing-16);
   font-weight: 800;
   letter-spacing: -0.02em;
 }
 
 .grid {
-  display: grid;
-  gap: var(--spacing-12);
-  grid-template-columns: repeat(1, 1fr);
-  max-width: 1100px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--spacing-6);
+  max-width: 1200px;
   margin: 0 auto;
 }
 
-@media (min-width: 768px) {
-  .grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
 .card {
-  background-color: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 20px;
-  padding: var(--spacing-12);
+  width: 100%;
+  max-width: 330px; /* ~3 por linha no desktop */
+  background-color: transparent;
+  border: 2px solid #ffffff;
+  border-radius: 12px;
+  padding: 3rem 1.5rem;
   text-align: center;
   transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
   display: flex;
   flex-direction: column;
   align-items: center;
-  backdrop-filter: blur(8px);
   position: relative;
 }
 
 .card:hover {
-  transform: translateY(-8px);
-  border-color: rgba(255, 255, 255, 0.6);
-  background-color: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  background-color: rgba(255, 255, 255, 0.05); /* very slight highlight */
 }
 
 .iconWrapper {
-  margin-bottom: var(--spacing-8);
-  width: 80px;
-  height: 80px;
+  margin-bottom: var(--spacing-6);
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.1);
   transition: all 0.4s ease;
 }
 
 .card:hover .iconWrapper {
-  background: rgba(255, 255, 255, 0.2);
-  transform: scale(1.1);
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+  transform: scale(1.08); /* slight bounce */
 }
 
 .iconImage {
-  max-height: 40px;
+  height: 64px; /* Big readable icons */
   width: auto;
-  filter: brightness(0) invert(1);
+  object-fit: contain;
 }
 
 .cardTitle {
-  font-size: 1.5rem;
-  margin-bottom: var(--spacing-6);
-  color: #ffffff;
-  font-weight: 700;
-  letter-spacing: -0.01em;
+  font-size: 1.25rem;
+  margin-bottom: var(--spacing-4);
+  color: var(--color-secondary, #e5b76b); /* Yellow/Gold for title */
+  font-weight: 800;
+  letter-spacing: 0.5px;
 }
 
 .text {
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 1rem;
-  line-height: 1.7;
-  font-weight: 400;
+  color: #ffffff;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  font-weight: 500;
+  max-width: 250px;
 }

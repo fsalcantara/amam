@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Dancing_Script } from "next/font/google";
+import { Montserrat, Geist_Mono, Dancing_Script } from "next/font/google";
 import { Preloader } from "@/components/organisms/Preloader/Preloader";
 import { ConditionalLayout } from "@/components/organisms/ConditionalLayout/ConditionalLayout";
 import "./globals.css";
 
-const geistSans = Geist({
+const montserrat = Montserrat({
   variable: "--font-family-sans",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
@@ -55,7 +56,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${dancingScript.variable}`}
+        className={`${montserrat.variable} ${geistMono.variable} ${dancingScript.variable}`}
       >
         <Preloader />
         <ConditionalLayout>

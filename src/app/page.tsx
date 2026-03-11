@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <>
       <Hero 
-        headline="Sabor e Qualidade em Cada Detalhe"
+        headline="Chegou a fatia que faltava"
         subheadline="Descubra a excelência dos produtos Amam Alimentos. Tradição que alimenta famílias com confiança."
         ctaText="Conheça Nossos Produtos"
         ctaLink="/produtos"

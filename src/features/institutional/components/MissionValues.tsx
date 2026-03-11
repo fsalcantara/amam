@@ -17,8 +17,7 @@ export const MissionValues = () => {
             </div>
             <h3 className={styles.title}>Missão</h3>
             <p className={styles.text}>
-              Oferecer alimentos de alta qualidade que nutrem e deliciam as famílias, 
-              mantendo a tradição e o sabor artesanal em cada produto.
+              Oferecer um produto com sabor de casa e conhecimento técnico de alto nível, unindo a força da tradição familiar à experiência industrial.
             </p>
           </div>
           
@@ -31,8 +30,8 @@ export const MissionValues = () => {
             </div>
             <h3 className={styles.title}>Visão</h3>
             <p className={styles.text}>
-              Ser referência nacional na indústria alimentícia, reconhecida pela 
-              excelência, inovação sustentável e compromisso com nossos parceiros.
+              Ser a marca líder no fornecimento de pães embalados de alta qualidade, 
+              levando alegria e praticidade às famílias.
             </p>
           </div>
           
@@ -45,10 +44,23 @@ export const MissionValues = () => {
               </svg>
             </div>
             <h3 className={styles.title}>Valores</h3>
-            <p className={styles.text}>
-              Qualidade intransigente, ética, transparência, valorização das pessoas 
-              e responsabilidade socioambiental.
-            </p>
+            <div className={styles.valuesList}>
+              <div className={styles.valueItem}>
+                <strong>Qualidade</strong> — Manter padrões elevados em todas as etapas, da seleção de ingredientes à entrega.
+              </div>
+              <div className={styles.valueItem}>
+                <strong>Sustentabilidade</strong> — Reduzir o impacto ambiental com práticas responsáveis.
+              </div>
+              <div className={styles.valueItem}>
+                <strong>Inovação</strong> — Criar e aprimorar produtos para atender a novas demandas.
+              </div>
+              <div className={styles.valueItem}>
+                <strong>Integridade</strong> — Atuar com ética, honestidade e transparência.
+              </div>
+              <div className={styles.valueItem}>
+                <strong>Satisfação do Cliente</strong> — Superar expectativas em cada experiência.
+              </div>
+            </div>
           </div>
         </div>
 

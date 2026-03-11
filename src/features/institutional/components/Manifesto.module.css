@@ -1,17 +1,87 @@
+.section {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 1. History Section */
+.historySection {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  padding: 80px 0; /* Reduzido de 140px */
+  text-align: center;
+  position: relative;
+}
+
+.historyContent {
+  max-width: 800px; /* Levemente maior para distribuir melhor o texto */
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6); /* Reduzido o gap geral */
+}
+
+.manifestoTitle {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  line-height: 1.1;
+  color: #ffffff;
+  font-weight: 300;
+  margin-bottom: var(--spacing-4);
+}
+
+.highlight {
+  font-weight: 900;
+  color: var(--color-secondary); /* Gold */
+  display: block;
+  margin-top: var(--spacing-2);
+}
+
+.textContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4); /* Parágrafos mais próximos */
+  font-size: 1.15rem; /* Ajuste leve no tamanho */
+  line-height: 1.7; /* Mais compacto e profissional */
+  color: #ffffff;
+  font-weight: 400;
+}
+
+.strongText {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-top: var(--spacing-6); /* Reduzido o salto entre o corpo e o final */
+  position: relative;
+  padding-top: var(--spacing-8);
+}
+
+.strongText::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background-color: var(--color-secondary);
+  border-radius: 2px;
+}
+
+.strongText strong {
+  color: var(--color-secondary);
+}
+
+/* 2. Top Banner (Bridge) */
 .topBanner {
   background-image: linear-gradient(rgba(237, 50, 55, 0.8), rgba(237, 50, 55, 0.9)), url('/SITE/BANNER/pao_1.png');
   background-size: cover;
   background-position: center;
   color: #ffffff;
-  padding: var(--spacing-48) 0 var(--spacing-64) 0;
-  min-height: 480px;
-  display: flex;
-  align-items: center;
+  padding: 100px 0;
   text-align: center;
 }
 
 .bannerText {
-  font-size: 3rem;
+  font-size: clamp(1.8rem, 4vw, 3rem);
   line-height: 1.2;
   font-weight: 300;
   color: #ffffff;
@@ -22,77 +92,100 @@
 }
 
 .bannerText span {
-  font-size: 2rem;
+  font-size: clamp(1.2rem, 3vw, 2rem);
   font-weight: 400;
   display: block;
   margin-top: var(--spacing-4);
   color: rgba(255, 255, 255, 0.9);
 }
 
-.bottomSection {
-  background-color: var(--color-primary); /* Red Background */
-  color: #ffffff;
-  padding: 80px 0 var(--spacing-32) 0;
+/* 3. Contact Form Section */
+.contactFormSection {
+  position: relative;
+  background-image: url('/SITE/BANNER/pao_2.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  padding: 100px 0;
+}
+
+/* Overlay darker to make gold pop */
+.contactFormSection::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(0,0,0,0.8));
+  z-index: 1;
+}
+
+.formContainer {
   position: relative;
   z-index: 2;
-  margin-bottom: -120px;
-  padding-bottom: calc(var(--spacing-32) + 120px);
-  margin-top: -80px; /* Pull it up into the banner nicely to integrate better */
 }
 
-.grid {
-  display: grid;
-  gap: var(--spacing-24);
+.formGrid {
+  display: flex;
+  justify-content: center;
 }
 
-@media (min-width: 992px) {
-  .grid {
-    grid-template-columns: 1fr 1fr;
-    align-items: flex-start;
-    padding-top: 100px; /* Specific padding for the content inside the grid */
-  }
-}
-
-.leftCol {
+.formWrapper {
   width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
-  margin-top: 40px; /* Extra push for the form */
+  max-width: 480px;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 50px;
+  border-radius: 32px;
+  border: 1px solid rgba(235, 181, 113, 0.3);
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6);
 }
 
-.rightCol {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-8);
-  margin-top: 40px; /* Extra push for the text */
+/* ──────── CustomSelect Override for Dark/Gold Theme ──────── */
+.formWrapper :global([class*="CustomSelect_trigger"]) {
+  background-color: rgba(0, 0, 0, 0.2) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff !important;
+  border-radius: 12px !important;
+  padding: 1.1rem 1.25rem !important;
 }
 
-.manifestoTitle {
-  font-size: 4rem;
-  line-height: 1;
-  color: #ffffff;
-  font-weight: 300;
+.formWrapper :global([class*="CustomSelect_trigger"]:focus),
+.formWrapper :global([class*="CustomSelect_trigger"].CustomSelect_open) {
+  border-color: #e7b16d !important;
+  box-shadow: 0 0 15px rgba(231, 177, 109, 0.3) !important;
 }
 
-.highlight {
-  font-weight: 800;
-  color: var(--color-secondary); /* Gold */
+.formWrapper :global([class*="CustomSelect_optionsContainer"]) {
+  background-color: rgba(20, 20, 20, 0.95) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(235, 181, 113, 0.3) !important;
+  border-radius: 12px !important;
 }
 
-.textContent {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-6);
-  font-size: var(--font-size-base);
-  line-height: 1.8;
-  color: rgba(255, 255, 255, 0.9);
+.formWrapper :global([class*="CustomSelect_option"]) {
+  color: rgba(255, 255, 255, 0.8) !important;
 }
 
-.strongText {
-  font-size: var(--font-size-lg);
-  font-weight: 600;
-  color: #ffffff;
+.formWrapper :global([class*="CustomSelect_option"]:hover) {
+  background-color: rgba(235, 181, 113, 0.1) !important;
+  color: #e7b16d !important;
 }
-.strongText strong {
-  color: var(--color-secondary);
+
+.formWrapper :global([class*="CustomSelect_option"].CustomSelect_selected) {
+  background-color: #e7b16d !important;
+  color: #000000 !important;
+}
+
+
+@media (max-width: 768px) {
+  .historySection, .topBanner, .contactFormSection {
+    padding: 60px 0;
+  }
+  
+  .formWrapper {
+    padding: 24px;
+  }
 }

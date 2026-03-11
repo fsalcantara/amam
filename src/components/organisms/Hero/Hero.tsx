@@ -55,8 +55,9 @@ export const Hero = ({
         <div className={styles.content}>
           <div className={styles.textContent}>
             <h1 ref={headlineRef} className={styles.headline}>
-              {headline}
-              <span className={styles.subtext}>a fatia que faltava</span>
+              <span className={styles.introWord}>Chegou</span><br/>
+              a fatia<br/>
+              <span className={styles.yellowText}>que faltava</span>
             </h1>
             <div className={styles.wheatIcon}>
               {/* Optional wheat icon or similar decorative element if needed, though we can use CSS */}

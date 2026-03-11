@@ -28,6 +28,8 @@
 .logo {
   display: flex;
   align-items: center;
+  position: relative;
+  z-index: 1001; /* Stay above mobileNav */
 }
 
 .logoImage {
@@ -49,13 +51,15 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-4);
+  position: relative;
+  z-index: 1001; /* Stay above mobileNav */
 }
 
 @media (min-width: 992px) {
   .nav {
     display: flex;
-    gap: var(--spacing-12); /* Increased spacing even more */
-    margin-left: var(--spacing-10); /* More separation from logo */
+    gap: var(--spacing-8); /* Reduced spacing to accommodate wider font */
+    margin-left: var(--spacing-8); /* Adjusted separation from logo */
   }
 }
 
@@ -63,11 +67,12 @@
   font-weight: 600;
   color: #ffffff;
   transition: all 0.2s ease;
-  font-size: 0.85rem; /* Slightly smaller for all-caps */
+  font-size: 0.80rem; /* Slightly smaller to fit better */
   text-transform: uppercase;
   letter-spacing: 1px;
   position: relative;
-  padding: var(--spacing-2) 0; /* Add some padding for easier clicking and proper underline spacing */
+  padding: var(--spacing-2) 0;
+  white-space: nowrap;
 }
 
 .scrolled .navLink {
@@ -166,7 +171,7 @@
   background-color: #ffffff;
   padding: 120px var(--spacing-6) var(--spacing-10);
   gap: var(--spacing-6);
-  z-index: 5;
+  z-index: 990; /* High z-index but below header */
   transition: transform 0.3s ease-in-out;
   transform: translateY(-100%);
   overflow-y: auto;
@@ -193,7 +198,7 @@
 }
 
 .header.menuOpen {
-  background: transparent;
+  background: #ffffff;
   box-shadow: none;
 }
 

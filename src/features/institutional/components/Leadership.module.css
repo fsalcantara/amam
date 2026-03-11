@@ -1,7 +1,7 @@
 .section {
   background-color: var(--color-primary);
   color: #fff;
-  padding: var(--spacing-40) 0 calc(var(--spacing-40) + 1.5rem); /* Added 1.5rem bottom space */
+  padding: var(--spacing-40) 0 var(--spacing-48); /* Aumentado respiro inferior */
 }
 
 .layout {

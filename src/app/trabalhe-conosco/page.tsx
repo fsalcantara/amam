@@ -91,12 +91,25 @@ const CULTURE_POINTS = [
 ];
 
 const GALLERY_IMAGES = [
-  { src: "/SITE/Empresa/Operador_desenformando_pao.png", alt: "Nossa equipe na linha de frente" },
-  { src: "/SITE/Empresa/Funcionaria_guardando_paes.jpg", alt: "Colaboradora organizando produção" },
-  { src: "/SITE/Empresa/Operador_mexendo_na_maquina.jpg", alt: "Operação de equipamentos modernos" },
-  { src: "/SITE/Empresa/Operadora_mexendo_no_pao.jpg", alt: "Cuidado e qualidade técnica" },
-  { src: "/SITE/Empresa/operador_retirando_paes_forno.jpg", alt: "Tradição em cada fornada" },
-  { src: "/SITE/Empresa/Imagem15.jpg", alt: "Dedicacão e excelência amam" },
+  { src: "/SITE/Empresa/Operador_desenformando_pao.png", alt: "Extração cuidadosa dos pães" },
+  { src: "/SITE/Empresa/Paes_na_maquina.jpg", alt: "Produção em escala amam" },
+  { src: "/SITE/Empresa/Funcionaria_guardando_paes.jpg", alt: "Organização e controle de qualidade" },
+  { src: "/SITE/Empresa/Operador_mexendo_na_maquina.jpg", alt: "Monitoramento constante" },
+  { src: "/SITE/Empresa/Operadora_mexendo_no_pao.jpg", alt: "Toque artesanal na indústria" },
+  { src: "/SITE/Empresa/operador_retirando_paes_forno.jpg", alt: "Fornadas sempre fresquinhas" },
+  { src: "/SITE/Empresa/Imagem10.jpg", alt: "Equipe dedicada AMAM" },
+  { src: "/SITE/Empresa/Imagem11.jpg", alt: "Excelência em panificação" },
+  { src: "/SITE/Empresa/Imagem12.jpg", alt: "Processo produtivo moderno" },
+  { src: "/SITE/Empresa/Imagem13.jpg", alt: "Qualidade garantida" },
+  { src: "/SITE/Empresa/Imagem14.jpg", alt: "Logística interna ágil" },
+  { src: "/SITE/Empresa/Imagem15.jpg", alt: "Cuidado em cada detalhe" },
+  { src: "/SITE/Empresa/Imagem16.jpg", alt: "Paixão pelo que fazemos" },
+  { src: "/SITE/Empresa/Imagem17.jpg", alt: "Tecnologia a serviço do sabor" },
+  { src: "/SITE/Empresa/Imagem18.jpg", alt: "Ambiente seguro e profissional" },
+  { src: "/SITE/Empresa/Imagem19.jpg", alt: "Nosso pão de cada dia" },
+  { src: "/SITE/Empresa/Imagem20.jpg", alt: "Sabor que atravessa gerações" },
+  { src: "/SITE/Empresa/Imagem9.jpg", alt: "Foco no resultado" },
+  { src: "/SITE/Empresa/fachada_amam.jpg", alt: "Nossa sede em Uberlândia" },
 ];
 
 function getWorkType(job: Job): { label: string; type: 'presencial' | 'remoto' | 'hibrido' } {
@@ -394,18 +407,44 @@ export default function WorkWithUsPage() {
                 </svg>
               </Link>
             </div>
-            <div className={styles.aboutImageWrapper}>
-              <Image
-                src="/images/careers/gallery-bakery.png"
-                alt="Processo de produção AMAM"
-                fill
-                style={{ objectFit: 'cover' }}
+            <div className={styles.acronymImageWrapper}>
+              <Image 
+                src="/SITE/Empresa/amam-acronimo.png" 
+                alt="Acrônimo AMAM: Atitude, Compromisso, Determinação, Metas"
+                width={800}
+                height={800}
+                className={styles.acronymImage}
+                priority
               />
-              <div className={styles.aboutImageBadge}>
-                <strong>+10 anos</strong>
-                <span>de excelência</span>
-              </div>
             </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* ── 6. TALENT POOL CTA ────────────────────────────────── */}
+      <section className={styles.talentCta}>
+        <div className={styles.talentCtaBg} />
+        <Container>
+          <div className={styles.talentCtaContent}>
+            <div className={styles.talentCtaIcon}>
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <line x1="19" y1="8" x2="19" y2="14"/>
+                <line x1="22" y1="11" x2="16" y2="11"/>
+              </svg>
+            </div>
+            <h2 className={styles.talentCtaTitle}>Cadastre seu currículo no nosso banco de talentos</h2>
+            <p className={styles.talentCtaSubtitle}>
+              Mesmo que não encontre uma vaga agora, queremos conhecer você.
+              Faremos contato quando surgir uma oportunidade ideal para o seu perfil.
+            </p>
+            <Link href="/trabalhe-conosco/banco-talentos" className={styles.talentCtaBtn}>
+              Cadastrar currículo
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </Link>
           </div>
         </Container>
       </section>
@@ -465,46 +504,26 @@ export default function WorkWithUsPage() {
             <h2 className={styles.sectionTitle}>Nossa Empresa em Fotos</h2>
             <p className={styles.sectionSubtitle}>Conheça o ambiente onde você vai trabalhar.</p>
           </div>
-          <div className={styles.galleryGrid}>
-            {GALLERY_IMAGES.map((img, i) => (
-              <div key={i} className={styles.galleryItem}>
-                <img src={img.src} alt={img.alt} />
-                <div className={styles.galleryOverlay}>
-                  <span>{img.alt}</span>
+          <div className={styles.marqueeContainer}>
+            <div className={styles.marqueeTrack}>
+              {[...GALLERY_IMAGES, ...GALLERY_IMAGES].map((img, i) => (
+                <div 
+                  key={i} 
+                  className={styles.galleryItemMarquee}
+                  style={{ '--delay': `${(i % 19) * 3 - 57}s` } as React.CSSProperties}
+                >
+                  <img src={img.src} alt={img.alt} />
+                  <div className={styles.galleryOverlay}>
+                    <span>{img.alt}</span>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </Container>
       </section>
 
-      {/* ── 8. TALENT POOL CTA ────────────────────────────────── */}
-      <section className={styles.talentCta}>
-        <div className={styles.talentCtaBg} />
-        <Container>
-          <div className={styles.talentCtaContent}>
-            <div className={styles.talentCtaIcon}>
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-                <circle cx="9" cy="7" r="4"/>
-                <line x1="19" y1="8" x2="19" y2="14"/>
-                <line x1="22" y1="11" x2="16" y2="11"/>
-              </svg>
-            </div>
-            <h2 className={styles.talentCtaTitle}>Cadastre seu currículo no nosso banco de talentos</h2>
-            <p className={styles.talentCtaSubtitle}>
-              Mesmo que não encontre uma vaga agora, queremos conhecer você.
-              Faremos contato quando surgir uma oportunidade ideal para o seu perfil.
-            </p>
-            <Link href="/trabalhe-conosco/banco-talentos" className={styles.talentCtaBtn}>
-              Cadastrar currículo
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-            </Link>
-          </div>
-        </Container>
-      </section>
+
 
       {/* ── 9. FOOTER WAVE (REMOVED: Handled by RootLayout) ── */}
 
