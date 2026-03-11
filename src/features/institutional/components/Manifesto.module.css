@@ -5,8 +5,8 @@
 
 /* 1. History Section */
 .historySection {
-  background-color: var(--color-primary);
-  color: #ffffff;
+  background-color: #ffffff;
+  color: #333333;
   padding: 80px 0; /* Reduzido de 140px */
   text-align: center;
   position: relative;
@@ -23,14 +23,14 @@
 .manifestoTitle {
   font-size: clamp(2.5rem, 5vw, 4rem);
   line-height: 1.1;
-  color: #ffffff;
+  color: var(--color-primary);
   font-weight: 300;
   margin-bottom: var(--spacing-4);
 }
 
 .highlight {
   font-weight: 900;
-  color: var(--color-secondary); /* Gold */
+  color: var(--color-primary); /* Red */
   display: block;
   margin-top: var(--spacing-2);
 }
@@ -41,14 +41,14 @@
   gap: var(--spacing-4); /* Parágrafos mais próximos */
   font-size: 1.15rem; /* Ajuste leve no tamanho */
   line-height: 1.7; /* Mais compacto e profissional */
-  color: #ffffff;
+  color: #444444;
   font-weight: 400;
 }
 
 .strongText {
   font-size: 1.4rem;
   font-weight: 800;
-  color: #ffffff;
+  color: #1a1a1a;
   margin-top: var(--spacing-6); /* Reduzido o salto entre o corpo e o final */
   position: relative;
   padding-top: var(--spacing-8);
@@ -62,12 +62,12 @@
   transform: translateX(-50%);
   width: 60px;
   height: 3px;
-  background-color: var(--color-secondary);
+  background-color: var(--color-primary);
   border-radius: 2px;
 }
 
 .strongText strong {
-  color: var(--color-secondary);
+  color: var(--color-primary);
 }
 
 /* 2. Top Banner (Bridge) */
