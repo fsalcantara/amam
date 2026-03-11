@@ -94,8 +94,8 @@ export const HistoryTimeline = () => {
 
             <div className={styles.explanationHeader}>
               <h3 className={styles.subtitle}>
-                O nosso nome é a união da
-                <span> inicial dos fundadores</span>
+                O nosso nome é a união das
+                <span> iniciais dos fundadores</span>
               </h3>
             </div>
 
