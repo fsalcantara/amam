@@ -23,7 +23,6 @@ export const BrandEssence = () => {
                 alt="Coração AMAM" 
                 className={styles.heartImage}
               />
-              <div className={styles.heartGlow}></div>
             </div>
           </div>
 

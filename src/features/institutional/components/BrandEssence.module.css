@@ -62,19 +62,11 @@
   object-fit: contain;
   position: relative;
   z-index: 2;
-  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.2));
   animation: heartPulse 4s infinite ease-in-out;
 }
 
 .heartGlow {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 120%;
-  height: 120%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
-  z-index: 1;
+  display: none;
 }
 
 @keyframes heartPulse {
