@@ -24,9 +24,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1.5rem;
   transition: all 0.2s;
   position: relative;
   user-select: none;
+  white-space: nowrap;
 }
 
 .trigger:focus, .trigger.open {
@@ -50,7 +52,8 @@
   position: absolute;
   top: 100%;
   left: 0;
-  right: 0;
+  min-width: 100%;
+  width: max-content;
   margin-top: 4px;
   background: var(--select-options-bg, white);
   border: 1px solid var(--select-options-border, #eee);
@@ -74,6 +77,7 @@
   font-size: var(--select-font-size, 0.95rem);
   color: var(--select-option-text, #444);
   transition: background 0.2s;
+  white-space: nowrap;
 }
 
 .option:hover {

@@ -8,6 +8,7 @@ import styles from './DashboardPage.module.css';
 
 import { jobService } from '@/features/jobs/services/jobService';
 import { postService } from '@/features/content-hub/services/postService';
+import { productClientService } from '@/features/products/services/productClientService';
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -15,7 +16,8 @@ export default function DashboardPage() {
   const [stats, setStats] = useState({
     jobs: 0,
     posts: 0,
-    users: 0
+    users: 0,
+    products: 0
   });
 
   useEffect(() => {
@@ -29,16 +31,18 @@ export default function DashboardPage() {
   }, [router]);
 
   const loadStats = async () => {
-    const [jobs, posts, users] = await Promise.all([
+    const [jobs, posts, users, products] = await Promise.all([
       jobService.getJobs(),
       postService.getPosts(),
-      authService.getMockUsers()
+      authService.getMockUsers(),
+      productClientService.getProducts()
     ]);
 
     setStats({
       jobs: jobs.filter(j => j.isActive).length,
       posts: posts.length,
-      users: users.filter(u => u.isActive).length
+      users: users.filter(u => u.isActive).length,
+      products: products.length
     });
   };
 
@@ -82,6 +86,24 @@ export default function DashboardPage() {
             </div>
              <div className={styles.cardAction}>
               <p className={styles.linkText}>Central de Notícias →</p>
+            </div>
+          </div>
+        )}
+
+        {(user.role === UserRole.ADMIN || user.role === UserRole.MARKETING) && (
+          <div className={styles.statCard} onClick={() => router.push('/admin/produtos')}>
+            <div className={styles.cardHeader}>
+              <div className={`${styles.iconBox} ${styles.redIconBox || styles.iconBox}`}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+              </div>
+              <h3 className={styles.cardTitle}>Catálogo de Produtos</h3>
+            </div>
+            <div className={styles.cardBody}>
+              <div className={styles.statValue}>{stats.products}</div>
+              <p className={styles.statLabel}>Produtos no catálogo</p>
+            </div>
+             <div className={styles.cardAction}>
+              <p className={styles.linkText}>Gestão de Nutrientes →</p>
             </div>
           </div>
         )}

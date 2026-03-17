@@ -1,168 +1,194 @@
 .container {
   width: 100%;
+  max-width: 520px;
   margin: 0 auto;
   background-color: #ffffff;
-  color: #111111;
-  font-family: var(--font-family-sans);
-  border-radius: 18px;
-  padding: var(--spacing-6) var(--spacing-8);
+  padding: var(--spacing-4);
+  color: #000;
+  font-family: var(--font-family-sans), sans-serif;
+  box-sizing: border-box;
+}
+
+.productInfo {
+  margin-bottom: var(--spacing-4);
+  color: #000;
+  text-align: left;
+}
+
+.infoSection {
+  font-size: 0.75rem;
+  line-height: 1.4;
+  margin-bottom: var(--spacing-3);
+  text-transform: uppercase;
+}
+
+.warnings {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: var(--spacing-4);
+}
+
+.warningItem {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+.glutenCapsule {
+  margin-top: var(--spacing-2);
+  display: inline-block;
+  font-size: 0.9rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  background: #fff;
+  border: 4px solid #fff; /* "Falsa cápsula" ou apenas destaque */
+  text-align: center;
+  width: 100%;
+}
+
+.labelFrame {
+  border: 2px solid #000;
+  padding: 0;
+  background: #fff;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .header {
-  margin-bottom: var(--spacing-6);
+  border-bottom: 2px solid #000;
+  padding: 10px 5px;
+  text-align: center;
 }
 
 .title {
   font-size: 1.5rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  margin: 0 0 var(--spacing-1) 0;
-  color: var(--color-primary);
+  font-weight: 900;
   text-transform: uppercase;
+  margin: 0;
+  line-height: 1;
+  color: #000 !important;
 }
 
-.metadata {
-  display: flex;
-  gap: var(--spacing-4);
-  align-items: center;
-  font-size: 0.85rem;
-  color: #666;
-}
-
-.dot {
-  opacity: 0.3;
-}
-
-.gridHeader {
-  display: grid;
-  grid-template-columns: 2.2fr 1fr 1fr 1.8fr;
-  padding: 0 var(--spacing-2) var(--spacing-3);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  margin-bottom: var(--spacing-4);
-}
-
-.colLabel {
-  font-size: 0.7rem;
+.servingInfo {
+  padding: 8px 10px;
+  border-bottom: 2px solid #000;
+  font-size: 0.95rem;
   font-weight: 700;
-  text-transform: uppercase;
-  color: #999;
-  letter-spacing: 0.05em;
+  text-align: left;
 }
 
-.section {
-  margin-bottom: var(--spacing-6);
+.servingInfo p {
+  margin: 4px 0;
 }
 
-.sectionHeader {
-  font-size: 0.75rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  color: #bbb;
-  margin-bottom: var(--spacing-2);
-  letter-spacing: 0.1em;
-  padding-left: var(--spacing-2);
+.tableWrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
-.row {
-  display: grid;
-  grid-template-columns: 2.2fr 1fr 1fr 1.8fr;
-  align-items: center;
-  padding: var(--spacing-2) var(--spacing-2);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.03);
-  transition: background-color 0.2s ease;
-  border-radius: 6px;
+.table {
+  width: 100%;
+  border-collapse: collapse;
 }
 
-.row:hover {
-  background-color: rgba(0, 0, 0, 0.02);
+.table th, .table td {
+  border: 1px solid #000;
+  padding: 8px 10px;
+  color: #000;
+  white-space: nowrap;
+}
+
+.table th {
+  background: #fff;
+  font-weight: 900;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.colNutrient {
+  width: auto;
+  text-align: left !important;
+}
+
+.colValue, .colVD {
+  width: 80px;
+}
+
+.table td {
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.2;
 }
 
 .nutrientName {
-  font-weight: 600;
-  font-size: 0.95rem;
-  color: #222;
+  text-align: left;
 }
 
-.val100g, .valPortion {
+.indentedRow .nutrientName {
+  padding-left: 20px;
   font-weight: 500;
-  font-size: 0.9rem;
-  color: #444;
 }
 
-.unit {
-  font-size: 0.75rem;
-  color: #aaa;
-  margin-left: 2px;
-}
-
-.vdCol {
-  display: flex;
-  align-items: center;
-}
-
-.vdInfo {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.vdNum {
-  font-weight: 700;
-  font-size: 0.85rem;
-  color: #10b981; /* Emerald */
-}
-
-.progressBar {
-  width: 100%;
-  height: 4px;
-  background-color: rgba(16, 185, 129, 0.1);
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.progressFill {
-  height: 100%;
-  background-color: #10b981;
-  border-radius: 10px;
+.val, .vdVal {
+  text-align: center;
 }
 
 .footer {
-  margin-top: var(--spacing-8);
-  padding-top: var(--spacing-6);
-  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 8px 10px;
   font-size: 0.75rem;
-  color: #999;
-  line-height: 1.6;
+  font-weight: 600;
+  line-height: 1.2;
+  border-top: 1px solid #000;
 }
 
-.noData {
-  padding: var(--spacing-20);
-  text-align: center;
-  background: var(--color-surface);
-  border-radius: 18px;
-  color: #666;
+.footer p {
+  margin: 0;
 }
 
-@media (max-width: 640px) {
-  .gridHeader {
-    display: none;
+@media (max-width: 480px) {
+  .title {
+    font-size: 1.1rem;
   }
   
-  .row {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-2);
-    padding: var(--spacing-6) var(--spacing-2);
+  .table th, .table td {
+    font-size: 0.65rem;
+    padding: 4px 1px;
+    white-space: nowrap;
   }
   
-  .val100g, .valPortion {
-    font-size: 0.85rem;
+  .servingInfo {
+    font-size: 0.8rem;
+    padding: 6px 8px;
   }
-  
-  .val100g::before { content: "100g: "; opacity: 0.5; font-size: 0.7rem; }
-  .valPortion::before { content: "Porção: "; opacity: 0.5; font-size: 0.7rem; }
-  
-  .vdCol {
-    margin-top: var(--spacing-2);
+
+  .container {
+    padding: 2px;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .labelFrame {
+    border-width: 1px;
+    max-width: 100%;
+    width: 100%;
+    margin: 0 auto;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+  .colValue, .colVD {
+    width: auto;
+    min-width: 50px;
+  }
+
+  .colNutrient {
+    min-width: 140px;
+  }
+
+  .indentedRow .nutrientName {
+    padding-left: 10px;
   }
 }

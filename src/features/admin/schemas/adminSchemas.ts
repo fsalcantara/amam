@@ -45,3 +45,23 @@ export const newUserSchema = z.object({
 });
 
 export type NewUserFormValues = z.infer<typeof newUserSchema>;
+
+// --- Produto ---
+export const productSchema = z.object({
+  name: z.string().min(3, 'O nome deve ter pelo menos 3 caracteres.'),
+  slug: z.string().min(3, 'O slug deve ter pelo menos 3 caracteres.'),
+  description: z.string().min(10, 'A descrição deve ter pelo menos 10 caracteres.'),
+  highlights: z.string().optional(),
+  category: z.string().min(1, 'Selecione uma categoria.'),
+  image: z.string().optional().or(z.literal('')),
+  ingredients: z.string().optional(),
+  allergens: z.string().optional(),
+  mayContain: z.string().optional(),
+  containsGluten: z.boolean().default(true),
+  nutritionalInfo: z.object({
+    servingSize: z.coerce.number().min(1, 'Tamanho da porção inválido.'),
+    servingsPerPack: z.coerce.number().min(1, 'Número de porções inválido.'),
+  }),
+});
+
+export type ProductFormValues = z.infer<typeof productSchema>;

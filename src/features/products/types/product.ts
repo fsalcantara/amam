@@ -9,8 +9,13 @@ export interface Product {
   name: string;
   slug: string;
   description: string;
+  highlights?: string;
   category: string;
   image: string;
+  ingredients?: string;
+  allergens?: string;
+  mayContain?: string;
+  containsGluten?: boolean;
   nutritionalInfo?: {
     servingSize: number;
     servingsPerPack: number;

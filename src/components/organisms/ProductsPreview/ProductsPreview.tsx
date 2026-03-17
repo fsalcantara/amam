@@ -1,10 +1,13 @@
 "use client";
 
 import { useRef } from 'react';
+import useSWR from 'swr';
 import { Container } from '../../atoms/Container/Container';
 import { Button } from '../../atoms/Button/Button';
 import { ProductCard } from '@/features/products/components/ProductCard';
-import { PRODUCTS } from '@/features/products/data/mock-data';
+import { Product } from '@/features/products/types/product';
+import { productClientService } from '@/features/products/services/productClientService';
+import { CATEGORIES } from '@/features/products/data/mock-data';
 import styles from './ProductsPreview.module.css';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
@@ -15,8 +18,15 @@ if (typeof window !== "undefined") {
 }
 
 export const ProductsPreview = () => {
-  // Take first 4 products for preview
-  const products = PRODUCTS.slice(0, 4);
+  const { data: allProducts } = useSWR<Product[]>('/api/products', () => productClientService.getProducts());
+
+  // Lógica: Trazer exatamente o PRIMEIRO produto de cada categoria.
+  // Se tiver 3 categorias = 3 produtos. Se tiver 4 categorias = 4 produtos.
+  const previewProducts = CATEGORIES.map(cat => {
+    // Busca o primeiro produto que pertence a esta categoria
+    return (allProducts || []).find(p => p.category === cat.slug);
+  }).filter(Boolean) as Product[];
+
   const containerRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
@@ -63,7 +73,7 @@ export const ProductsPreview = () => {
         </div>
 
         <div className={styles.grid} ref={gridRef}>
-          {products.map((product) => (
+          {previewProducts.map((product: Product) => (
             <div key={product.id}>
               <ProductCard product={product} />
             </div>

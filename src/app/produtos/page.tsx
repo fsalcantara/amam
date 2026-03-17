@@ -4,12 +4,14 @@ import Link from 'next/link';
 import { useRef, use } from 'react'; 
 import { Container } from '@/components/atoms/Container/Container';
 import { ProductCard } from '@/features/products/components/ProductCard';
-import { PRODUCTS, CATEGORIES } from '@/features/products/data/mock-data';
+import { CATEGORIES } from '@/features/products/data/mock-data';
+import { Product } from '@/features/products/types/product';
+import { productClientService } from '@/features/products/services/productClientService';
+import useSWR from 'swr';
 import styles from './page.module.css';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
-// Register the plugin if needed, though useGSAP usually handles context
 if (typeof window !== "undefined") {
     gsap.registerPlugin(useGSAP);
 }
@@ -19,22 +21,15 @@ interface ProductsPageProps {
 }
 
 export default function ProductsPage({ searchParams }: ProductsPageProps) {
-  // Check if we are running on server or client to safely unwrap params if needed.
-  // Next.js 15 requires awaiting searchParams.
-  // We can use the experimental `use` hook or async/await in a Server Component.
-  // Since I made this a Client Component ("use client") to use GSAP, 
-  // I need to handle the promise or receive resolved props.
-  // HOWEVER, converting this to "use client" complicates the async props.
-  // APPROACH: Keep it as a Client Component for GSAP, but since we receive a Promise,
-  // we must use the `use` hook to unwrap it in Next.js 15+ Client Components.
-  
-  const resolvedParams = use(searchParams); 
+  const resolvedParams = use(searchParams) as { category?: string }; 
   const { category } = resolvedParams;
   const selectedCategory = typeof category === 'string' ? category : undefined;
 
-  const filteredProducts = selectedCategory
-    ? PRODUCTS.filter(p => p.category === selectedCategory)
-    : PRODUCTS;
+  const { data: products } = useSWR<Product[]>('/api/products', () => productClientService.getProducts());
+
+  const filteredProducts = (products || []).filter(p => 
+    selectedCategory ? p.category === selectedCategory : true
+  );
 
   const containerRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -42,13 +37,11 @@ export default function ProductsPage({ searchParams }: ProductsPageProps) {
   const gridRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    // Initial reveal of layout (Header & Sidebar) - only on mount
     gsap.fromTo([headerRef.current, sidebarRef.current],
       { opacity: 0, y: (i) => i === 0 ? -20 : 0, x: (i) => i === 1 ? -20 : 0 },
       { opacity: 1, y: 0, x: 0, duration: 1, ease: 'power3.out', stagger: 0.2 }
     );
 
-    // Grid items animation - happens every time selectedCategory changes
     if (gridRef.current) {
       gsap.fromTo(gridRef.current.children,
         { y: 30, opacity: 0, scale: 0.95 },
@@ -63,7 +56,7 @@ export default function ProductsPage({ searchParams }: ProductsPageProps) {
         }
       );
     }
-  }, { scope: containerRef, dependencies: [selectedCategory] });
+  }, { scope: containerRef, dependencies: [selectedCategory, products] });
 
   return (
     <div className={styles.page} ref={containerRef}>
@@ -109,7 +102,7 @@ export default function ProductsPage({ searchParams }: ProductsPageProps) {
               ))
             ) : (
               <div className={styles.empty}>
-                <p>Nenhum produto encontrado nesta categoria.</p>
+                <p>{!products ? 'Carregando produtos...' : 'Nenhum produto encontrado nesta categoria.'}</p>
               </div>
             )}
           </section>

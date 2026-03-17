@@ -88,3 +88,30 @@
     font-size: var(--font-size-lg);
   }
 }
+
+/* Novos estilos para visão condicional */
+.mobileOnly {
+  display: block;
+}
+
+.desktopOnly {
+  display: none;
+}
+
+.desktopTableContainer {
+  background-color: #fff;
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-8);
+  border: 1px solid var(--color-border);
+}
+
+@media (min-width: 1024px) {
+  .mobileOnly {
+    display: none;
+  }
+  
+  .desktopOnly {
+    display: block;
+    width: 100%;
+  }
+}

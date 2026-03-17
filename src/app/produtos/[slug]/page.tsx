@@ -1,6 +1,6 @@
 import { Container } from '@/components/atoms/Container/Container';
 import { Button } from '@/components/atoms/Button/Button';
-import { getProductBySlug } from '@/features/products/data/mock-data';
+import { productService } from '@/features/products/services/productService';
 import { notFound } from 'next/navigation';
 import styles from './page.module.css';
 import { NutritionalInfo } from '@/components/organisms/NutritionalInfo/NutritionalInfo';
@@ -15,7 +15,7 @@ export async function generateMetadata(
   { params }: ProductDetailProps
 ) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await productService.getProductBySlug(slug);
   
   if (!product) {
     return {
@@ -31,7 +31,7 @@ export async function generateMetadata(
 
 export default async function ProductDetailPage({ params }: ProductDetailProps) {
   const resolvedParams = await params;
-  const product = getProductBySlug(resolvedParams.slug);
+  const product = await productService.getProductBySlug(resolvedParams.slug);
 
   if (!product) {
     notFound();
@@ -59,6 +59,16 @@ export default async function ProductDetailPage({ params }: ProductDetailProps) 
             <span className={styles.categoryBadge}>{product.category}</span>
             <h1 className={styles.productName}>{product.name}</h1>
             <p className={styles.descriptionText}>{product.description}</p>
+            
+            {product.highlights && (
+              <div className={styles.highlights}>
+                {product.highlights.split(' - ').map((item, index) => (
+                  <span key={index} className={styles.highlightItem}>
+                    {item}
+                  </span>
+                ))}
+              </div>
+            )}
 
             <NutritionalInfo product={product} />
 

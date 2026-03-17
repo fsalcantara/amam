@@ -18,7 +18,8 @@ export const NutritionalInfo = ({ product }: NutritionalInfoProps) => {
 
   return (
     <>
-      <div className={styles.container}>
+      {/* VISÃO MOBILE: Card Resumido + Botão para Modal */}
+      <div className={`${styles.container} ${styles.mobileOnly}`}>
         <div className={styles.inner}>
           <h3 className={styles.title}>Informação Nutricional</h3>
           <div className={styles.details}>
@@ -29,7 +30,7 @@ export const NutritionalInfo = ({ product }: NutritionalInfoProps) => {
             <div className={styles.detailItem}>
               <span className={styles.label}>Calorias</span>
               <span className={styles.value}>
-                {product.nutritionalInfo.nutrients.valor_energetico_kcal.perServing} kcal
+                {product.nutritionalInfo.nutrients.valor_energetico_kcal.perServing}
               </span>
             </div>
           </div>
@@ -39,7 +40,7 @@ export const NutritionalInfo = ({ product }: NutritionalInfoProps) => {
           className={styles.footer}
           onClick={() => setIsModalOpen(true)}
         >
-          <span>Ver tabela nutricional completa</span>
+          <span>Ver tabela completa</span>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="9 18 15 12 9 6"></polyline>
           </svg>
@@ -49,6 +50,11 @@ export const NutritionalInfo = ({ product }: NutritionalInfoProps) => {
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <NutritionalTable product={product} />
       </Modal>
+
+      {/* VISÃO DESKTOP: Tabela Técnica Direta */}
+      <div className={`${styles.desktopOnly} ${styles.desktopTableContainer}`}>
+        <NutritionalTable product={product} />
+      </div>
     </>
   );
 };

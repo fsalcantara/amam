@@ -51,6 +51,11 @@ export function AdminSidebar() {
       roles: [UserRole.ADMIN, UserRole.MARKETING],
     },
     {
+      label: 'Produtos',
+      href: '/admin/produtos',
+      roles: [UserRole.ADMIN],
+    },
+    {
       label: 'Usuários',
       href: '/admin/usuarios',
       roles: [UserRole.ADMIN],
