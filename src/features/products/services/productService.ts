@@ -4,7 +4,7 @@ import { Product } from '../types/product';
 export const productService = {
   getProducts: async (): Promise<Product[]> => {
     try {
-      const rows = db.prepare('SELECT * FROM products ORDER BY created_at DESC').all();
+      const rows = await db.all('SELECT * FROM products ORDER BY created_at DESC');
       return (rows as any[]).map(row => ({
         ...row,
         mayContain: row.may_contain,
@@ -19,7 +19,7 @@ export const productService = {
 
   getProductById: async (id: string): Promise<Product | undefined> => {
     try {
-      const row = db.prepare('SELECT * FROM products WHERE id = ?').get(id) as any;
+      const row = await db.get('SELECT * FROM products WHERE id = ?', [id]);
       if (!row) return undefined;
       return {
         ...row,
@@ -35,7 +35,7 @@ export const productService = {
 
   getProductBySlug: async (slug: string): Promise<Product | undefined> => {
     try {
-      const row = db.prepare('SELECT * FROM products WHERE slug = ?').get(slug) as any;
+      const row = await db.get('SELECT * FROM products WHERE slug = ?', [slug]);
       if (!row) return undefined;
       return {
         ...row,
@@ -54,12 +54,10 @@ export const productService = {
       const id = Math.random().toString(36).substr(2, 9);
       const { name, slug, description, highlights, category, image, nutritionalInfo, ingredients, allergens, mayContain, containsGluten } = product;
       
-      const info = db.prepare(`
+      await db.run(`
         INSERT INTO products (id, name, slug, description, highlights, category, image, ingredients, allergens, may_contain, contains_gluten, nutritional_info)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-      `).run(
-        id, name, slug, description, highlights, category, image, ingredients, allergens, mayContain, containsGluten ? 1 : 0, JSON.stringify(nutritionalInfo)
-      );
+      `, [id, name, slug, description, highlights, category, image, ingredients, allergens, mayContain, containsGluten ? 1 : 0, JSON.stringify(nutritionalInfo)]);
       
       return { ...product, id } as Product;
     } catch (error: any) {
@@ -75,11 +73,11 @@ export const productService = {
 
       const data = { ...prev, ...updates };
       
-      db.prepare(`
+      await db.run(`
         UPDATE products 
         SET name = ?, slug = ?, description = ?, highlights = ?, category = ?, image = ?, ingredients = ?, allergens = ?, may_contain = ?, contains_gluten = ?, nutritional_info = ?, updated_at = CURRENT_TIMESTAMP
         WHERE id = ?
-      `).run(
+      `, [
         data.name, 
         data.slug, 
         data.description, 
@@ -92,7 +90,7 @@ export const productService = {
         data.containsGluten ? 1 : 0,
         JSON.stringify(data.nutritionalInfo), 
         id
-      );
+      ]);
       
       return data;
     } catch (error: any) {
@@ -103,7 +101,7 @@ export const productService = {
 
   deleteProduct: async (id: string): Promise<boolean> => {
     try {
-      db.prepare('DELETE FROM products WHERE id = ?').run(id);
+      await db.run('DELETE FROM products WHERE id = ?', [id]);
       return true;
     } catch (error: any) {
       console.error(`❌ [productService] Erro ao excluir produto (${id}):`, error.message);

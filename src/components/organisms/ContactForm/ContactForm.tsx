@@ -34,20 +34,38 @@ export const ContactForm = ({ variant = 'light' }: ContactFormProps) => {
     e.preventDefault();
     setLoading(true);
     
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    alert(`Obrigado pelo contato, ${formData.name}! Recebemos sua mensagem.`);
-    setLoading(false);
-    setFormData({
-      name: '',
-      phone: '',
-      city: '',
-      email: '',
-      segment: '',
-      otherSegment: '',
-      businessName: '',
-    });
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          formType: 'contact',
+          ...formData
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Erro ao enviar mensagem');
+      }
+
+      alert(`Obrigado pelo contato, ${formData.name}! Recebemos sua mensagem com sucesso.`);
+      setFormData({
+        name: '',
+        phone: '',
+        city: '',
+        email: '',
+        segment: '',
+        otherSegment: '',
+        businessName: '',
+      });
+    } catch (error: any) {
+      console.error('Submit error:', error);
+      alert(error.message || 'Ocorreu um erro ao enviar sua mensagem. Tente novamente mais tarde.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

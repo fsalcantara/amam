@@ -23,11 +23,24 @@ export const ContactForm = () => {
     e.preventDefault();
     setStatus('submitting');
     
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          formType: 'contact',
+          ...formData
+        })
+      });
+
+      if (!response.ok) throw new Error('Falha no envio');
+
       setStatus('success');
       setFormData({ name: '', email: '', subject: '', message: '' });
-    }, 1500);
+    } catch (error) {
+      console.error('Submit error:', error);
+      setStatus('error');
+    }
   };
 
   return (

@@ -87,38 +87,40 @@ let MOCKED_JOBS: Job[] = [
 
 export const jobService = {
   getJobs: async (): Promise<Job[]> => {
-    await new Promise(resolve => setTimeout(resolve, 500));
-    return [...MOCKED_JOBS];
+    const res = await fetch('/api/jobs');
+    if (!res.ok) throw new Error('Falha ao buscar vagas');
+    return res.json();
   },
 
   getJobById: async (id: string): Promise<Job | undefined> => {
-    await new Promise(resolve => setTimeout(resolve, 300));
-    return MOCKED_JOBS.find(j => j.id === id);
+    const res = await fetch(`/api/jobs/${id}`);
+    if (res.status === 404) return undefined;
+    if (!res.ok) throw new Error('Falha ao buscar vaga');
+    return res.json();
   },
 
   createJob: async (job: Omit<Job, 'id' | 'createdAt'>): Promise<Job> => {
-    await new Promise(resolve => setTimeout(resolve, 800));
-    const newJob: Job = {
-      ...job,
-      id: Math.random().toString(36).substr(2, 9),
-      createdAt: new Date().toISOString(),
-    };
-    MOCKED_JOBS.push(newJob);
-    return newJob;
+    const res = await fetch('/api/jobs', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(job)
+    });
+    if (!res.ok) throw new Error('Falha ao criar vaga');
+    return res.json();
   },
 
   updateJob: async (id: string, updates: Partial<Job>): Promise<Job | null> => {
-    await new Promise(resolve => setTimeout(resolve, 600));
-    const index = MOCKED_JOBS.findIndex(j => j.id === id);
-    if (index === -1) return null;
-    
-    MOCKED_JOBS[index] = { ...MOCKED_JOBS[index], ...updates };
-    return MOCKED_JOBS[index];
+    const res = await fetch(`/api/jobs/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updates)
+    });
+    if (!res.ok) return null;
+    return { id, ...updates } as Job;
   },
 
   deleteJob: async (id: string): Promise<boolean> => {
-    await new Promise(resolve => setTimeout(resolve, 500));
-    MOCKED_JOBS = MOCKED_JOBS.filter(j => j.id !== id);
-    return true;
+    const res = await fetch(`/api/jobs/${id}`, { method: 'DELETE' });
+    return res.ok;
   }
 };

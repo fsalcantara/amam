@@ -1,14 +1,10 @@
 import { Application } from '../types/application';
 
-const STORAGE_KEY = 'amam_applications';
-
 export const applicationService = {
   getApplications: async (): Promise<Application[]> => {
-    await new Promise(resolve => setTimeout(resolve, 500));
-    if (typeof window === 'undefined') return [];
-    
-    const stored = localStorage.getItem(STORAGE_KEY);
-    return stored ? JSON.parse(stored) : [];
+    const res = await fetch('/api/applications');
+    if (!res.ok) throw new Error('Falha ao buscar candidaturas');
+    return res.json();
   },
 
   getApplicationsByJobId: async (jobId: string): Promise<Application[]> => {
@@ -21,10 +17,6 @@ export const applicationService = {
     return apps.length;
   },
 
-  /**
-   * Checks if a CPF has already been used to apply for a specific job.
-   * Returns true if duplicate exists.
-   */
   checkDuplicateCPF: async (jobId: string, cpf: string): Promise<boolean> => {
     const apps = await applicationService.getApplicationsByJobId(jobId);
     const normalizedCPF = cpf.replace(/\D/g, '');
@@ -32,11 +24,7 @@ export const applicationService = {
   },
 
   apply: async (application: Omit<Application, 'id' | 'createdAt'>): Promise<Application> => {
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    const apps = await applicationService.getApplications();
-    
-    // Read file as base64 to persist in localStorage
+    // Read file as base64
     let cvBase64: string | undefined = undefined;
     if (application.cvFile) {
       cvBase64 = await new Promise<string>((resolve, reject) => {
@@ -46,39 +34,49 @@ export const applicationService = {
         reader.readAsDataURL(application.cvFile as File);
       });
     }
-    
-    const newApp: Application = {
-      ...application,
-      id: Math.random().toString(36).substr(2, 9),
-      createdAt: new Date().toISOString(),
-      cvUrl: cvBase64
-    };
 
-    // Remove file object before storing in localStorage so JSON.stringify doesn't fail
-    const { cvFile, ...storedApp } = newApp;
+    const payload = { ...application, cvUrl: cvBase64 };
+
+    // Envio para o Banco via API
+    const res = await fetch('/api/applications', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
     
-    const updatedApps = [...apps, storedApp];
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedApps));
-    
+    if (!res.ok) throw new Error('Falha ao salvar candidatura');
+    const newApp = await res.json();
+
+    // Envio de e-mail (Trabalhe Conosco) via API
+    try {
+      await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          formType: 'job',
+          ...application
+        })
+      });
+    } catch (error) {
+      console.error('Email notify error:', error);
+    }
+
     return newApp;
   },
 
   deleteApplication: async (applicationId: string): Promise<boolean> => {
-    await new Promise(resolve => setTimeout(resolve, 300));
-    const apps = await applicationService.getApplications();
-    const updatedApps = apps.filter(app => app.id !== applicationId);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedApps));
-    return true;
+    const res = await fetch(`/api/applications/${applicationId}`, { method: 'DELETE' });
+    return res.ok;
   },
 
   updateApplication: async (applicationId: string, updates: Partial<Application>): Promise<Application | null> => {
-    await new Promise(resolve => setTimeout(resolve, 300));
-    const apps = await applicationService.getApplications();
-    const index = apps.findIndex(app => app.id === applicationId);
-    if (index === -1) return null;
-    
-    apps[index] = { ...apps[index], ...updates };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(apps));
-    return apps[index];
+    const res = await fetch(`/api/applications/${applicationId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updates)
+    });
+    if (!res.ok) return null;
+    const current = await applicationService.getApplications();
+    return current.find(a => a.id === applicationId) || null;
   }
 };
