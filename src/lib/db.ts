@@ -1,4 +1,3 @@
-import Database from 'better-sqlite3';
 import path from 'path';
 
 // --- INTERFACE UNIFICADA ---
@@ -8,16 +7,7 @@ export interface DbInterface {
   run: (sql: string, params?: any[]) => Promise<{ lastInsertRowid?: any; changes?: number }>;
 }
 
-
-let dbInstance: DbInterface;
-
-// --- CONFIGURAÇÃO SQLITE (Local e Produção na HostGator) ---
-const dbPath = path.resolve(process.cwd(), 'amam.db');
-const sqliteDb = new Database(dbPath);
-sqliteDb.pragma('foreign_keys = ON');
-
-// Inicialização síncrona de tabelas para SQLite
-sqliteDb.exec(`
+const INIT_SQL = `
   CREATE TABLE IF NOT EXISTS products (
     id TEXT PRIMARY KEY,
     name TEXT NOT NULL,
@@ -72,39 +62,101 @@ sqliteDb.exec(`
     name TEXT NOT NULL,
     role TEXT NOT NULL,
     is_active INTEGER DEFAULT 1,
+    force_password_reset INTEGER DEFAULT 0,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
   );
-`);
+`;
 
-dbInstance = {
-  all: async (sql, params = []) => {
-    try {
-      return sqliteDb.prepare(sql).all(...params);
-    } catch (error) {
-      console.error(`[DB Error] all: ${sql}`, error);
-      throw error;
+let dbInstance: DbInterface;
+
+// --- TURSO HTTP API (Vercel / Produção) ---
+if (process.env.TURSO_DATABASE_URL) {
+  const TURSO_URL = process.env.TURSO_DATABASE_URL.replace(/\/$/, '');
+  const TURSO_TOKEN = process.env.TURSO_AUTH_TOKEN ?? '';
+
+  async function tursoExecute(sql: string, args: any[] = []) {
+    const res = await fetch(`${TURSO_URL}/v2/pipeline`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${TURSO_TOKEN}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        requests: [
+          { type: 'execute', stmt: { sql, args: args.map(v => ({ type: typeof v === 'number' ? 'integer' : 'text', value: String(v ?? '') })) } },
+          { type: 'close' },
+        ],
+      }),
+    });
+
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error(`Turso error: ${err}`);
     }
-  },
-  get: async (sql, params = []) => {
-    try {
-      return sqliteDb.prepare(sql).get(...params);
-    } catch (error) {
-      console.error(`[DB Error] get: ${sql}`, error);
-      throw error;
+
+    const data = await res.json();
+    const result = data.results?.[0]?.response?.result;
+    return result;
+  }
+
+  // Initialize tables on startup
+  (async () => {
+    for (const stmt of INIT_SQL.split(';').map((s: string) => s.trim()).filter(Boolean)) {
+      await tursoExecute(stmt);
     }
-  },
-  run: async (sql, params = []) => {
-    try {
+  })().catch(console.error);
+
+  function parseRows(result: any): any[] {
+    if (!result?.rows || !result?.cols) return [];
+    const cols = result.cols.map((c: any) => c.name);
+    return result.rows.map((row: any[]) =>
+      Object.fromEntries(cols.map((col: string, i: number) => [col, row[i]?.value ?? null]))
+    );
+  }
+
+  dbInstance = {
+    all: async (sql, params = []) => {
+      const result = await tursoExecute(sql, params);
+      return parseRows(result);
+    },
+    get: async (sql, params = []) => {
+      const result = await tursoExecute(sql, params);
+      return parseRows(result)[0] ?? null;
+    },
+    run: async (sql, params = []) => {
+      const result = await tursoExecute(sql, params);
+      return {
+        lastInsertRowid: result?.last_insert_rowid,
+        changes: result?.affected_row_count ?? 0,
+      };
+    },
+  };
+
+  console.log('✅ [DB] Conectado ao Turso HTTP API (Produção)');
+
+// --- SQLITE LOCAL ---
+} else {
+  const Database = require('better-sqlite3');
+  const dbPath = process.env.DB_PATH
+    ? path.resolve(process.env.DB_PATH)
+    : path.resolve(process.cwd(), 'amam.db');
+
+  const sqliteDb = new Database(dbPath);
+  sqliteDb.pragma('journal_mode = WAL');
+  sqliteDb.pragma('foreign_keys = ON');
+  sqliteDb.pragma('busy_timeout = 5000');
+  sqliteDb.exec(INIT_SQL);
+
+  dbInstance = {
+    all: async (sql, params = []) => sqliteDb.prepare(sql).all(...params),
+    get: async (sql, params = []) => sqliteDb.prepare(sql).get(...params) ?? null,
+    run: async (sql, params = []) => {
       const result = sqliteDb.prepare(sql).run(...params);
       return { lastInsertRowid: result.lastInsertRowid, changes: result.changes };
-    } catch (error) {
-      console.error(`[DB Error] run: ${sql}`, error);
-      throw error;
-    }
-  }
-};
+    },
+  };
 
-console.log('✅ [DB] Conectado ao SQLite (Local/Produção)');
-
+  console.log(`✅ [DB] Conectado ao SQLite local: ${dbPath}`);
+}
 
 export default dbInstance;
