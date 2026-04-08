@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e \"const db = require\\('better-sqlite3'\\)\\('amam.db'\\); const users = db.prepare\\('SELECT id, username, name, role FROM users'\\).all\\(\\); console.log\\(JSON.stringify\\(users\\)\\);\")",
+      "Bash(node -e ':*)",
+      "Bash(npx tsc:*)",
+      "Bash(node -e \"const db = require\\('better-sqlite3'\\)\\('amam.db'\\); db.prepare\\('UPDATE users SET role = ? WHERE username = ?'\\).run\\('ADMIN', 'vellum'\\); const u = db.prepare\\('SELECT id, username, role FROM users WHERE username = ?'\\).get\\('vellum'\\); console.log\\(JSON.stringify\\(u\\)\\);\")"
+    ]
+  }
+}
