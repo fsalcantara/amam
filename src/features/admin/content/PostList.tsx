@@ -114,6 +114,25 @@ export default function PostList() {
         </div>
       </div>
 
+      {/* Mobile cards */}
+      <div className={styles.cardList}>
+        {filteredPosts.length === 0 ? (
+          <p className={styles.emptyState}>Nenhum conteúdo encontrado.</p>
+        ) : filteredPosts.map((post) => (
+          <div key={post.id} className={styles.card}>
+            <span className={styles.cardTitle}>{post.title}</span>
+            <div className={styles.cardMeta}>
+              <span className={styles.typeTag}>{getTypeLabel(post.type)}</span>
+              <span className={styles.cardDate}>{new Date(post.date).toLocaleDateString()}</span>
+            </div>
+            <div className={styles.cardActions}>
+              <AdminButton variant="secondary" className={styles.smBtn} onClick={() => handleEdit(post)}>Editar</AdminButton>
+              <AdminButton variant="danger" className={styles.smBtn} onClick={() => handleDelete(post.id)}>Excluir</AdminButton>
+            </div>
+          </div>
+        ))}
+      </div>
+
       <div className={styles.tableContainer}>
         <table className={styles.table}>
           <thead>

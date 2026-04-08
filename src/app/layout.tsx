@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat, Geist_Mono, Dancing_Script } from "next/font/google";
 import { Preloader } from "@/components/organisms/Preloader/Preloader";
 import { ConditionalLayout } from "@/components/organisms/ConditionalLayout/ConditionalLayout";
+import { ToastProvider } from "@/components/atoms/Toast/ToastContext";
 import "./globals.css";
 
 const montserrat = Montserrat({
@@ -59,10 +60,12 @@ export default function RootLayout({
       <body
         className={`${montserrat.variable} ${geistMono.variable} ${dancingScript.variable}`}
       >
-        <Preloader />
-        <ConditionalLayout>
-          {children}
-        </ConditionalLayout>
+        <ToastProvider>
+          <Preloader />
+          <ConditionalLayout>
+            {children}
+          </ConditionalLayout>
+        </ToastProvider>
       </body>
     </html>
   );

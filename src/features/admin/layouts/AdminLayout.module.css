@@ -4,9 +4,67 @@
   background-color: #f1f5f9;
 }
 
+.contentWrapper {
+  flex: 1;
+  margin-left: 280px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
 .main {
   flex: 1;
-  margin-left: 280px; /* New Sidebar width */
   padding: 3rem 4rem;
   background-color: transparent;
+}
+
+.mobileBar {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .contentWrapper {
+    margin-left: 0;
+  }
+
+  .main {
+    padding: 1.5rem 1rem 2rem;
+  }
+
+  .mobileBar {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: #0f172a;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    gap: 1rem;
+  }
+
+  .mobileBarTitle {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .hamburger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    width: 36px;
+    height: 36px;
+    color: white;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .hamburger:hover {
+    background: rgba(255,255,255,0.15);
+  }
 }

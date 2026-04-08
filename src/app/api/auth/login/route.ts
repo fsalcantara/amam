@@ -21,6 +21,7 @@ export async function POST(req: NextRequest) {
       name: user.name,
       role: user.role,
       isActive: Boolean(user.is_active),
+      forcePasswordReset: Boolean(user.force_password_reset),
     });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });

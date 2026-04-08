@@ -10,6 +10,7 @@ export interface User {
   name: string;
   role: UserRole;
   isActive: boolean;
+  forcePasswordReset?: boolean;
 }
 
 export interface AuthState {

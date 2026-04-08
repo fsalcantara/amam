@@ -5,6 +5,7 @@ import { Job } from '@/features/jobs/types/job';
 import { Application } from '@/features/jobs/types/application';
 import { applicationService } from '@/features/jobs/services/applicationService';
 import { AdminButton } from '@/features/admin/components/ui/AdminButton';
+import { useToast } from '@/components/atoms/Toast/ToastContext';
 import styles from './ApplicationList.module.css';
 
 interface ApplicationListProps {
@@ -13,6 +14,7 @@ interface ApplicationListProps {
 }
 
 export function ApplicationList({ job, onBack }: ApplicationListProps) {
+  const { showToast } = useToast();
   const [applications, setApplications] = useState<Application[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedApp, setSelectedApp] = useState<Application | null>(null);
@@ -94,7 +96,7 @@ export function ApplicationList({ job, onBack }: ApplicationListProps) {
       }
     } catch (error) {
       console.error(error);
-      alert('Houve um erro ao analisar o currículo.');
+      showToast('Houve um erro ao analisar o currículo.', 'error');
     } finally {
       setAnalyzingAi(false);
     }

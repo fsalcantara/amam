@@ -51,7 +51,7 @@ export const VirtualAgent = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${isOpen ? styles.chatOpen : ''}`}>
       {isOpen ? (
         <div className={styles.chatWindow}>
           <div className={styles.header}>

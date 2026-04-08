@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { ScreeningQuestion } from '@/features/jobs/types/job';
 import { QuestionAnswer, ProctoringData } from '@/features/jobs/types/application';
 import { applicationService } from '@/features/jobs/services/applicationService';
+import { useToast } from '@/components/atoms/Toast/ToastContext';
 import styles from './page.module.css';
 
 interface ApplicationFormProps {
@@ -43,6 +44,7 @@ function isValidCPF(cpf: string): boolean {
 export function ApplicationForm({ jobId, screeningQuestions = [], onSuccess, onCancel }: ApplicationFormProps) {
   const hasQuestions = screeningQuestions.length > 0;
   const [step, setStep] = useState<1 | 2>(1);
+  const { showToast } = useToast();
   const [loading, setLoading] = useState(false);
   const [cpfError, setCpfError] = useState('');
 
@@ -179,7 +181,7 @@ export function ApplicationForm({ jobId, screeningQuestions = [], onSuccess, onC
       onSuccess();
     } catch (error) {
       console.error('Error submitting application:', error);
-      alert('Erro ao enviar candidatura. Tente novamente.');
+      showToast('Erro ao enviar candidatura. Tente novamente.', 'error');
     } finally {
       setLoading(false);
     }
@@ -207,7 +209,7 @@ export function ApplicationForm({ jobId, screeningQuestions = [], onSuccess, onC
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
-        alert('Por favor, envie o currículo apenas em formato PDF.');
+        showToast('Por favor, envie o currículo apenas em formato PDF.', 'error');
         e.target.value = ''; // clear input
         setFormData({ ...formData, cvFile: null });
         return;

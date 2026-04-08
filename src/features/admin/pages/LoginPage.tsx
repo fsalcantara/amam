@@ -22,7 +22,7 @@ export default function LoginPage() {
     try {
       const user = await authService.login(username, password);
       if (user) {
-        router.push('/admin');
+        router.push(user.forcePasswordReset ? '/admin/reset-senha' : '/admin');
       } else {
         setError('Usuário ou senha inválidos');
       }

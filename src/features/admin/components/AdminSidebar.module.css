@@ -1,7 +1,7 @@
 .sidebar {
   width: 280px;
   height: 100vh;
-  background-color: #0f172a; /* Premium Dark Slate */
+  background-color: #0f172a;
   border-right: 1px solid #1e293b;
   display: flex;
   flex-direction: column;
@@ -10,21 +10,95 @@
   top: 0;
   box-shadow: 4px 0 24px rgba(0,0,0,0.1);
   color: white;
-  z-index: 50;
-  list-style: none; /* Previne pontos de bullets indesejados caso interpretado erradamente */
+  z-index: 200;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Mobile: full-width drawer */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    transform: translateX(-100%);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+}
+
+.overlay {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 199;
+    backdrop-filter: blur(2px);
+  }
+
+  .nav {
+    padding: 1.5rem 1rem;
+    gap: 0.25rem;
+  }
+
+  .navItem {
+    font-size: 1.05rem;
+    padding: 1.1rem 1.25rem;
+  }
+
+  .footerActions {
+    padding: 1rem;
+  }
+}
+
+/* Close button — only visible on mobile */
+.closeBtn {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .closeBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    width: 36px;
+    height: 36px;
+    color: white;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.2s;
+  }
+
+  .closeBtn:hover {
+    background: rgba(255,255,255,0.15);
+  }
 }
 
 .header {
-  padding: 2.5rem 2rem;
+  padding: 2rem 1.5rem;
   background-color: #0f172a;
   border-bottom: 1px solid #1e293b;
+}
+
+.headerTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .logoContainer {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  margin-bottom: 1.5rem;
 }
 
 .logoImage {
@@ -69,6 +143,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  overflow-y: auto;
 }
 
 .navItem {

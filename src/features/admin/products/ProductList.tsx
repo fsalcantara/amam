@@ -116,6 +116,25 @@ export default function ProductList() {
         </div>
       </div>
 
+      {/* Mobile cards */}
+      <div className={styles.cardList}>
+        {filteredProducts.length === 0 ? (
+          <p className={styles.emptyState}>Nenhum produto encontrado.</p>
+        ) : filteredProducts.map((product) => (
+          <div key={product.id} className={styles.card}>
+            <img src={product.image} alt={product.name} className={styles.cardImg} />
+            <div className={styles.cardBody}>
+              <span className={styles.cardName}>{product.name}</span>
+              <span className={styles.categoryTag}>{product.category}</span>
+              <div className={styles.cardActions}>
+                <AdminButton variant="secondary" className={styles.smBtn} onClick={() => handleEdit(product)}>Editar</AdminButton>
+                <AdminButton variant="danger" className={styles.smBtn} onClick={() => handleDelete(product.id)}>Excluir</AdminButton>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
       <div className={styles.tableContainer}>
         <table className={styles.table}>
           <thead>

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { CustomSelect } from '@/features/admin/components/ui/CustomSelect';
+import { useToast } from '@/components/atoms/Toast/ToastContext';
 import styles from './ContactForm.module.css';
 
 interface ContactFormProps {
@@ -19,6 +20,7 @@ export const ContactForm = ({ variant = 'light' }: ContactFormProps) => {
     businessName: '',
   });
 
+  const { showToast } = useToast();
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -50,7 +52,7 @@ export const ContactForm = ({ variant = 'light' }: ContactFormProps) => {
         throw new Error(data.message || 'Erro ao enviar mensagem');
       }
 
-      alert(`Obrigado pelo contato, ${formData.name}! Recebemos sua mensagem com sucesso.`);
+      showToast(`Obrigado pelo contato, ${formData.name}! Recebemos sua mensagem com sucesso.`, 'success');
       setFormData({
         name: '',
         phone: '',
@@ -62,7 +64,7 @@ export const ContactForm = ({ variant = 'light' }: ContactFormProps) => {
       });
     } catch (error: any) {
       console.error('Submit error:', error);
-      alert(error.message || 'Ocorreu um erro ao enviar sua mensagem. Tente novamente mais tarde.');
+      showToast(error.message || 'Ocorreu um erro ao enviar sua mensagem. Tente novamente mais tarde.', 'error');
     } finally {
       setLoading(false);
     }

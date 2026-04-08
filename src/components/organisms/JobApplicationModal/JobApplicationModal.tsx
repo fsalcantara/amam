@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Modal } from '@/components/molecules/Modal/Modal';
+import { useToast } from '@/components/atoms/Toast/ToastContext';
 import styles from './JobApplicationModal.module.css';
 
 interface JobApplicationModalProps {
@@ -11,6 +12,7 @@ interface JobApplicationModalProps {
 }
 
 export const JobApplicationModal = ({ isOpen, onClose, vacancyTitle }: JobApplicationModalProps) => {
+  const { showToast } = useToast();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -22,7 +24,7 @@ export const JobApplicationModal = ({ isOpen, onClose, vacancyTitle }: JobApplic
     e.preventDefault();
     // Here you would typically send the data to your backend
     console.log('Application submitted:', formData);
-    alert(`Candidatura enviada para ${vacancyTitle} com sucesso!`);
+    showToast(`Candidatura enviada para ${vacancyTitle} com sucesso!`, 'success');
     onClose();
   };
 
