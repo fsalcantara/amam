@@ -71,8 +71,16 @@ let dbInstance: DbInterface;
 
 // --- TURSO HTTP API (Vercel / Produção) ---
 if (process.env.TURSO_DATABASE_URL) {
-  const TURSO_URL = process.env.TURSO_DATABASE_URL.replace(/\/$/, '');
+  const TURSO_URL = process.env.TURSO_DATABASE_URL
+    .replace(/^libsql:\/\//, 'https://')
+    .replace(/\/$/, '');
   const TURSO_TOKEN = process.env.TURSO_AUTH_TOKEN ?? '';
+
+  function mapArg(v: any) {
+    if (v === null || v === undefined) return { type: 'null' };
+    if (typeof v === 'number') return { type: Number.isInteger(v) ? 'integer' : 'float', value: String(v) };
+    return { type: 'text', value: String(v) };
+  }
 
   async function tursoExecute(sql: string, args: any[] = []) {
     const res = await fetch(`${TURSO_URL}/v2/pipeline`, {
@@ -83,7 +91,7 @@ if (process.env.TURSO_DATABASE_URL) {
       },
       body: JSON.stringify({
         requests: [
-          { type: 'execute', stmt: { sql, args: args.map(v => ({ type: typeof v === 'number' ? 'integer' : 'text', value: String(v ?? '') })) } },
+          { type: 'execute', stmt: { sql, args: args.map(mapArg) } },
           { type: 'close' },
         ],
       }),
@@ -91,12 +99,17 @@ if (process.env.TURSO_DATABASE_URL) {
 
     if (!res.ok) {
       const err = await res.text();
-      throw new Error(`Turso error: ${err}`);
+      throw new Error(`Turso HTTP error ${res.status}: ${err}`);
     }
 
     const data = await res.json();
-    const result = data.results?.[0]?.response?.result;
-    return result;
+    const first = data.results?.[0];
+
+    if (first?.type === 'error') {
+      throw new Error(`Turso SQL error: ${first.error?.message ?? JSON.stringify(first.error)}`);
+    }
+
+    return first?.response?.result;
   }
 
   // Initialize tables on startup

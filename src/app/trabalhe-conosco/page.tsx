@@ -200,7 +200,7 @@ export default function WorkWithUsPage() {
         <div className={styles.heroContainer}>
           <div className={styles.heroBg}>
             <Image
-              src="/images/careers/hero-team-banner.png"
+              src="/images/careers/trabalhe-conosco-main.png"
               alt="Nossa equipe AMAM"
               fill
               sizes="(max-width: 1200px) 100vw, 50vw"
