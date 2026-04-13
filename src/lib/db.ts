@@ -27,7 +27,7 @@ const INIT_STATEMENTS = [
     title TEXT NOT NULL,
     area TEXT NOT NULL,
     location TEXT NOT NULL,
-    type TEXT NOT NULL,
+    type TEXT NOT NULL DEFAULT 'CLT',
     description TEXT,
     requirements TEXT,
     benefits TEXT,

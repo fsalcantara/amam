@@ -28,12 +28,12 @@ export async function POST(req: NextRequest) {
       INSERT INTO jobs (id, title, area, location, type, description, requirements, benefits, is_active)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `, [
-      id, 
-      data.title, 
-      data.area, 
-      data.location, 
-      data.type, 
-      data.description, 
+      id,
+      data.title,
+      data.area || 'admin',
+      data.location || '',
+      data.type || 'CLT',
+      data.description || '',
       JSON.stringify(data.requirements || []), 
       JSON.stringify(data.benefits || []), 
       data.isActive ? 1 : 0

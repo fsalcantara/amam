@@ -105,7 +105,10 @@ export const jobService = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(job)
     });
-    if (!res.ok) throw new Error('Falha ao criar vaga');
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ error: `HTTP ${res.status}` }));
+      throw new Error(err.error || 'Falha ao criar vaga');
+    }
     return res.json();
   },
 
