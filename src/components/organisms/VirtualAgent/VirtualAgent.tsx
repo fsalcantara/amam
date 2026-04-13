@@ -35,16 +35,22 @@ export const VirtualAgent = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: [...messages, userMessage] })
       });
-      
+
       const data = await response.json();
-      
+
+      if (!response.ok || data.error) {
+        const msg = data.error || `Erro ${response.status}`;
+        setMessages(prev => [...prev, { role: 'assistant', content: `⚠️ ${msg}` }]);
+        return;
+      }
+
       if (data.reply) {
         setMessages(prev => [...prev, data.reply]);
       } else {
-        throw new Error('No reply');
+        setMessages(prev => [...prev, { role: 'assistant', content: '⚠️ Resposta inesperada da IA. Tente novamente.' }]);
       }
-    } catch (error) {
-      setMessages(prev => [...prev, { role: 'assistant', content: 'Desculpe, estou com um pouco de lentidão no momento devido ao alto volume de contatos. Pode tentar novamente em instantes?' }]);
+    } catch (error: any) {
+      setMessages(prev => [...prev, { role: 'assistant', content: `⚠️ Erro de conexão: ${error.message}` }]);
     } finally {
       setIsLoading(false);
     }
