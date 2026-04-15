@@ -120,13 +120,18 @@ function getWorkType(job: Job): { label: string; type: 'presencial' | 'remoto' |
 }
 
 function getPostedLabel(createdAt: string): string {
-  const created = new Date(createdAt);
+  // Turso returns "2026-04-14 21:03:39" (space instead of T) — normalize to ISO 8601
+  const normalized = createdAt ? createdAt.replace(' ', 'T') : '';
+  const created = new Date(normalized);
+  if (!normalized || isNaN(created.getTime())) return 'Publicada recentemente';
   const now = new Date();
   const diffDays = Math.floor((now.getTime() - created.getTime()) / (1000 * 60 * 60 * 24));
   if (diffDays === 0) return 'Publicada hoje';
   if (diffDays === 1) return 'Publicada há 1 dia';
-  if (diffDays < 30) return `Publicada há ${diffDays} dias`;
-  return `Publicada há ${Math.floor(diffDays / 30)} meses`;
+  if (diffDays < 7) return `Publicada há ${diffDays} dias`;
+  if (diffDays < 30) return `Publicada há ${Math.floor(diffDays / 7)} semana${Math.floor(diffDays / 7) > 1 ? 's' : ''}`;
+  if (diffDays < 365) return `Publicada há ${Math.floor(diffDays / 30)} ${Math.floor(diffDays / 30) === 1 ? 'mês' : 'meses'}`;
+  return `Publicada há mais de 1 ano`;
 }
 
 export default function WorkWithUsPage() {
