@@ -340,7 +340,7 @@ export function ApplicationList({ job, onBack }: ApplicationListProps) {
                             {question.options[ans.selectedOptionIndex] || 'Não respondida'}
                           </p>
                           {!isCorrect && (
-                            <p className={styles.correctAnswer}>Correta: {question.options[question.correctOptionIndex]}</p>
+                            <p className={styles.correctAnswer}>Correta: {question.options[question.correctOptionIndex ?? 0]}</p>
                           )}
                           <span className={styles.timeSpent}>{Math.round(ans.timeSpentMs / 1000)}s nesta questão</span>
                         </div>
