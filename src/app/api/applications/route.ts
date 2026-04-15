@@ -7,6 +7,7 @@ export async function GET() {
     const applications = rows.map(row => ({
       ...row,
       jobId: row.job_id,
+      cvUrl: row.cv_url,
       answers: row.answers ? JSON.parse(row.answers) : [],
       proctoring: row.proctoring ? JSON.parse(row.proctoring) : null,
       aiAnalysis: row.ai_analysis ? JSON.parse(row.ai_analysis) : null,
