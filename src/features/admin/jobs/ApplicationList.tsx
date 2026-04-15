@@ -7,6 +7,13 @@ import { applicationService } from '@/features/jobs/services/applicationService'
 import { useToast } from '@/components/atoms/Toast/ToastContext';
 import styles from './ApplicationList.module.css';
 
+const AREA_PT: Record<string, string> = {
+  admin: 'Administrativo',
+  production: 'Produção',
+  logistics: 'Logística',
+  commercial: 'Comercial',
+};
+
 interface ApplicationListProps {
   job: Job;
   onBack: () => void;
@@ -121,7 +128,7 @@ export function ApplicationList({ job, onBack }: ApplicationListProps) {
         <div className={styles.headerMain}>
           <div>
             <h1 className={styles.title}>{job.title}</h1>
-            <p className={styles.subtitle}>{job.location} · {job.area}</p>
+            <p className={styles.subtitle}>{job.location} · {AREA_PT[job.area] ?? job.area}</p>
           </div>
           <div className={styles.statsRow}>
             <div className={styles.statBadge}>
