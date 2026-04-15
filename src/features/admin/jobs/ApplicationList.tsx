@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { Job } from '@/features/jobs/types/job';
 import { Application } from '@/features/jobs/types/application';
 import { applicationService } from '@/features/jobs/services/applicationService';
-import { AdminButton } from '@/features/admin/components/ui/AdminButton';
 import { useToast } from '@/components/atoms/Toast/ToastContext';
 import styles from './ApplicationList.module.css';
 
@@ -18,13 +17,11 @@ export function ApplicationList({ job, onBack }: ApplicationListProps) {
   const [applications, setApplications] = useState<Application[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedApp, setSelectedApp] = useState<Application | null>(null);
-  
-  const [aiAnalysis, setAiAnalysis] = useState<{ score: number, evaluation: string, recommendation: string } | null>(null);
+  const [activeTab, setActiveTab] = useState<'info' | 'cv' | 'answers'>('info');
+  const [aiAnalysis, setAiAnalysis] = useState<{ score: number; evaluation: string; recommendation: string } | null>(null);
   const [analyzingAi, setAnalyzingAi] = useState(false);
 
-  useEffect(() => {
-    loadApplications();
-  }, [job]);
+  useEffect(() => { loadApplications(); }, [job]);
 
   const loadApplications = async () => {
     setLoading(true);
@@ -41,6 +38,7 @@ export function ApplicationList({ job, onBack }: ApplicationListProps) {
   const handleSelectApp = (app: Application) => {
     setSelectedApp(app);
     setAiAnalysis(app.aiAnalysis || null);
+    setActiveTab('info');
   };
 
   const getTestScore = (app: Application) => {
@@ -52,24 +50,16 @@ export function ApplicationList({ job, onBack }: ApplicationListProps) {
     });
     const total = job.screeningQuestions.length;
     const percentage = Math.round((correct / total) * 100);
-    
-    let grade = 'Ruim candidato';
-    if (percentage >= 80) grade = 'Excelente candidato';
-    else if (percentage >= 60) grade = 'Bom candidato';
-    else if (percentage >= 40) grade = 'Candidato regular';
-
+    let grade = 'Fraco';
+    if (percentage >= 80) grade = 'Excelente';
+    else if (percentage >= 60) grade = 'Bom';
+    else if (percentage >= 40) grade = 'Regular';
     return { correct, total, percentage, grade };
   };
 
   const handleAnalyzeCV = async () => {
-    if (!selectedApp || !selectedApp.cvUrl) return;
-    
-    // If we already have the analysis for this specific applicant on the object, just use it
-    if (selectedApp.aiAnalysis) {
-      setAiAnalysis(selectedApp.aiAnalysis);
-      return;
-    }
-    
+    if (!selectedApp?.cvUrl) return;
+    if (selectedApp.aiAnalysis) { setAiAnalysis(selectedApp.aiAnalysis); return; }
     setAnalyzingAi(true);
     try {
       const res = await fetch('/api/analyze-cv', {
@@ -79,24 +69,19 @@ export function ApplicationList({ job, onBack }: ApplicationListProps) {
           cvBase64: selectedApp.cvUrl,
           jobTitle: job.title,
           jobDescription: job.description,
-          candidateName: selectedApp.name
+          candidateName: selectedApp.name,
         }),
       });
-
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Erro na análise');
-      
       setAiAnalysis(data);
-      
-      // Save the analysis result back into the application
-      const updatedApp = await applicationService.updateApplication(selectedApp.id, { aiAnalysis: data });
-      if (updatedApp) {
-         setSelectedApp(updatedApp);
-         setApplications(prev => prev.map(a => a.id === updatedApp.id ? updatedApp : a));
+      const updated = await applicationService.updateApplication(selectedApp.id, { aiAnalysis: data });
+      if (updated) {
+        setSelectedApp(updated);
+        setApplications(prev => prev.map(a => a.id === updated.id ? updated : a));
       }
-    } catch (error) {
-      console.error(error);
-      showToast('Houve um erro ao analisar o currículo.', 'error');
+    } catch {
+      showToast('Erro ao analisar o currículo.', 'error');
     } finally {
       setAnalyzingAi(false);
     }
@@ -104,142 +89,196 @@ export function ApplicationList({ job, onBack }: ApplicationListProps) {
 
   const handleDeleteApp = async () => {
     if (!selectedApp) return;
-    if (confirm('Tem certeza que deseja excluir esta candidatura?')) {
-      await applicationService.deleteApplication(selectedApp.id);
-      setSelectedApp(null);
-      loadApplications();
-    }
+    if (!confirm('Tem certeza que deseja excluir esta candidatura?')) return;
+    await applicationService.deleteApplication(selectedApp.id);
+    setSelectedApp(null);
+    loadApplications();
+    showToast('Candidatura excluída.', 'success');
   };
 
-  if (loading) return <div className={styles.loading}>Carregando candidatos...</div>;
+  const handleDownloadCV = () => {
+    if (!selectedApp?.cvUrl) return;
+    const link = document.createElement('a');
+    link.href = selectedApp.cvUrl;
+    link.download = `Curriculo_${selectedApp.name.replace(/\s+/g, '_')}.pdf`;
+    link.click();
+  };
+
+  const withCV = applications.filter(a => a.cvUrl).length;
+  const withAnswers = applications.filter(a => a.answers?.length).length;
+
+  if (loading) return <div className={styles.loading}><div className={styles.spinner} /><span>Carregando candidatos...</span></div>;
 
   return (
     <div className={styles.container}>
+
+      {/* ── HEADER ── */}
       <div className={styles.header}>
-        <div>
-          <button className={styles.backButton} onClick={onBack}>
-            ← Voltar para Vagas
-          </button>
-          <h1>Candidatos: {job.title}</h1>
-          <p className={styles.subtitle}>
-            {applications.length} {applications.length === 1 ? 'candidato' : 'candidatos'} para esta vaga.
-          </p>
+        <button className={styles.backButton} onClick={onBack}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+          Voltar para Vagas
+        </button>
+        <div className={styles.headerMain}>
+          <div>
+            <h1 className={styles.title}>{job.title}</h1>
+            <p className={styles.subtitle}>{job.location} · {job.area}</p>
+          </div>
+          <div className={styles.statsRow}>
+            <div className={styles.statBadge}>
+              <span className={styles.statNum}>{applications.length}</span>
+              <span className={styles.statLabel}>Candidatos</span>
+            </div>
+            <div className={styles.statBadge}>
+              <span className={styles.statNum}>{withCV}</span>
+              <span className={styles.statLabel}>Com currículo</span>
+            </div>
+            <div className={styles.statBadge}>
+              <span className={styles.statNum}>{withAnswers}</span>
+              <span className={styles.statLabel}>Com triagem</span>
+            </div>
+          </div>
         </div>
       </div>
 
+      {/* ── GRID ── */}
       <div className={styles.contentGrid}>
-        <div className={styles.listSection}>
+
+        {/* LEFT — LIST */}
+        <aside className={styles.listSection}>
           {applications.length === 0 ? (
-            <div className={styles.emptyState}>Nenhum candidato ainda.</div>
+            <div className={styles.emptyState}>
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" strokeWidth="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+              <p>Nenhum candidato ainda</p>
+            </div>
           ) : (
             <ul className={styles.appList}>
-              {applications.map((app) => (
-                <li 
-                  key={app.id} 
-                  className={`${styles.appItem} ${selectedApp?.id === app.id ? styles.selected : ''}`}
-                  onClick={() => handleSelectApp(app)}
-                >
-                  <div className={styles.appHeader}>
-                    <strong>{app.name}</strong>
-                    <span className={styles.date}>
-                      {new Date(app.createdAt).toLocaleDateString('pt-BR')}
-                    </span>
-                  </div>
-                  <div className={styles.appMeta}>{app.email}</div>
-                  {app.answers && app.answers.length > 0 && (
-                     <div className={styles.appBadge}>Questionário Respondido</div>
-                  )}
-                </li>
-              ))}
+              {applications.map(app => {
+                const score = getTestScore(app);
+                return (
+                  <li
+                    key={app.id}
+                    className={`${styles.appItem} ${selectedApp?.id === app.id ? styles.selected : ''}`}
+                    onClick={() => handleSelectApp(app)}
+                  >
+                    <div className={styles.appAvatar}>{app.name.charAt(0).toUpperCase()}</div>
+                    <div className={styles.appInfo}>
+                      <strong className={styles.appName}>{app.name}</strong>
+                      <span className={styles.appEmail}>{app.email}</span>
+                      <div className={styles.appTags}>
+                        {app.cvUrl && <span className={styles.tag}>📄 CV</span>}
+                        {score && (
+                          <span className={`${styles.tag} ${score.percentage >= 60 ? styles.tagGood : styles.tagBad}`}>
+                            {score.percentage}% triagem
+                          </span>
+                        )}
+                        {app.aiAnalysis && <span className={`${styles.tag} ${styles.tagAi}`}>✦ IA avaliado</span>}
+                      </div>
+                    </div>
+                    <span className={styles.appDate}>{new Date(app.createdAt).toLocaleDateString('pt-BR')}</span>
+                  </li>
+                );
+              })}
             </ul>
           )}
-        </div>
+        </aside>
 
-        <div className={styles.detailsSection}>
-          {selectedApp ? (
+        {/* RIGHT — DETAIL */}
+        <main className={styles.detailsSection}>
+          {!selectedApp ? (
+            <div className={styles.emptyDetails}>
+              <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#e2e8f0" strokeWidth="1.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              <p>Selecione um candidato para ver os detalhes</p>
+            </div>
+          ) : (
             <div className={styles.detailsCard}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', borderBottom: '1px solid #e2e8f0', paddingBottom: '0.5rem' }}>
-                <h2 style={{ margin: 0, borderBottom: 'none', paddingBottom: 0 }}>Detalhes do Candidato</h2>
-                <button 
-                  onClick={handleDeleteApp}
-                  style={{
-                    display: 'flex', alignItems: 'center', gap: '0.35rem',
-                    background: 'none', border: 'none', color: '#e31c23',
-                    cursor: 'pointer', fontSize: '0.9rem', fontWeight: 500
-                  }}
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="3 6 5 6 21 6"></polyline>
-                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                  </svg>
+
+              {/* Candidate header */}
+              <div className={styles.candidateHeader}>
+                <div className={styles.candidateAvatar}>{selectedApp.name.charAt(0).toUpperCase()}</div>
+                <div className={styles.candidateMeta}>
+                  <h2 className={styles.candidateName}>{selectedApp.name}</h2>
+                  <a href={`mailto:${selectedApp.email}`} className={styles.candidateEmail}>{selectedApp.email}</a>
+                </div>
+                <button className={styles.deleteBtn} onClick={handleDeleteApp} title="Excluir candidatura">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                   Excluir
                 </button>
               </div>
-              
-              <div className={styles.detailGroup}>
-                <label>Nome:</label>
-                <p>{selectedApp.name}</p>
-              </div>
-              <div className={styles.detailGrid}>
-                <div className={styles.detailGroup}>
-                  <label>E-mail:</label>
-                  <p><a href={`mailto:${selectedApp.email}`}>{selectedApp.email}</a></p>
-                </div>
-                <div className={styles.detailGroup}>
-                  <label>Telefone:</label>
-                  <p>{selectedApp.phone}</p>
-                </div>
-                <div className={styles.detailGroup}>
-                  <label>CPF:</label>
-                  <p>{selectedApp.cpf}</p>
-                </div>
-                <div className={styles.detailGroup}>
-                  <label>LinkedIn:</label>
-                  <p>
-                    {selectedApp.linkedin ? (
-                      <a href={selectedApp.linkedin} target="_blank" rel="noopener noreferrer">
-                        Acessar Perfil
-                      </a>
-                    ) : 'Não informado'}
-                  </p>
-                </div>
+
+              {/* Tabs */}
+              <div className={styles.tabs}>
+                <button className={`${styles.tab} ${activeTab === 'info' ? styles.tabActive : ''}`} onClick={() => setActiveTab('info')}>Dados</button>
+                {selectedApp.cvUrl && (
+                  <button className={`${styles.tab} ${activeTab === 'cv' ? styles.tabActive : ''}`} onClick={() => setActiveTab('cv')}>Currículo</button>
+                )}
+                {selectedApp.answers && selectedApp.answers.length > 0 && (
+                  <button className={`${styles.tab} ${activeTab === 'answers' ? styles.tabActive : ''}`} onClick={() => setActiveTab('answers')}>
+                    Triagem {(() => { const s = getTestScore(selectedApp); return s ? `· ${s.percentage}%` : ''; })()}
+                  </button>
+                )}
               </div>
 
-              {selectedApp.cvUrl && (
-                <div className={styles.detailGroup} style={{ marginTop: '1.5rem' }}>
-                  <label>Currículo (Anexo):</label>
-                  <div style={{ marginTop: '0.5rem', display: 'flex', gap: '1rem', alignItems: 'flex-start', flexWrap: 'wrap' }}>
-                    <a 
-                      href={selectedApp.cvUrl} 
-                      download={`Curriculo_${selectedApp.name.replace(/\s+/g, '_')}`}
-                      className={styles.downloadBtn}
-                    >
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                        <polyline points="7 10 12 15 17 10"></polyline>
-                        <line x1="12" y1="15" x2="12" y2="3"></line>
-                      </svg>
-                      Baixar Currículo
-                    </a>
-                    
-                    <button 
-                      className={styles.aiButton} 
+              {/* TAB: INFO */}
+              {activeTab === 'info' && (
+                <div className={styles.tabContent}>
+                  <div className={styles.infoGrid}>
+                    <div className={styles.infoItem}>
+                      <label>Telefone</label>
+                      <p>{selectedApp.phone}</p>
+                    </div>
+                    <div className={styles.infoItem}>
+                      <label>CPF</label>
+                      <p>{selectedApp.cpf}</p>
+                    </div>
+                    <div className={styles.infoItem}>
+                      <label>LinkedIn</label>
+                      <p>{selectedApp.linkedin
+                        ? <a href={selectedApp.linkedin} target="_blank" rel="noopener noreferrer">Ver perfil →</a>
+                        : 'Não informado'}
+                      </p>
+                    </div>
+                    <div className={styles.infoItem}>
+                      <label>Candidatura em</label>
+                      <p>{new Date(selectedApp.createdAt).toLocaleString('pt-BR')}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* TAB: CV */}
+              {activeTab === 'cv' && selectedApp.cvUrl && (
+                <div className={styles.tabContent}>
+                  <div className={styles.cvActions}>
+                    <button className={styles.downloadBtn} onClick={handleDownloadCV}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                      Baixar PDF
+                    </button>
+                    <button
+                      className={`${styles.aiBtn} ${selectedApp.aiAnalysis ? styles.aiBtnDone : ''}`}
                       onClick={handleAnalyzeCV}
                       disabled={analyzingAi || !!selectedApp.aiAnalysis}
                     >
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path>
-                      </svg>
-                      {selectedApp.aiAnalysis ? 'Currículo já Avaliado' : analyzingAi ? 'Analisando CV...' : 'Avaliar Currículo com IA'}
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                      {selectedApp.aiAnalysis ? '✦ Já avaliado pela IA' : analyzingAi ? 'Analisando...' : 'Analisar com IA'}
                     </button>
                   </div>
-                  
+
+                  {/* PDF viewer */}
+                  <div className={styles.pdfViewer}>
+                    <iframe
+                      src={selectedApp.cvUrl}
+                      title={`Currículo de ${selectedApp.name}`}
+                      className={styles.pdfFrame}
+                    />
+                  </div>
+
+                  {/* AI Analysis */}
                   {aiAnalysis && (
-                    <div className={styles.aiAnalysisCard}>
-                      <div className={styles.aiAnalysisHeader}>
-                        <h4>Avaliação da IA</h4>
-                        <span className={`${styles.aiScore} ${aiAnalysis.score >= 70 ? styles.scoreGood : styles.scoreBad}`}>
-                          Nota: {aiAnalysis.score}/100
+                    <div className={styles.aiCard}>
+                      <div className={styles.aiCardHeader}>
+                        <span className={styles.aiCardTitle}>✦ Avaliação da IA</span>
+                        <span className={`${styles.aiScore} ${aiAnalysis.score >= 70 ? styles.scoreGood : aiAnalysis.score >= 50 ? styles.scoreMid : styles.scoreBad}`}>
+                          {aiAnalysis.score}/100
                         </span>
                       </div>
                       <p className={styles.aiEvaluation}>{aiAnalysis.evaluation}</p>
@@ -251,83 +290,61 @@ export function ApplicationList({ job, onBack }: ApplicationListProps) {
                 </div>
               )}
 
-              {selectedApp.answers && selectedApp.answers.length > 0 && (
-                <div className={styles.answersSection}>
-                  <div className={styles.answersHeader}>
-                    <h3>Respostas do Questionário</h3>
-                    {(() => {
-                      const score = getTestScore(selectedApp);
-                      if (!score) return null;
-                      return (
-                        <div className={styles.testScoreBadge}>
-                          <span className={styles.testPercentage}>{score.percentage}% de acerto</span>
-                          <span className={styles.testDetails}>({score.correct} de {score.total})</span>
-                          <span className={`${styles.testGrade} ${score.percentage >= 60 ? styles.gradeGood : styles.gradeBad}`}>
-                            - {score.grade}
-                          </span>
+              {/* TAB: ANSWERS */}
+              {activeTab === 'answers' && selectedApp.answers && selectedApp.answers.length > 0 && (
+                <div className={styles.tabContent}>
+                  {(() => {
+                    const score = getTestScore(selectedApp);
+                    return score && (
+                      <div className={`${styles.scoreSummary} ${score.percentage >= 60 ? styles.scoreSummaryGood : styles.scoreSummaryBad}`}>
+                        <div className={styles.scoreCircle}>
+                          <span className={styles.scoreNum}>{score.percentage}%</span>
+                          <span className={styles.scoreSub}>acerto</span>
                         </div>
-                      );
-                    })()}
-                  </div>
-                  
+                        <div>
+                          <p className={styles.scoreGrade}>{score.grade}</p>
+                          <p className={styles.scoreDetail}>{score.correct} de {score.total} questões corretas</p>
+                        </div>
+                      </div>
+                    );
+                  })()}
+
                   {selectedApp.proctoring && (
                     <div className={`${styles.proctoringAlert} ${selectedApp.proctoring.flagged ? styles.flagged : ''}`}>
-                      <strong>Status de Monitoramento:</strong>
-                      <ul style={{ margin: '0.5rem 0 0 1.5rem', fontSize: '0.9rem' }}>
-                         <li>Trocas de aba: {selectedApp.proctoring.tabSwitchCount}</li>
-                         <li>Tentativas de cola/paste: {selectedApp.proctoring.pasteAttemptCount}</li>
-                         <li>Tempo total: {Math.round(selectedApp.proctoring.totalTimeMs / 1000)}s</li>
-                      </ul>
-                      {selectedApp.proctoring.flagged && (
-                        <p style={{ marginTop: '0.5rem', color: '#d32f2f', fontWeight: 'bold' }}>
-                          ⚠️ Candidato sinalizado por comportamento suspeito.
-                        </p>
-                      )}
+                      <strong>{selectedApp.proctoring.flagged ? '⚠️ Comportamento suspeito detectado' : '✓ Monitoramento sem ocorrências'}</strong>
+                      <div className={styles.proctoringStats}>
+                        <span>Trocas de aba: {selectedApp.proctoring.tabSwitchCount}</span>
+                        <span>Tentativas de cola: {selectedApp.proctoring.pasteAttemptCount}</span>
+                        <span>Tempo total: {Math.round(selectedApp.proctoring.totalTimeMs / 1000)}s</span>
+                      </div>
                     </div>
                   )}
 
-                  {selectedApp.answers.map((ans, idx) => {
-                    const question = job.screeningQuestions?.find(q => q.id === ans.questionId);
-                    if (!question) return null;
-                    
-                    const selectedText = question.options[ans.selectedOptionIndex] || 'Não respondida';
-                    const isCorrect = ans.selectedOptionIndex === question.correctOptionIndex;
-
-                    return (
-                      <div key={ans.questionId} className={styles.answerBlock}>
-                        <p className={styles.questionText}>
-                          <strong>{idx + 1}.</strong> {question.text}
-                        </p>
-                        <p className={`${styles.answerText} ${isCorrect ? styles.correct : styles.incorrect}`}>
-                          {selectedText}
-                          <span className={styles.badge}>{isCorrect ? '✓' : '✗'}</span>
-                        </p>
-                        {!isCorrect && question.correctOptionIndex !== undefined && (
-                          <p className={styles.correctAnswerText}>
-                            Esperado: {question.options[question.correctOptionIndex]}
+                  <div className={styles.answersList}>
+                    {selectedApp.answers.map((ans, idx) => {
+                      const question = job.screeningQuestions?.find(q => q.id === ans.questionId);
+                      if (!question) return null;
+                      const isCorrect = ans.selectedOptionIndex === question.correctOptionIndex;
+                      return (
+                        <div key={ans.questionId} className={`${styles.answerBlock} ${isCorrect ? styles.answerCorrect : styles.answerWrong}`}>
+                          <p className={styles.questionText}><strong>{idx + 1}.</strong> {question.text}</p>
+                          <p className={styles.answerText}>
+                            <span className={styles.answerMark}>{isCorrect ? '✓' : '✗'}</span>
+                            {question.options[ans.selectedOptionIndex] || 'Não respondida'}
                           </p>
-                        )}
-                        <span className={styles.timeSpent}>
-                           Tempo na questão: {Math.round(ans.timeSpentMs / 1000)}s
-                        </span>
-                      </div>
-                    );
-                  })}
+                          {!isCorrect && (
+                            <p className={styles.correctAnswer}>Correta: {question.options[question.correctOptionIndex]}</p>
+                          )}
+                          <span className={styles.timeSpent}>{Math.round(ans.timeSpentMs / 1000)}s nesta questão</span>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               )}
             </div>
-          ) : (
-            <div className={styles.emptyDetails}>
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ccc" strokeWidth="1.5">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                <circle cx="9" cy="7" r="4"></circle>
-                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-              </svg>
-              <p>Selecione um candidato para ver os detalhes</p>
-            </div>
           )}
-        </div>
+        </main>
       </div>
     </div>
   );

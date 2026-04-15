@@ -210,7 +210,14 @@ export function ApplicationForm({ jobId, screeningQuestions = [], onSuccess, onC
       const file = e.target.files[0];
       if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
         showToast('Por favor, envie o currículo apenas em formato PDF.', 'error');
-        e.target.value = ''; // clear input
+        e.target.value = '';
+        setFormData({ ...formData, cvFile: null });
+        return;
+      }
+      const MAX_SIZE_MB = 5;
+      if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+        showToast(`O arquivo excede o limite de ${MAX_SIZE_MB}MB. Por favor, reduza o tamanho do PDF.`, 'error');
+        e.target.value = '';
         setFormData({ ...formData, cvFile: null });
         return;
       }
