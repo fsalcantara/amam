@@ -138,7 +138,7 @@ export default function JobDetailsPage() {
                   <circle cx="12" cy="12" r="10"></circle>
                   <polyline points="12 6 12 12 16 14"></polyline>
                 </svg>
-                Postada em {new Date(job.createdAt.replace(' ', 'T')).toLocaleDateString('pt-BR')}
+                {job.createdAt ? `Postada em ${new Date(job.createdAt.replace(' ', 'T')).toLocaleDateString('pt-BR')}` : 'Vaga disponível'}
               </div>
             </div>
           </div>
