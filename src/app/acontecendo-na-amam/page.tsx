@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import db from '@/lib/db';
 import { Post } from '@/features/content-hub/types/post';
 import { ContentHubClient } from './ContentHubClient';
