@@ -240,6 +240,7 @@ export function PostForm({ initialData, onSubmit, onCancel }: PostFormProps) {
 
           {coverImageMode === 'url' ? (
             <AdminInput
+              label="URL da imagem"
               {...register('imageUrl')}
               error={errors.imageUrl?.message}
               placeholder="https://exemplo.com/imagem-principal.jpg"

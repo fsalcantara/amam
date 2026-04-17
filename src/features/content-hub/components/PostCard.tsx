@@ -19,7 +19,7 @@ export const PostCard = ({ post }: PostCardProps) => {
 
   const getBadgeLabel = (type: string) => {
     switch (type) {
-      case 'blog': return 'Amam Alimentos';
+      case 'blog': return 'Blog';
       case 'receita': return 'Receitas';
       case 'evento': return 'Evento';
       case 'treinamento': return 'Treinamento';
