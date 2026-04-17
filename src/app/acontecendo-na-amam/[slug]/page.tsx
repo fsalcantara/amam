@@ -156,7 +156,7 @@ export default async function PostDetailPage({ params }: PostDetailProps) {
                           <h3>Ingredientes</h3>
                         </div>
                         <ul className={styles.ingredientsList}>
-                          {post.ingredients.map((item, idx) => (
+                          {post.ingredients.map((item: { measure: string; name: string }, idx: number) => (
                             <li key={idx}>
                               <span className={styles.bullet}></span>
                               <span className={styles.ingredientMeasure}>{item.measure}</span>
@@ -174,7 +174,7 @@ export default async function PostDetailPage({ params }: PostDetailProps) {
                           <h3>Modo de Preparo</h3>
                         </div>
                         <div className={styles.stepsList}>
-                          {post.preparationSteps.map((step, idx) => (
+                          {post.preparationSteps.map((step: string, idx: number) => (
                             <div key={idx} className={styles.stepItem}>
                               <div className={styles.stepNumber}>{String(idx + 1).padStart(2, '0')}</div>
                               <div className={styles.stepText}>{step}</div>
