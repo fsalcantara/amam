@@ -321,15 +321,45 @@ export function PostForm({ initialData, onSubmit, onCancel }: PostFormProps) {
         </div>
 
         <div className={styles.fullWidth}>
-          <AdminTextarea 
-            label="Galeria de Imagens Extras (Uma URL por linha)" 
-            value={gallery.join('\n')}
-            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => 
-              setGallery(e.target.value.split('\n').filter(url => url.trim() !== ''))
-            }
-            rows={4}
-            placeholder="https://exemplo.com/foto1.jpg"
+          <label style={{ display: 'block', marginBottom: '0.75rem', fontWeight: 600, color: '#1e293b' }}>Galeria de Imagens</label>
+          <input
+            type="file"
+            id="gallery-upload"
+            accept="image/*"
+            multiple
+            className={styles.hiddenFileInput}
+            onChange={(e) => {
+              const files = Array.from(e.target.files || []);
+              files.forEach(file => {
+                if (file.size > 2 * 1024 * 1024) { alert(`"${file.name}" excede 2MB e foi ignorada.`); return; }
+                const reader = new FileReader();
+                reader.onload = () => setGallery(prev => [...prev, reader.result as string]);
+                reader.readAsDataURL(file);
+              });
+              e.target.value = '';
+            }}
           />
+          <label htmlFor="gallery-upload" className={styles.fileUploadZone} style={{ marginBottom: '1rem' }}>
+            <div className={styles.fileUploadContent}>
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#94a3b8', marginBottom: '6px' }}><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <span style={{ fontWeight: 600, color: '#0f172a' }}>Adicionar imagens à galeria</span>
+              <span style={{ fontSize: '0.82rem', color: '#64748b' }}>JPG, PNG, WebP — múltiplas (Max 2MB cada)</span>
+            </div>
+          </label>
+          {gallery.length > 0 && (
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
+              {gallery.map((img, idx) => (
+                <div key={idx} style={{ position: 'relative', display: 'inline-block' }}>
+                  <img src={img} alt={`Galeria ${idx + 1}`} style={{ width: '90px', height: '70px', objectFit: 'cover', borderRadius: '8px', border: '1px solid #e2e8f0' }} />
+                  <button
+                    type="button"
+                    onClick={() => setGallery(prev => prev.filter((_, i) => i !== idx))}
+                    style={{ position: 'absolute', top: '-8px', right: '-8px', background: '#ef4444', color: 'white', border: 'none', borderRadius: '50%', width: '22px', height: '22px', cursor: 'pointer', fontSize: '13px', lineHeight: 1 }}
+                  >×</button>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
