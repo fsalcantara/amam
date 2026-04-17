@@ -1,7 +1,8 @@
 "use client";
 
-import { use, useRef } from 'react';
+import { useRef } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import useSWR from 'swr';
 import { Container } from '@/components/atoms/Container/Container';
 import { PostCard } from '@/features/content-hub/components/PostCard';
@@ -11,18 +12,13 @@ import styles from './page.module.css';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
-// Register plugin if needed
 if (typeof window !== "undefined") {
     gsap.registerPlugin(useGSAP);
 }
 
-interface PageProps {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-}
-
-export default function ContentHubPage({ searchParams }: PageProps) {
-  const resolvedSearchParams = use(searchParams);
-  const category = typeof resolvedSearchParams.category === 'string' ? resolvedSearchParams.category : 'todos';
+export default function ContentHubPage() {
+  const searchParams = useSearchParams();
+  const category = searchParams.get('category') ?? 'todos';
 
   const { data: allPosts = [] } = useSWR<Post[]>('api/posts', () => postService.getPosts());
   const posts = category === 'todos' ? allPosts : allPosts.filter(p => p.type === category);
