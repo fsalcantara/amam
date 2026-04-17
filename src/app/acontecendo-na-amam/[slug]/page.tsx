@@ -137,7 +137,7 @@ export default async function PostDetailPage({ params }: PostDetailProps) {
                   <div className={styles.gallerySection}>
                     <h3>Galeria de Fotos</h3>
                     <div className={styles.galleryGrid}>
-                       {post.gallery.map((img, idx) => (
+                       {post.gallery.map((img: string, idx: number) => (
                           <div key={idx} className={styles.galleryItem}>
                             <img src={img} alt={`Galeria imagem ${idx + 1}`} loading="lazy" />
                           </div>
