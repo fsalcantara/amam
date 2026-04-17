@@ -1,24 +1,37 @@
 import { Container } from '@/components/atoms/Container/Container';
 import { Button } from '@/components/atoms/Button/Button';
-import { getPostBySlug } from '@/features/content-hub/data/mock-posts';
+import db from '@/lib/db';
 import { CONTENT_TYPES } from '@/features/content-hub/types/post';
 import { notFound } from 'next/navigation';
 import styles from './page.module.css';
 
 interface PostDetailProps {
-  params: {
-    slug: string;
+  params: Promise<{ slug: string }>;
+}
+
+async function getPost(slug: string) {
+  const row = await db.get('SELECT * FROM posts WHERE slug = ?', [slug]);
+  if (!row) return null;
+  return {
+    ...row,
+    isFeatured: Boolean(row.is_featured),
+    coverImage: row.cover_image,
+    videoUrl: row.video_url,
+    eventDate: row.event_date,
+    targetAudience: row.target_audience,
+    gallery: row.gallery ? JSON.parse(row.gallery) : [],
+    ingredients: row.ingredients ? JSON.parse(row.ingredients) : [],
+    preparationSteps: row.preparation_steps ? JSON.parse(row.preparation_steps) : [],
+    createdAt: row.created_at,
   };
 }
 
 export async function generateMetadata({ params }: PostDetailProps) {
-  const resolvedParams = await params;
-  const post = getPostBySlug(resolvedParams.slug);
+  const { slug } = await params;
+  const post = await getPost(slug);
 
   if (!post) {
-    return {
-      title: 'Conteúdo não encontrado',
-    };
+    return { title: 'Conteúdo não encontrado' };
   }
 
   return {
@@ -28,8 +41,8 @@ export async function generateMetadata({ params }: PostDetailProps) {
 }
 
 export default async function PostDetailPage({ params }: PostDetailProps) {
-  const resolvedParams = await params;
-  const post = getPostBySlug(resolvedParams.slug);
+  const { slug } = await params;
+  const post = await getPost(slug);
 
   if (!post) {
     notFound();
@@ -112,29 +125,12 @@ export default async function PostDetailPage({ params }: PostDetailProps) {
                   </div>
                 )}
 
-                <div className={styles.content}>
-                  <p className={styles.dropcap}>
-                    O texto deste post começa aqui com uma letra capital elegante. O marketing pode inserir textos robustos direto do painel.
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.
-                  </p>
-                  
-                  <h2>Construindo o Futuro com Qualidade</h2>
-                  <p>
-                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-                    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                  </p>
-                  
-                  <blockquote>
-                    "Acreditamos que todo mundo merece o gostinho do pão quentinho recém saído do forno. Essa é a essência do que fazemos aqui."
-                    <cite>- Trazendo palavras reais do campo para você</cite>
-                  </blockquote>
-
-                  <p>
-                    Conteúdo completo do post será renderizado via CMS (Strapi ou WordPress) aqui. Graças a sua atualização,
-                    este componente já suportará conteúdo misturado com múltiplos formatos.
-                  </p>
-                </div>
+                {post.content && (
+                  <div
+                    className={styles.content}
+                    dangerouslySetInnerHTML={{ __html: post.content }}
+                  />
+                )}
 
                 {/* Photo Gallery Grid */}
                 {post.gallery && post.gallery.length > 0 && (

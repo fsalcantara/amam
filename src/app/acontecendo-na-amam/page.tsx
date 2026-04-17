@@ -2,9 +2,11 @@
 
 import { use, useRef } from 'react';
 import Link from 'next/link';
+import useSWR from 'swr';
 import { Container } from '@/components/atoms/Container/Container';
 import { PostCard } from '@/features/content-hub/components/PostCard';
-import { getPostsByType } from '@/features/content-hub/data/mock-posts';
+import { Post } from '@/features/content-hub/types/post';
+import { postService } from '@/features/content-hub/services/postService';
 import styles from './page.module.css';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
@@ -19,10 +21,11 @@ interface PageProps {
 }
 
 export default function ContentHubPage({ searchParams }: PageProps) {
-  // Unwrap params using `use` hook because this is a Client Component
   const resolvedSearchParams = use(searchParams);
   const category = typeof resolvedSearchParams.category === 'string' ? resolvedSearchParams.category : 'todos';
-  const posts = getPostsByType(category === 'todos' ? undefined : category);
+
+  const { data: allPosts = [] } = useSWR<Post[]>('api/posts', () => postService.getPosts());
+  const posts = category === 'todos' ? allPosts : allPosts.filter(p => p.type === category);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
