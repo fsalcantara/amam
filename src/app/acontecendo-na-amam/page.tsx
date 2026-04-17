@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from 'react';
+import { Suspense, useRef } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import useSWR from 'swr';
@@ -17,6 +17,14 @@ if (typeof window !== "undefined") {
 }
 
 export default function ContentHubPage() {
+  return (
+    <Suspense fallback={<div style={{ minHeight: '100vh' }} />}>
+      <ContentHubInner />
+    </Suspense>
+  );
+}
+
+function ContentHubInner() {
   const searchParams = useSearchParams();
   const category = searchParams.get('category') ?? 'todos';
 
