@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import db from '@/lib/db';
 
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const { id } = await params;
     const d = await req.json();
     await db.run(
       `UPDATE posts SET
@@ -28,10 +29,10 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
         d.format ?? null, d.hours ?? null,
         d.ingredients !== undefined ? JSON.stringify(d.ingredients) : null,
         d.preparationSteps !== undefined ? JSON.stringify(d.preparationSteps) : null,
-        params.id,
+        id,
       ]
     );
-    const row = await db.get('SELECT * FROM posts WHERE id = ?', [params.id]);
+    const row = await db.get('SELECT * FROM posts WHERE id = ?', [id]);
     if (!row) return NextResponse.json({ error: 'Post não encontrado' }, { status: 404 });
     return NextResponse.json(row);
   } catch (error: any) {
@@ -39,9 +40,10 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
   }
 }
 
-export async function DELETE(_: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(_: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    await db.run('DELETE FROM posts WHERE id = ?', [params.id]);
+    const { id } = await params;
+    await db.run('DELETE FROM posts WHERE id = ?', [id]);
     return NextResponse.json({ success: true });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });

@@ -126,32 +126,43 @@
   list-style: none;
   padding: 0;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .requirementsList li {
-  position: relative;
-  padding-left: 2rem;
-  margin-bottom: 0.75rem;
-  color: #4b5563;
-  line-height: 1.6;
-  font-size: 1.05rem;
-  padding-top: 0.6rem;
-  padding-bottom: 0.6rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-left: 3px solid var(--color-primary, #e31c23);
   border-radius: 8px;
-  transition: background-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
+  color: #334155;
+  line-height: 1.5;
+  font-size: 1rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .requirementsList li:hover {
-  background-color: #f8fafc;
-  transform: translateX(6px);
-  color: #1e293b;
+  transform: translateX(4px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  color: #0f172a;
 }
 
 .requirementsList li::before {
-  content: "";
-  position: absolute;
-  left: 0.5rem;
-  top: 1.15rem;
+  content: "✓";
+  color: var(--color-primary, #e31c23);
+  font-weight: 700;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+  margin-top: 0.05rem;
+  /* override old absolute positioning */
+  position: static;
+  left: auto;
+  top: auto;
   width: 8px;
   height: 8px;
   border-radius: 50%;
