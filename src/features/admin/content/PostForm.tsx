@@ -20,6 +20,12 @@ export function PostForm({ initialData, onSubmit, onCancel }: PostFormProps) {
   const [videoMode, setVideoMode] = useState<'url' | 'upload'>('url');
   const [videoUrl, setVideoUrl] = useState(initialData?.videoUrl || '');
   const [gallery, setGallery] = useState<string[]>(initialData?.gallery || []);
+  const [coverImageMode, setCoverImageMode] = useState<'url' | 'upload'>(
+    initialData?.coverImage?.startsWith('data:') ? 'upload' : 'url'
+  );
+  const [coverImageBase64, setCoverImageBase64] = useState<string>(
+    initialData?.coverImage?.startsWith('data:') ? initialData.coverImage : ''
+  );
 
   const { register, control, handleSubmit, watch, setValue, formState: { errors } } = useForm<PostFormValues>({
     resolver: zodResolver(postSchema),
@@ -55,13 +61,25 @@ export function PostForm({ initialData, onSubmit, onCancel }: PostFormProps) {
     }
   }, []);
 
+  const handleCoverImageUpload = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 2 * 1024 * 1024) {
+      alert('A imagem deve ter no máximo 2MB.');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => setCoverImageBase64(reader.result as string);
+    reader.readAsDataURL(file);
+  }, []);
+
   const onFormSubmit = useCallback(async (data: PostFormValues) => {
     setLoading(true);
     try {
       await onSubmit({
         ...data,
         type: data.type as Post['type'],
-        coverImage: data.imageUrl,
+        coverImage: coverImageMode === 'upload' ? coverImageBase64 : data.imageUrl,
         videoUrl: videoMode === 'upload' ? videoUrl : data.videoUrl,
         gallery,
         isFeatured: false,
@@ -208,12 +226,52 @@ export function PostForm({ initialData, onSubmit, onCancel }: PostFormProps) {
         <h3 className={styles.sectionTitle}>Mídia e Galeria</h3>
         
         <div className={styles.fullWidth}>
-          <AdminInput 
-            label="Imagem de Capa (URL)" 
-            {...register('imageUrl')}
-            error={errors.imageUrl?.message}
-            placeholder="https://exemplo.com/imagem-principal.jpg"
-          />
+          <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600, color: '#1e293b' }}>Imagem de Capa</label>
+          <div style={{ display: 'flex', gap: '1.5rem', marginBottom: '1rem' }}>
+            <label className={styles.checkboxLabel}>
+              <input type="radio" checked={coverImageMode === 'url'} onChange={() => setCoverImageMode('url')} />
+              Link Externo (URL)
+            </label>
+            <label className={styles.checkboxLabel}>
+              <input type="radio" checked={coverImageMode === 'upload'} onChange={() => setCoverImageMode('upload')} />
+              Fazer Upload de Imagem
+            </label>
+          </div>
+
+          {coverImageMode === 'url' ? (
+            <AdminInput
+              {...register('imageUrl')}
+              error={errors.imageUrl?.message}
+              placeholder="https://exemplo.com/imagem-principal.jpg"
+            />
+          ) : (
+            <div>
+              <input
+                type="file"
+                id="cover-image-upload"
+                accept="image/*"
+                className={styles.hiddenFileInput}
+                onChange={handleCoverImageUpload}
+              />
+              <label htmlFor="cover-image-upload" className={styles.fileUploadZone}>
+                <div className={styles.fileUploadContent}>
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#94a3b8', marginBottom: '8px' }}><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                  <span style={{ fontWeight: 600, color: '#0f172a' }}>Clique para selecionar a imagem</span>
+                  <span style={{ fontSize: '0.85rem', color: '#64748b' }}>JPG, PNG, WebP (Max 2MB)</span>
+                </div>
+              </label>
+              {coverImageBase64 && (
+                <div style={{ marginTop: '0.75rem', position: 'relative', display: 'inline-block' }}>
+                  <img src={coverImageBase64} alt="Preview" style={{ maxHeight: '160px', borderRadius: '8px', border: '1px solid #e2e8f0' }} />
+                  <button
+                    type="button"
+                    onClick={() => setCoverImageBase64('')}
+                    style={{ position: 'absolute', top: '-8px', right: '-8px', background: '#ef4444', color: 'white', border: 'none', borderRadius: '50%', width: '24px', height: '24px', cursor: 'pointer', fontSize: '14px', lineHeight: 1 }}
+                  >×</button>
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         <div className={styles.fullWidth}>
