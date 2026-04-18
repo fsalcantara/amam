@@ -91,7 +91,7 @@
 .card {
   background: white;
   border-radius: 20px;
-  padding: 3.5rem;
+  padding: 2rem;
   box-shadow: 0 20px 40px -10px rgba(0,0,0,0.08), 0 10px 15px -3px rgba(0,0,0,0.04);
   max-width: 800px;
   margin: 0 auto;
@@ -211,8 +211,8 @@
 
 /* New Form Styles */
 .formContainer {
-  margin-top: 3rem;
-  padding: 3rem;
+  margin-top: 2rem;
+  padding: 2rem;
   background: #ffffff;
   border-radius: 16px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);

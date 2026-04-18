@@ -56,10 +56,13 @@ export default function JobList() {
     [jobs, debouncedSearchTerm, areaFilter]
   );
 
-  const getAreaLabel = useCallback((areaId: string) => 
+  const getAreaLabel = useCallback((areaId: string) =>
     JOB_AREAS.find(a => a.id === areaId)?.label || areaId,
     []
   );
+
+  const toTitleCase = (str: string) =>
+    str.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
 
   const handleCreate = () => {
     setCurrentJob(null);
@@ -166,7 +169,7 @@ export default function JobList() {
             {filteredJobs.length > 0 ? (
               filteredJobs.map((job) => (
                 <tr key={job.id}>
-                  <td className={styles.jobTitle}>{job.title}</td>
+                  <td className={styles.jobTitle}>{toTitleCase(job.title)}</td>
                   <td>
                     <span className={styles.areaTag}>{getAreaLabel(job.area)}</span>
                   </td>
@@ -193,13 +196,10 @@ export default function JobList() {
                     </div>
                   </td>
                   <td className={styles.actions}>
-                    <AdminButton 
-                      variant="primary" 
-                      className={styles.smBtn} 
-                      onClick={() => {
-                        setViewingApplicationsJob(job);
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                      }}
+                    <AdminButton
+                      variant="primary"
+                      className={styles.smBtn}
+                      onClick={() => { setViewingApplicationsJob(job); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                       disabled={!applicationCounts[job.id]}
                     >
                       Candidatos
@@ -207,9 +207,9 @@ export default function JobList() {
                     <AdminButton variant="secondary" className={styles.smBtn} onClick={() => handleEdit(job)}>
                       Editar
                     </AdminButton>
-                    <AdminButton variant="danger" className={styles.smBtn} onClick={() => handleDelete(job.id)}>
-                      Excluir
-                    </AdminButton>
+                    <button className={styles.deleteIconBtn} title="Excluir" onClick={() => handleDelete(job.id)}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+                    </button>
                   </td>
                 </tr>
               ))

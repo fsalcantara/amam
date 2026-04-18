@@ -148,6 +148,12 @@ function parseRows(result: any): any[] {
   for (const stmt of INIT_STATEMENTS) {
     await tursoExecute(stmt);
   }
+  try {
+    // Tenta adicionar a coluna recipe_note caso não exista
+    await tursoExecute("ALTER TABLE posts ADD COLUMN recipe_note TEXT");
+  } catch (e) {
+    // Ignorar (coluna já existe)
+  }
   console.log('✅ [DB] Turso conectado e tabelas verificadas');
 })().catch(err => console.error('❌ [DB] Erro na inicialização:', err.message));
 

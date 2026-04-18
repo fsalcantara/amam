@@ -26,6 +26,7 @@ function rowToPost(row: any): Post {
     hours: row.hours,
     ingredients: row.ingredients ? JSON.parse(row.ingredients) : [],
     preparationSteps: row.preparation_steps ? JSON.parse(row.preparation_steps) : [],
+    recipeNote: row.recipe_note,
     createdAt: row.created_at,
   };
 }

@@ -15,7 +15,8 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
         event_date = COALESCE(?, event_date), location = COALESCE(?, location),
         status = COALESCE(?, status), target_audience = COALESCE(?, target_audience),
         format = COALESCE(?, format), hours = COALESCE(?, hours),
-        ingredients = COALESCE(?, ingredients), preparation_steps = COALESCE(?, preparation_steps)
+        ingredients = COALESCE(?, ingredients), preparation_steps = COALESCE(?, preparation_steps),
+        recipe_note = COALESCE(?, recipe_note)
        WHERE id = ?`,
       [
         d.title ?? null, d.slug ?? null, d.type ?? null,
@@ -29,6 +30,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
         d.format ?? null, d.hours ?? null,
         d.ingredients !== undefined ? JSON.stringify(d.ingredients) : null,
         d.preparationSteps !== undefined ? JSON.stringify(d.preparationSteps) : null,
+        d.recipeNote !== undefined ? d.recipeNote : null,
         id,
       ]
     );

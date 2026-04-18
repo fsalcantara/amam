@@ -23,6 +23,7 @@ function rowToPost(row: any) {
     hours: row.hours,
     ingredients: row.ingredients ? JSON.parse(row.ingredients) : [],
     preparationSteps: row.preparation_steps ? JSON.parse(row.preparation_steps) : [],
+    recipeNote: row.recipe_note,
     createdAt: row.created_at,
   };
 }
@@ -45,8 +46,8 @@ export async function POST(req: NextRequest) {
     await db.run(
       `INSERT INTO posts (id, title, slug, type, excerpt, content, date, author, is_featured,
         cover_image, gallery, video_url, event_date, location, status,
-        target_audience, format, hours, ingredients, preparation_steps)
-       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+        target_audience, format, hours, ingredients, preparation_steps, recipe_note)
+       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
       [
         id, d.title, slug, d.type || 'blog', d.excerpt || null, d.content || null,
         d.date || new Date().toISOString().split('T')[0], d.author || null,
@@ -56,6 +57,7 @@ export async function POST(req: NextRequest) {
         d.targetAudience || null, d.format || null, d.hours || null,
         d.ingredients ? JSON.stringify(d.ingredients) : null,
         d.preparationSteps ? JSON.stringify(d.preparationSteps) : null,
+        d.recipeNote || null,
       ]
     );
 

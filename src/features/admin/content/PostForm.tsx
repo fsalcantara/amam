@@ -37,6 +37,7 @@ export function PostForm({ initialData, onSubmit, onCancel }: PostFormProps) {
       imageUrl: initialData?.coverImage || '',
       videoUrl: initialData?.videoUrl || '',
       content: initialData?.content || '',
+      recipeNote: initialData?.recipeNote || '',
       ingredients: initialData?.ingredients || [],
       preparationSteps: initialData?.preparationSteps?.map(i => ({ value: i })) || [],
     }
@@ -146,6 +147,15 @@ export function PostForm({ initialData, onSubmit, onCancel }: PostFormProps) {
         {formType === 'receita' && (
           <>
             <h3 className={styles.sectionTitle}>Detalhes da Receita</h3>
+
+            <div className={styles.fullWidth} style={{ marginBottom: '1.5rem' }}>
+              <AdminTextarea 
+                label="Card de Dica / Contexto (Antes dos ingredientes)" 
+                {...register('recipeNote')}
+                rows={3}
+                placeholder="Ex: Esta receita é tradicional de família e rende 4 deliciosas porções..."
+              />
+            </div>
             
             <div className={styles.fullWidth}>
               <label className={styles.listLabel}>Ingredientes</label>
