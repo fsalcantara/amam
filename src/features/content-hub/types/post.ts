@@ -29,12 +29,13 @@ export interface Post {
   // Recipe specific
   ingredients?: { measure: string; name: string }[];
   preparationSteps?: string[];
+  recipeNote?: string;
   
   createdAt?: string;
 }
 
 export const CONTENT_TYPES: { id: ContentType; label: string }[] = [
-  { id: 'blog', label: 'Amam Alimentos' },
+  { id: 'blog', label: 'Blog' },
   { id: 'evento', label: 'Evento' },
   { id: 'treinamento', label: 'Treinamento' },
   { id: 'receita', label: 'Receitas' },

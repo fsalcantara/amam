@@ -44,7 +44,7 @@ export function AdminSidebar({ isOpen = false, onClose }: AdminSidebarProps) {
   const menuItems = [
     { label: 'Dashboard', href: '/admin', roles: [UserRole.ADMIN] },
     { label: 'Vagas', href: '/admin/vagas', roles: [UserRole.ADMIN, UserRole.HR] },
-    { label: 'O que acontece na Amam', href: '/admin/conteudo', roles: [UserRole.ADMIN, UserRole.MARKETING] },
+    { label: 'Conteúdo', href: '/admin/conteudo', roles: [UserRole.ADMIN, UserRole.MARKETING] },
     { label: 'Produtos', href: '/admin/produtos', roles: [UserRole.ADMIN] },
     { label: 'Usuários', href: '/admin/usuarios', roles: [UserRole.ADMIN] },
   ];
