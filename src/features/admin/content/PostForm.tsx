@@ -40,6 +40,7 @@ export function PostForm({ initialData, onSubmit, onCancel }: PostFormProps) {
       recipeNote: initialData?.recipeNote || '',
       ingredients: initialData?.ingredients || [],
       preparationSteps: initialData?.preparationSteps?.map(i => ({ value: i })) || [],
+      isFeatured: initialData?.isFeatured || false,
     }
   });
 
@@ -83,7 +84,7 @@ export function PostForm({ initialData, onSubmit, onCancel }: PostFormProps) {
         coverImage: coverImageMode === 'upload' ? coverImageBase64 : data.imageUrl,
         videoUrl: videoMode === 'upload' ? videoUrl : data.videoUrl,
         gallery,
-        isFeatured: false,
+        isFeatured: data.isFeatured || false,
         ingredients: data.ingredients ? data.ingredients.filter(v => v.measure.trim() || v.name.trim()) : undefined,
         preparationSteps: data.preparationSteps ? data.preparationSteps.map(s => s.value).filter(v => v.trim()) : undefined,
         slug: data.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
@@ -118,13 +119,20 @@ export function PostForm({ initialData, onSubmit, onCancel }: PostFormProps) {
           required
         />
         
-        <AdminInput 
-          label="Data de Publicação" 
+        <AdminInput
+          label="Data de Publicação"
           type="date"
           {...register('date')}
           error={errors.date?.message}
           required
         />
+
+        <div className={styles.fullWidth}>
+          <label className={styles.checkboxLabel}>
+            <input type="checkbox" {...register('isFeatured')} />
+            Destacar na Home (exibir esta postagem na página inicial)
+          </label>
+        </div>
 
         <div className={styles.fullWidth}>
           <AdminTextarea 
@@ -331,29 +339,38 @@ export function PostForm({ initialData, onSubmit, onCancel }: PostFormProps) {
         </div>
 
         <div className={styles.fullWidth}>
-          <label style={{ display: 'block', marginBottom: '0.75rem', fontWeight: 600, color: '#1e293b' }}>Galeria de Imagens</label>
+          <label style={{ display: 'block', marginBottom: '0.75rem', fontWeight: 600, color: '#1e293b' }}>Galeria de Imagens ({gallery.length}/6)</label>
           <input
             type="file"
             id="gallery-upload"
             accept="image/*"
             multiple
+            disabled={gallery.length >= 6}
             className={styles.hiddenFileInput}
             onChange={(e) => {
               const files = Array.from(e.target.files || []);
-              files.forEach(file => {
+              const remainingSlots = 6 - gallery.length;
+              if (files.length > remainingSlots) {
+                alert(`Limite de 6 imagens na galeria. Apenas ${remainingSlots} imagem(ns) a mais será(ão) adicionada(s).`);
+              }
+              files.slice(0, remainingSlots).forEach(file => {
                 if (file.size > 2 * 1024 * 1024) { alert(`"${file.name}" excede 2MB e foi ignorada.`); return; }
                 const reader = new FileReader();
-                reader.onload = () => setGallery(prev => [...prev, reader.result as string]);
+                reader.onload = () => setGallery(prev => prev.length >= 6 ? prev : [...prev, reader.result as string]);
                 reader.readAsDataURL(file);
               });
               e.target.value = '';
             }}
           />
-          <label htmlFor="gallery-upload" className={styles.fileUploadZone} style={{ marginBottom: '1rem' }}>
+          <label
+            htmlFor="gallery-upload"
+            className={styles.fileUploadZone}
+            style={{ marginBottom: '1rem', opacity: gallery.length >= 6 ? 0.5 : 1, pointerEvents: gallery.length >= 6 ? 'none' : 'auto' }}
+          >
             <div className={styles.fileUploadContent}>
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#94a3b8', marginBottom: '6px' }}><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-              <span style={{ fontWeight: 600, color: '#0f172a' }}>Adicionar imagens à galeria</span>
-              <span style={{ fontSize: '0.82rem', color: '#64748b' }}>JPG, PNG, WebP — múltiplas (Max 2MB cada)</span>
+              <span style={{ fontWeight: 600, color: '#0f172a' }}>{gallery.length >= 6 ? 'Limite de 6 imagens atingido' : 'Adicionar imagens à galeria'}</span>
+              <span style={{ fontSize: '0.82rem', color: '#64748b' }}>JPG, PNG, WebP — máximo 6 imagens (2MB cada)</span>
             </div>
           </label>
           {gallery.length > 0 && (

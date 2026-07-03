@@ -24,7 +24,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
         d.date ?? null, d.author ?? null,
         d.isFeatured !== undefined ? (d.isFeatured ? 1 : 0) : null,
         d.coverImage ?? null,
-        d.gallery !== undefined ? JSON.stringify(d.gallery) : null,
+        d.gallery !== undefined ? JSON.stringify(d.gallery.slice(0, 6)) : null,
         d.videoUrl ?? null, d.eventDate ?? null, d.location ?? null,
         d.status ?? null, d.targetAudience ?? null,
         d.format ?? null, d.hours ?? null,

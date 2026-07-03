@@ -18,6 +18,7 @@ export const postSchema = z.object({
   ingredients: z.array(z.object({ measure: z.string(), name: z.string() })).optional(),
   preparationSteps: z.array(z.object({ value: z.string() })).optional(),
   recipeNote: z.string().optional(),
+  isFeatured: z.boolean().optional(),
 });
 
 export type PostFormValues = z.infer<typeof postSchema>;

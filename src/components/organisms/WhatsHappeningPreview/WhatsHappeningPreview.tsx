@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import { Container } from '../../atoms/Container/Container';
 import { Button } from '../../atoms/Button/Button';
 import { PostCard } from '@/features/content-hub/components/PostCard';
-import { POSTS } from '@/features/content-hub/data/mock-posts';
+import { Post } from '@/features/content-hub/types/post';
 import styles from './WhatsHappeningPreview.module.css';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
@@ -14,9 +14,11 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(useGSAP, ScrollTrigger);
 }
 
-export const WhatsHappeningPreview = () => {
-  // Take first 3 posts for preview
-  const posts = POSTS.slice(0, 3);
+interface WhatsHappeningPreviewProps {
+  posts: Post[];
+}
+
+export const WhatsHappeningPreview = ({ posts }: WhatsHappeningPreviewProps) => {
   const containerRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
@@ -49,6 +51,8 @@ export const WhatsHappeningPreview = () => {
     }, "-=0.4");
     
   }, { scope: containerRef });
+
+  if (posts.length === 0) return null;
 
   return (
     <section className={styles.section} ref={containerRef}>

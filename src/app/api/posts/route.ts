@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
         id, d.title, slug, d.type || 'blog', d.excerpt || null, d.content || null,
         d.date || new Date().toISOString().split('T')[0], d.author || null,
         d.isFeatured ? 1 : 0, d.coverImage || null,
-        d.gallery ? JSON.stringify(d.gallery) : null,
+        d.gallery ? JSON.stringify(d.gallery.slice(0, 6)) : null,
         d.videoUrl || null, d.eventDate || null, d.location || null, d.status || null,
         d.targetAudience || null, d.format || null, d.hours || null,
         d.ingredients ? JSON.stringify(d.ingredients) : null,

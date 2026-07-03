@@ -1,8 +1,8 @@
 import { MetadataRoute } from 'next';
 import { PRODUCTS } from '@/features/products/data/mock-data';
-import { POSTS } from '@/features/content-hub/data/mock-posts';
+import db from '@/lib/db';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://www.amamalimentos.com.br';
 
   const productUrls = PRODUCTS.map((product) => ({
@@ -10,7 +10,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(),
   }));
 
-  const postUrls = POSTS.map((post) => ({
+  const rows = await db.all('SELECT slug, date FROM posts ORDER BY created_at DESC');
+  const postUrls = rows.map((post: any) => ({
     url: `${baseUrl}/acontecendo-na-amam/${post.slug}`,
     lastModified: new Date(post.date),
   }));
