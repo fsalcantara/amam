@@ -128,9 +128,22 @@ export function PostForm({ initialData, onSubmit, onCancel }: PostFormProps) {
         />
 
         <div className={styles.fullWidth}>
-          <label className={styles.checkboxLabel}>
-            <input type="checkbox" {...register('isFeatured')} />
-            Destacar na Home (exibir esta postagem na página inicial)
+          <label className={styles.featuredCard}>
+            <span className={styles.featuredInfo}>
+              <span className={styles.featuredIcon}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.6L22 9.3l-5 4.9 1.2 7.1L12 17.8l-6.2 3.5L7 14.2 2 9.3l7.1-.7L12 2z"/></svg>
+              </span>
+              <span className={styles.featuredText}>
+                <span className={styles.featuredTitle}>Destacar na Home</span>
+                <span className={styles.featuredDesc}>Exibe esta postagem na página inicial do site</span>
+              </span>
+            </span>
+            <span className={styles.switch}>
+              <input type="checkbox" className={styles.switchInput} {...register('isFeatured')} />
+              <span className={styles.switchTrack}>
+                <span className={styles.switchThumb}></span>
+              </span>
+            </span>
           </label>
         </div>
 

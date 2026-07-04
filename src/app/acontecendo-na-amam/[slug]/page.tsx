@@ -16,7 +16,7 @@ async function getPost(slug: string) {
   if (!row) return null;
   return {
     ...row,
-    isFeatured: Boolean(row.is_featured),
+    isFeatured: Number(row.is_featured) === 1,
     coverImage: row.cover_image,
     videoUrl: row.video_url,
     eventDate: row.event_date,

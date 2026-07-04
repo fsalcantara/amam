@@ -14,7 +14,7 @@ function rowToPost(row: any): Post {
     content: row.content,
     date: row.date,
     author: row.author,
-    isFeatured: Boolean(row.is_featured),
+    isFeatured: Number(row.is_featured) === 1,
     coverImage: row.cover_image,
     gallery: row.gallery ? JSON.parse(row.gallery) : [],
     videoUrl: row.video_url,
